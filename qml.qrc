@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>AppSettings.qml</file>
+        <file>MusicList.qml</file>
+        <file>ToolBtn.qml</file>
+        <file>FindToolBtn.qml</file>
+        <file>CustomToolBar.qml</file>
+        <file>AuthorizationPage.qml</file>
+        <file>ToolBarButtonMain.qml</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="find-icon">resources/find-icon.png</file>
+        <file alias="cancel-icon">resources/close-icon.png</file>
+        <file alias="equalizer">resources/equalizer.png</file>
+        <file alias="music-library">resources/music-library.png</file>
+        <file alias="music-playlist">resources/music-playlist.png</file>
+        <file alias="music-queue">resources/music-queue.png</file>
+        <file alias="radio">resources/radio.png</file>
+        <file alias="clock">resources/clock.png</file>
+        <file alias="settings">resources/settings.png</file>
+        <file alias="user">resources/user.png</file>
+        <file alias="like">resources/like.png</file>
+    </qresource>
+</RCC>
