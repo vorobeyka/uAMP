@@ -5,13 +5,17 @@ import QtGraphicalEffects 1.15
 
 Window {
     id: root
-    minimumWidth: 800
-    minimumHeight: 640
+    minimumWidth: 480
+    minimumHeight: 680
+    width: 800
     visible: true
     title: qsTr("Hello World")
     color: settings.backGroundColor
 
-    CustomToolBar { id: mainToolBar; visible: settings.isAuthorized }
+    property StackView mainStack: stackView
+    property bool isToolBarVisible: false
+
+    CustomToolBar { id: mainToolBar }
 
     StackView {
         id: stackView
@@ -19,27 +23,9 @@ Window {
         x: mainToolBar.width
         width: parent.width - mainToolBar.width
         height: parent.height - musicController.height
+        clip: true
     }
 
-    Rectangle {
-        id: musicController
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: 70
-        color: settings.themeColor
-//        LinearGradient {
-//            width: parent.width
-//            height: parent.height
-//            start: Qt.point(0, 0)
-//            end: Qt.point(width, 0)
-//            gradient: Gradient {
-//                GradientStop { position: 0.0; color: settings.backGroundColor }
-//                GradientStop { position: 0.5; color: settings.themeColor }
-//                GradientStop { position: 1.0; color: settings.backGroundColor }
-//            }
-//        }
-
-        opacity: 0.5
-    }
-    AppSettings { id: settings }
+    MusicController { id: musicController }
+    AppSettings { id: settings; windowWidth: root.width; windowHeight: root.height }
 }

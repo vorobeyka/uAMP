@@ -6,6 +6,9 @@ Rectangle {
     property string imgSource: ""
     property int toolBtnWidth: 0
     property int toolBtnHeight: 0
+    property bool gradientVisible: false
+    property int xMouse: 0
+
     id: root
     height: toolBtnHeight
     color: width > 50 ? settings.backGroundColor : settings.toolBarBackGroundColor
@@ -24,12 +27,11 @@ Rectangle {
         }
     }
 
-    Button {
+    MouseArea {
         width: height
         height: parent.height
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        flat: true
         Image {
             id: searchIcon
             source: imgSource
@@ -44,6 +46,15 @@ Rectangle {
             height: 25
         }
 
+        CustomGradient {
+            visible: gradientVisible
+            xxMouse: xMouse
+        }
+
+        hoverEnabled: true
+        onEntered: { gradientVisible = true }
+        onPositionChanged: { xMouse = mouse.x }
+        onExited: { gradientVisible = false }
         onClicked: {
             if (!openedToolBar) {
                 openedToolBar = true
@@ -53,29 +64,5 @@ Rectangle {
             }
         }
     }
-//    Button {
-//        visible: !openedToolBar
-//        width: toolBtnWidth
-//        height: toolBtnHeight
-//        flat: true
-
-//        Image {
-//            id: searchIconClosed
-//            source: imgSource
-//            visible: false
-//        }
-//        ColorOverlay {
-//            id: coloredSearchIconClosed
-//            anchors.centerIn: parent
-//            source: searchIconClosed
-//            color: settings.textColor
-//            width: 25
-//            height: 25
-//        }
-//        onClicked: {
-//            openedToolBar = true
-//            searchField.focus = true
-//        }
-//    }
     AppSettings { id: settings }
 }

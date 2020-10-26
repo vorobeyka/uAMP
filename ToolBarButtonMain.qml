@@ -18,36 +18,14 @@ MouseArea {
         color: settings.textColor
     }
 
-    LinearGradient {
+    CustomGradient {
+        xxMouse: xMouse
         visible: gradientVisible
-        width: xMouse
-        height: parent.height
-        start: Qt.point(0, 0)
-        end: Qt.point(xMouse, 0)
-        opacity: 0.5
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: settings.toolBarBackGroundColor }
-            GradientStop { position: 1.0; color: settings.themeColor }
-        }
-    }
-    LinearGradient {
-        visible: gradientVisible
-        x: xMouse
-        y: 0
-        height: parent.height
-        width: parent.width - xMouse
-        start: Qt.point(0, 0)
-        end: Qt.point(width, 0)
-        opacity: 0.5
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: settings.themeColor }
-            GradientStop { position: 1.0; color: settings.toolBarBackGroundColor }
-        }
     }
 
     hoverEnabled: true
     onEntered: { gradientVisible = true }
     onPositionChanged: { xMouse = mouse.x }
-    onExited: { gradientVisible = false }
+    onExited: { xMouse = 0; gradientVisible = false }
     onClicked: { openedToolBar = !openedToolBar }
 }

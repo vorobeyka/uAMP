@@ -6,8 +6,19 @@
         <file>ToolBtn.qml</file>
         <file>FindToolBtn.qml</file>
         <file>CustomToolBar.qml</file>
-        <file>AuthorizationPage.qml</file>
         <file>ToolBarButtonMain.qml</file>
+        <file>CustomGradient.qml</file>
+        <file>MusicController.qml</file>
+        <file>MusicControllerButton.qml</file>
+        <file>MusicControllerButtonCheck.qml</file>
+        <file>CustomSlider.qml</file>
+        <file>AuthorizationPage.qml</file>
+        <file>CustomText.qml</file>
+        <file>CustomButton.qml</file>
+        <file>CustomTextField.qml</file>
+        <file>UserPage.qml</file>
+        <file>SignInPage.qml</file>
+        <file>Settings.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="find-icon">resources/find-icon.png</file>
@@ -21,5 +32,15 @@
         <file alias="settings">resources/settings.png</file>
         <file alias="user">resources/user.png</file>
         <file alias="like">resources/like.png</file>
+        <file alias="play">resources/play.png</file>
+        <file alias="pause">resources/pause.png</file>
+        <file alias="stop">resources/stop.png</file>
+        <file alias="back">resources/back.png</file>
+        <file alias="forward">resources/forward.png</file>
+        <file alias="volume">resources/volume.png</file>
+        <file alias="random">resources/random.png</file>
+        <file alias="repeat">resources/repeat.png</file>
+        <file alias="full-screen">resources/full-screen.png</file>
+        <file alias="animation">resources/animation.gif</file>
     </qresource>
 </RCC>

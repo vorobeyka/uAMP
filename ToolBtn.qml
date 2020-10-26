@@ -14,83 +14,63 @@ MouseArea {
     property bool gradientVisible: false
     property ButtonGroup buttonGroup: value
     property string buttonText: ""
+    property bool _checked: false
 
-    Rectangle {
-        id: bg
-        anchors.fill: parent
-        color: settings.toolBarBackGroundColor
-
-        RadioButton {
-            id: control
-            width: 50
-            height: 50
-
-            ButtonGroup.group: buttonGroup
-            indicator: Rectangle {
-                width: 8
-                height: bg.height
-                color: control.down ? settings.toolBarBackGroundColor : settings.themeColor
-                visible: control.checked
-            }
+    RadioButton {
+        id: control
+        width: 8
+        height: parent.height
+        checked: _checked
+        ButtonGroup.group: buttonGroup
+        indicator: Rectangle {
+            width: 8
+            height: control.height
+            color: control.down ? settings.toolBarBackGroundColor : settings.themeColor
+            visible: control.checked
         }
+    }
 
-        LinearGradient {
-            visible: gradientVisible
-            width: xMouse
-            height: parent.height
-            start: Qt.point(0, 0)
-            end: Qt.point(xMouse, 0)
-            opacity: 0.5
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: settings.toolBarBackGroundColor }
-                GradientStop { position: 1.0; color: settings.themeColor }
-            }
-        }
-        LinearGradient {
-            visible: gradientVisible
-            x: xMouse
-            y: 0
-            height: parent.height
-            width: parent.width - xMouse
-            start: Qt.point(0, 0)
-            end: Qt.point(width, 0)
-            opacity: 0.5
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: settings.themeColor }
-                GradientStop { position: 1.0; color: settings.toolBarBackGroundColor }
-            }
-        }
+
+
+    Row {
+        height: parent.height
+        width: parent.width - 10
+        spacing: 10
+        x: 10
 
         Image {
-            id: toolImage
+            id: toolIcon
             source: imgSource
             visible: false
         }
 
         ColorOverlay {
-            id: coloredSearchIcon
-            x: 10
+            id: coloredToolIcon
             anchors.verticalCenter: parent.verticalCenter
-            source: toolImage
+            source: toolIcon
             color: settings.textColor
             width: 25
             height: 25
         }
+
+        CustomText {
+            visible: openedToolBar
+            text: buttonText
+        }
     }
 
-    Text {
-        anchors.verticalCenter: parent.verticalCenter
-        x: coloredSearchIcon.width + 20
-        visible: openedToolBar
-        text: buttonText
-        font.pixelSize: Qt.application.font.pixelSize * 1.2
-        color: settings.textColor
+    CustomGradient {
+        xxMouse: xMouse
+        visible: gradientVisible
     }
 
     hoverEnabled: true
     onEntered: { gradientVisible = true }
     onPositionChanged: { xMouse = mouse.x }
-    onExited: { gradientVisible = false }
+    onExited: {
+        xMouse = 0
+        gradientVisible = false
+    }
     onClicked: { control.checked = true }
 
 
