@@ -6,11 +6,14 @@ int main(int argc, char *argv[]) {
     DataBase db;
 
     db.connectToDataBase();
-    qDebug() << db.tables();
+    db.inserIntoTable("Tmp", QStringList() << "syka" << "blyat" << "pizda");
+    // qDebug()
 //    if (db.tables().isEmpty())
     // db.createTable("Tmp", QStringList() << "BGColor VARCHAR(255),"
                                         // << "Tcolor VARCHAR(255),"
                                         // << "TextColor VARCHAR(255))");
+    // qDebug() << db.tables();
+
     // db.inserIntoTable
 
     // db.inserIntoTable("syka", "blyat", "pisya");

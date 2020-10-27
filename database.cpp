@@ -101,13 +101,13 @@ bool DataBase::inserIntoTable(const QVariantList &data) {
      * которые потом связываются методом bindValue
      * для подстановки данных из QVariantList
      * */
-    query.prepare("INSERT INTO " TABLE " ( " TABLE_FNAME ", "
-                                             TABLE_SNAME ", "
-                                             TABLE_NIK " ) "
-                  "VALUES (:FName, :SName, :Nik)");
-    query.bindValue(":FName",       data[0].toString());
-    query.bindValue(":SName",       data[1].toString());
-    query.bindValue(":Nik",         data[2].toString());
+    query.prepare("INSERT INTO " + data[0] + " (BGColor, "
+                                              "Tcolor, "
+                                             " TextColor) "
+                  "VALUES (:BGColor, :Tcolor, :TextColor)");
+    query.bindValue(":BGColor",       data[1].toString());
+    query.bindValue(":Tcolor",       data[2].toString());
+    query.bindValue(":TextColor",         data[3].toString());
 
     // После чего выполняется запросом методом exec()
     if(!query.exec()){
@@ -122,11 +122,12 @@ bool DataBase::inserIntoTable(const QVariantList &data) {
 
 /* Второй метод для вставки записи в базу данных
  * */
-bool DataBase::inserIntoTable(const QString &fname, const QString &sname, const QString &nik) {
+bool DataBase::inserIntoTable(QString& tableName, QStringList values) {
     QVariantList data;
-    data.append(fname);
-    data.append(sname);
-    data.append(nik);
+    data.append(tableName);
+    data.append(values[0]);
+    data.append(values[1]);
+    data.append(values[2]);
 
     if(inserIntoTable(data))
         return true;

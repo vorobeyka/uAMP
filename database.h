@@ -37,7 +37,7 @@ public:
 
 public slots:
     bool inserIntoTable(const QVariantList& data);      // Добавление записей в таблицу
-    bool inserIntoTable(const QString& fname, const QString& sname, const QString &nik);
+    bool inserIntoTable(QString& tableName, QStringsList values);
     bool removeRecord(const int id); // Удаление записи из таблицы по её id
     bool createTable(QString tName, QStringList columns);
     // bool readFromTable();;
