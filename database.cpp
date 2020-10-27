@@ -1,5 +1,4 @@
 #include "database.h"
-#include <QCoreApplication>
 
 DataBase::DataBase(QObject *parent) : QObject(parent) {
     
@@ -18,7 +17,7 @@ void DataBase::connectToDataBase() {
 //    if(!QFile(QCoreApplication::applicationDirPath() + DATABASE_NAME).exists()){
 //        this->restoreDataBase();
 //    } else {
-        this->openDataBase();
+      this->openDataBase();
 //    }
 }
 
@@ -44,7 +43,7 @@ bool DataBase::openDataBase() {
      * */
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName(DATABASE_HOSTNAME);
-    db.setDatabaseName(QCoreApplication::applicationDirPath() + DATABASE_NAME);
+    db.setDatabaseName(DATABASE_NAME);
     if(db.open()){
         return true;
     } else {

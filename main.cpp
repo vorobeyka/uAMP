@@ -2,13 +2,12 @@
 #include <QQmlApplicationEngine>
 #include "database.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     DataBase db;
-    
-    db.connectToDataBase();
 
-    qDebug() << db.tables().size();
+    db.connectToDataBase();
+    qDebug() << db.tables();
+//    if (db.tables().isEmpty())
     // db.createTable("Tmp", QStringList() << "BGColor VARCHAR(255),"
                                         // << "Tcolor VARCHAR(255),"
                                         // << "TextColor VARCHAR(255))");
