@@ -31,13 +31,16 @@ public:
      * Подключение к базе данных и вставка записей в таблицу
      * */
     void connectToDataBase();
+    QStringList tables() {
+        return db.tables();
+    }
 
 public slots:
     bool inserIntoTable(const QVariantList& data);      // Добавление записей в таблицу
     bool inserIntoTable(const QString& fname, const QString& sname, const QString &nik);
     bool removeRecord(const int id); // Удаление записи из таблицы по её id
     bool createTable(QString tName, QStringList columns);
-    bool readFromTable();;
+    // bool readFromTable();;
 
 private:
     // Сам объект базы данных, с которым будет производиться работа

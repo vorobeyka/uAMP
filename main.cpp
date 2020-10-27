@@ -7,8 +7,12 @@ int main(int argc, char *argv[])
     DataBase db;
     
     db.connectToDataBase();
-    db.createTable("Tmp", QStringList() << "");
-
+    
+    // qDebug() << QA
+    // db.createTable("Tmp", QStringList() << "BGColor VARCHAR(255),"
+                                        // << "Tcolor VARCHAR(255),"
+                                        // << "TextColor VARCHAR(255))");
+    // db.inserIntoTable
 
     // db.inserIntoTable("syka", "blyat", "pisya");
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

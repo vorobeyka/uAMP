@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_DataBase_t {
-    QByteArrayData data[9];
-    char stringdata0[62];
+    QByteArrayData data[12];
+    char stringdata0[88];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,11 +40,15 @@ QT_MOC_LITERAL(4, 30, 5), // "fname"
 QT_MOC_LITERAL(5, 36, 5), // "sname"
 QT_MOC_LITERAL(6, 42, 3), // "nik"
 QT_MOC_LITERAL(7, 46, 12), // "removeRecord"
-QT_MOC_LITERAL(8, 59, 2) // "id"
+QT_MOC_LITERAL(8, 59, 2), // "id"
+QT_MOC_LITERAL(9, 62, 11), // "createTable"
+QT_MOC_LITERAL(10, 74, 5), // "tName"
+QT_MOC_LITERAL(11, 80, 7) // "columns"
 
     },
     "DataBase\0inserIntoTable\0\0data\0fname\0"
-    "sname\0nik\0removeRecord\0id"
+    "sname\0nik\0removeRecord\0id\0createTable\0"
+    "tName\0columns"
 };
 #undef QT_MOC_LITERAL
 
@@ -54,7 +58,7 @@ static const uint qt_meta_data_DataBase[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -62,14 +66,16 @@ static const uint qt_meta_data_DataBase[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   29,    2, 0x0a /* Public */,
-       1,    3,   32,    2, 0x0a /* Public */,
-       7,    1,   39,    2, 0x0a /* Public */,
+       1,    1,   34,    2, 0x0a /* Public */,
+       1,    3,   37,    2, 0x0a /* Public */,
+       7,    1,   44,    2, 0x0a /* Public */,
+       9,    2,   47,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Bool, QMetaType::QVariantList,    3,
     QMetaType::Bool, QMetaType::QString, QMetaType::QString, QMetaType::QString,    4,    5,    6,
     QMetaType::Bool, QMetaType::Int,    8,
+    QMetaType::Bool, QMetaType::QString, QMetaType::QStringList,   10,   11,
 
        0        // eod
 };
@@ -85,6 +91,8 @@ void DataBase::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 1: { bool _r = _t->inserIntoTable((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
         case 2: { bool _r = _t->removeRecord((*reinterpret_cast< const int(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
+        case 3: { bool _r = _t->createTable((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QStringList(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
         default: ;
         }
@@ -120,13 +128,13 @@ int DataBase::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 4)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }
