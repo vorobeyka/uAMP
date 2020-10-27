@@ -32,14 +32,12 @@ if(ANDROID)
       main.cpp
       qml.qrc
       database.cpp
-      database.h
     )
 else()
     add_executable(player
       main.cpp
       qml.qrc
       database.cpp
-      database.h
     )
 endif()
 

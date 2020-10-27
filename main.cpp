@@ -7,6 +7,9 @@ int main(int argc, char *argv[])
     DataBase db;
     
     db.connectToDataBase();
+    db.createTable("Tmp", QStringList() << "");
+
+
     // db.inserIntoTable("syka", "blyat", "pisya");
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);

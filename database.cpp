@@ -15,24 +15,24 @@ void DataBase::connectToDataBase() {
     /* Перед подключением к базе данных производим проверку на её существование.
      * В зависимости от результата производим открытие базы данных или её восстановление
      * */
-    if(!QFile(QCoreApplication::applicationDirPath() + DATABASE_NAME).exists()){
-        this->restoreDataBase();
-    } else {
+//    if(!QFile(QCoreApplication::applicationDirPath() + DATABASE_NAME).exists()){
+//        this->restoreDataBase();
+//    } else {
         this->openDataBase();
-    }
+//    }
 }
 
 /* Методы восстановления базы данных
  * */
 bool DataBase::restoreDataBase() {
     // Если база данных открылась ...
-    if(this->openDataBase()){
+//    if(this->openDataBase()){
         // Производим восстановление базы данных
-        return (this->createTable()) ? true : false;
-    } else {
-        qDebug() << "Не удалось восстановить базу данных";
-        return false;
-    }
+//        return (this->createTable()) ? true : false;
+//    } else {
+//        qDebug() << "Не удалось восстановить базу данных";
+//        return false;
+//    }
     return false;
 }
 
@@ -60,25 +60,35 @@ void DataBase::closeDataBase() {
 
 /* Метод для создания таблицы в базе данных
  * */
-bool DataBase::createTable() {
+bool DataBase::createTable(QString tName, QStringList columns) {
     /* В данном случае используется формирование сырого SQL-запроса
-     * с последующим его выполнением.
      * */
     QSqlQuery query;
-    if(!query.exec( "CREATE TABLE " TABLE " ("
-                            "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                            TABLE_FNAME     " VARCHAR(255)    NOT NULL,"
-                            TABLE_SNAME     " VARCHAR(255)    NOT NULL,"
-                            TABLE_NIK       " VARCHAR(255)    NOT NULL"
-                        " )"
-                    )){
-        qDebug() << "DataBase: error of create " << TABLE;
+    QString queryString = "CREATE TABLE " + tName + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ";
+    for (auto i : columns)
+        queryString += i;
+    if (!query.exec(queryString)) {
+        qDebug() << "DatBase: error of create " << TABLE;
         qDebug() << query.lastError().text();
         return false;
     } else {
         return true;
     }
-    return false;
+//    QSqlQuery query;
+//    if(!query.exec( "CREATE TABLE " TABLE " ("
+//                            "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+//                            TABLE_FNAME     " VARCHAR(255)    NOT NULL,"
+//                            TABLE_SNAME     " VARCHAR(255)    NOT NULL,"
+//                            TABLE_NIK       " VARCHAR(255)    NOT NULL"
+//                        " )"
+//                    )){
+//        qDebug() << "DataBase: error of create " << TABLE;
+//        qDebug() << query.lastError().text();
+//        return false;
+//    } else {
+//        return true;
+//    }
+//    return false;
 }
 
 /* Метод для вставки записи в базу данных
