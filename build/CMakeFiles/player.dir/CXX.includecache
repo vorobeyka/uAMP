@@ -6,44 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../database.h
-QObject
--
-QSql
--
-QSqlQuery
--
-QSqlError
--
-QSqlDatabase
--
-QFile
--
-QDate
--
-QDebug
--
-
-/home/vorobey/uamp/build/player_autogen/EWIEGA46WW/moc_database.cpp
-memory
--
-database.h
-/home/vorobey/uamp/build/player_autogen/EWIEGA46WW/database.h
-QtCore/qbytearray.h
--
-QtCore/qmetatype.h
--
-
-/home/vorobey/uamp/build/player_autogen/mocs_compilation.cpp
-EWIEGA46WW/moc_database.cpp
-/home/vorobey/uamp/build/player_autogen/EWIEGA46WW/moc_database.cpp
-
-/home/vorobey/uamp/database.cpp
-database.h
-/home/vorobey/uamp/database.h
-QCoreApplication
--
-
 /home/vorobey/uamp/database.h
 QObject
 -
@@ -69,10 +31,6 @@ QQmlApplicationEngine
 -
 database.h
 /home/vorobey/uamp/database.h
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QCoreApplication
-qcoreapplication.h
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreapplication.h
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/QDate
 qdatetime.h

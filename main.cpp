@@ -7,8 +7,8 @@ int main(int argc, char *argv[])
     DataBase db;
     
     db.connectToDataBase();
-    
-    // qDebug() << QA
+
+    qDebug() << db.tables().size();
     // db.createTable("Tmp", QStringList() << "BGColor VARCHAR(255),"
                                         // << "Tcolor VARCHAR(255),"
                                         // << "TextColor VARCHAR(255))");
