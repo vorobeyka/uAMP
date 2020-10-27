@@ -12,7 +12,7 @@
 
 /* Директивы имен таблицы, полей таблицы и базы данных */
 #define DATABASE_HOSTNAME   "NameDataBase"
-#define DATABASE_NAME       "Name.db"
+#define DATABASE_NAME       "Database.db"
 
 #define TABLE                   "NameTable"         // Название таблицы
 #define TABLE_FNAME             "FisrtName"         // Вторая колонка

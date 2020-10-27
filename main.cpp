@@ -1,10 +1,14 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include "database.h"
 
 int main(int argc, char *argv[])
 {
+    DataBase db;
+    
+    db.connectToDataBase();
+    // db.inserIntoTable("syka", "blyat", "pisya");
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;

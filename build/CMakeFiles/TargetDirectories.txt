@@ -1,0 +1,4 @@
+/home/vorobey/uamp/build/CMakeFiles/rebuild_cache.dir
+/home/vorobey/uamp/build/CMakeFiles/edit_cache.dir
+/home/vorobey/uamp/build/CMakeFiles/player.dir
+/home/vorobey/uamp/build/CMakeFiles/player_autogen.dir

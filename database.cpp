@@ -2,7 +2,7 @@
 #include <QCoreApplication>
 
 DataBase::DataBase(QObject *parent) : QObject(parent) {
-
+    
 }
 
 DataBase::~DataBase() {
