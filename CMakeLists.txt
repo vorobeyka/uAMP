@@ -32,12 +32,18 @@ if(ANDROID)
       main.cpp
       qml.qrc
       database.cpp
+      settings.cpp
+      settings.h
+      database.h
     )
 else()
     add_executable(player
       main.cpp
       qml.qrc
       database.cpp
+      settings.cpp
+      settings.h
+      database.h
     )
 endif()
 

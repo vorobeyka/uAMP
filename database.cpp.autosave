@@ -165,7 +165,7 @@ std::vector<QVariantList> DataBase::readFromTable(QString tableName, QString val
     if (query.exec("SELECT " + value + " FROM " + tableName)) {
         while (query.next()) {
             QVariantList pack;
-            qDebug() << query.value("TextColor");
+//            qDebug() << query
             for (int i = 0; i < query.size(); ++i) {
                 pack.append(query.value(i));
 
