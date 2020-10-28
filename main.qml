@@ -27,5 +27,9 @@ Window {
     }
 
     MusicController { id: musicController }
-    AppSettings { id: settings; windowWidth: root.width; windowHeight: root.height }
+    AppSettings {
+        id: settings
+        windowWidth: root.width
+        windowHeight: root.height
+    }
 }

@@ -108,7 +108,7 @@ Rectangle {
         buttonText: "Settings"
         onClicked: {
             if (settings.initialItem !== "settings")
-                mainStack.push("Settings.qml")
+                mainStack.push("Properties.qml")
             settings.initialItem = "settings"
         }
     }

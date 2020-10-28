@@ -60,8 +60,8 @@ Item {
                         password.clear()
                         login.clear()
                     } else {
-                        if (!getLoginLenght()) errorText.text = "Error: \nLogin must be longer then 2 characters."
-                        else errorText.text = "Error:\nPassword must be longer then 5 characters."
+                        if (!getLoginLenght()) errorText.text = "Error: \nLogin must be longer then 2 characters\nand not longer then 20 characters."
+                        else errorText.text = "Error:\nPassword must be longer then 5 characters\nand not longer then 20 characters."
                         errorWrapper.visible = true
                     }
                 }
@@ -87,6 +87,6 @@ Item {
     }
 
     AppSettings { id: settings }
-    function getPasswordLenght() { return password.text.length > 5; }
-    function getLoginLenght() { return login.text.length > 2; }
+    function getPasswordLenght() { return password.text.length > 5 && password.text.length < 21; }
+    function getLoginLenght() { return login.text.length > 2 && login.text.length < 21; }
 }

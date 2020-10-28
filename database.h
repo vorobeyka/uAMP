@@ -40,7 +40,8 @@ public slots:
         // Добавление записей в таблицу
     bool insertIntoTable(QString tableName, QVariantMap data);
     bool insertIntoTable(QString tableName, QStringList values);
-    std::vector<QVariantList> readFromTable(QString tableName, QString value = "*");
+    bool insertValue(QString tableName, QString column, QVariant value);
+    std::vector<QVariantList> readFromTable(QString tableName, int columns, QString value = "*");
 //    QString readString(QString tableName, QString value);
 //    QString readInt(QString tableName, QString value);
     bool removeRecord(const int id); // Удаление записи из таблицы по её id

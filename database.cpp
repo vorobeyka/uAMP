@@ -7,30 +7,24 @@ DataBase::DataBase(QString name, QObject *parent)
 
 DataBase::~DataBase() {}
 
-/* Методы для подключения к базе данных
- * */
-void DataBase::connectToDataBase() {
-    /* Перед подключением к базе данных производим проверку на её существование.
-     * В зависимости от результата производим открытие базы данных или её восстановление
-     * */
-//    if(!QFile(QCoreApplication::applicationDirPath() + DATABASE_NAME).exists()){
-//        this->restoreDataBase();
-//    } else {
-      this->openDataBase();
-//    }
+bool DataBase::insertValue(QString tableName, QString column, QVariant value) {
+    qDebug() << "INSERT VALUE"  + value.toString();
+    QSqlQuery query;
+    query.prepare("INSERT INTO " + tableName + " (" + column + ")" +
+                  "VALUES (:" + column + ")");
+    query.bindValue(":" + column, value);
+    if (!query.exec()) {
+        qDebug() << "Error: failed to insert " + value.toString() + " in " + column;
+        return false;
+    }
+    return true;
 }
 
-/* Методы восстановления базы данных
- * */
+void DataBase::connectToDataBase() {
+      this->openDataBase();
+}
+
 bool DataBase::restoreDataBase() {
-    // Если база данных открылась ...
-//    if(this->openDataBase()){
-        // Производим восстановление базы данных
-//        return (this->createTable()) ? true : false;
-//    } else {
-//        qDebug() << "Не удалось восстановить базу данных";
-//        return false;
-//    }
     return false;
 }
 
@@ -101,21 +95,21 @@ bool DataBase::insertIntoTable(QString tableName, QVariantMap data) {
      * */
     QSqlQuery query;
     QString queryString = "INSERT INTO " + tableName + " (";
-    QString queryVlues = "VALUES (";
+    QString queryValues = "VALUES (";
     for (QVariantMap::iterator i = data.begin(); i != data.end(); i++) {
         queryString += i.key();
-        queryVlues += ":" + i.key();
+        queryValues += ":" + i.key();
 //        qDebug() << i.key() << i.value().toString();
         if (i + 1 != data.end()) {
             queryString += ", ";
-            queryVlues += ", ";
+            queryValues += ", ";
         } else {
             queryString += ") ";
-            queryVlues += ")";
+            queryValues += ")";
         }
         query.bindValue(":" + i.key(), i.value());
     }
-    query.prepare(queryString + queryVlues);
+    query.prepare(queryString + queryValues);
     for (QVariantMap::iterator i = data.begin(); i != data.end(); i++) {
         query.bindValue(":" + i.key(), i.value().toString());
     }
@@ -158,18 +152,17 @@ bool DataBase::insertIntoTable(QString tableName, QStringList values) {
         return false;
 }
 
-std::vector<QVariantList> DataBase::readFromTable(QString tableName, QString value) {
+std::vector<QVariantList> DataBase::readFromTable(QString tableName, int columns, QString value) {
     QSqlQuery query;
     std::vector<QVariantList> data;
 
+
     if (query.exec("SELECT " + value + " FROM " + tableName)) {
         while (query.next()) {
+            qDebug() << query.value("ThemeColor");
             QVariantList pack;
-            qDebug() << query.value("TextColor");
-            for (int i = 0; i < query.size(); ++i) {
+            for (int i = 0; i < columns; ++i)
                 pack.append(query.value(i));
-
-            }
             data.push_back(pack);
         }
         qDebug() << "Info: sucksess to read from " + tableName;

@@ -18,7 +18,9 @@
         <file>CustomTextField.qml</file>
         <file>UserPage.qml</file>
         <file>SignInPage.qml</file>
-        <file>Settings.qml</file>
+        <file>Properties.qml</file>
+        <file>PropertiesColoredBGButton.qml</file>
+        <file>PropertiesColoredThemeButton.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="find-icon">resources/find-icon.png</file>

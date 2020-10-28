@@ -5,16 +5,16 @@ Item {
 
     property int windowWidth: 0
     property int windowHeight: 0
-    property string userName: ""
+    property string userName: Settings.userName
     property string userPassword: ""
     property string initialItem: ""
-    property bool isAuthorized: false
+    property bool isAuthorized: Settings.authorized
 
-    property string backGroundColor: "#303030"
-    property string toolBarBackGroundColor: "#404040"
-    property string themeColor: "#12CBC4"
-    property string textColor: "white"
-    property string hoverColor: "#BEC3C6"
+    property string backGroundColor: Settings.backGroundColor//""//"#303030"
+    property string toolBarBackGroundColor: Settings.toolBarColor//""//"#404040"
+    property string themeColor: Settings.themeColor//""//"#12CBC4"
+    property string textColor: Settings.textColor//""//"white"
+    property string hoverColor: Settings.hoverColor//""//"#BEC3C6"
     property int toolButtonHeight: 50
     property double opacityMusicCotnroll: 0.5
     property double opacityGradient: 0.5

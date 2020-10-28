@@ -2,27 +2,15 @@
 
 
 Settings::Settings(QObject* parent) : QObject(parent){
-    setDefaultValues();
     m_db = new DataBase("Settings.db");
     m_db->connectToDataBase();
+
     if (createTable()) {
         if (!readTable()) {
             insertDefaultValues();
             readTable();
-            for (auto i : m_settings) {
-                for (int j = 0; j < i.size(); j++)
-                    qDebug() << i.value(j).toString();
-            }
-        } else {
-            for (auto i : m_settings) {
-                for (int j = 0; j < i.size(); j++)
-                    qDebug() << i.value(j).toString();
-            }
         }
     }
-
-//    if ((settings = m_db->readFromTable("Settings")))
-//    if (m_db->readFromTable("Settings.db"))
 }
 
 Settings::~Settings() {
@@ -45,20 +33,28 @@ bool Settings::createTable() {
 }
 
 bool Settings::readTable() {
-    m_settings = m_db->readFromTable("Settings");
+    m_settings = m_db->readFromTable("Settings", 7);
     if (m_settings.empty()) return false;
-    else return true;
+    else {
+        m_bgColor = m_settings.begin()->at(1).toString();
+        m_hoverColor = m_settings.begin()->at(2).toString();
+        m_tbbColor = m_settings.begin()->at(3).toString();
+        m_textColor = m_settings.begin()->at(4).toString();
+        m_themeColor = m_settings.begin()->at(5).toString();
+        m_user = m_settings.begin()->at(6).toString();
+        return true;
+    }
 }
 
 bool Settings::insertDefaultValues() {
     QVariantMap data;
 
-    data.insert("BGColor", m_bgColor);
-    data.insert("TBBColor", m_tbbColor);
-    data.insert("ThemeColor", m_themeColor);
-    data.insert("TextColor", m_textColor);
-    data.insert("HoverColor", m_hoverColor);
-    data.insert("User", m_user);
+    data.insert(BACKGROUND_COLOR, "#303030");
+    data.insert(TOOLBAR_COLOR, "#404040");
+    data.insert(THEME_COLOR, "#12CBC4");
+    data.insert(TEXT_COLOR, "white");
+    data.insert(HOVER_COLOR, "#BEC3C6");
+    data.insert(USER, "");
     return m_db->insertIntoTable("Settings", data);
 }
 
@@ -66,11 +62,79 @@ bool Settings::insertValue() {
     return false;
 }
 
-void Settings::setDefaultValues() {
-    m_bgColor = "#303030";
-    m_tbbColor = "#404040";
-    m_themeColor = "#12CBC4";
-    m_textColor = "white";
-    m_hoverColor = "#BEC3C6";
-    m_user = "";
+QString Settings::backGroundColor() const {
+    return m_bgColor;
 }
+
+void Settings::setBackGroundColor(QString color) {
+    m_bgColor = color;
+    m_db->insertValue("Settings", BACKGROUND_COLOR, color);
+    emit backGroundColorChanged(color);
+}
+
+QString Settings::toolBarColor() const {
+    return m_tbbColor;
+}
+
+void Settings::setToolBarColor(QString color) {
+    m_tbbColor = color;
+    m_db->insertValue("Settings", TOOLBAR_COLOR, color);
+    emit toolBarColorChanged(color);
+}
+
+QString Settings::themeColor() const {
+    return m_themeColor;
+}
+
+void Settings::setThemeColor(QString color) {
+    m_themeColor = color;
+    m_db->insertValue("Settings", THEME_COLOR, color);
+    emit themeColorChanged(color);
+}
+
+QString Settings::textColor() const {
+    return m_textColor;
+}
+
+void Settings::setTextColor(QString color) {
+    m_textColor = color;
+    m_db->insertValue("Settings", TEXT_COLOR, color);
+    emit textColorChanged(color);
+}
+
+QString Settings::hoverColor() const {
+    return m_hoverColor;
+}
+
+void Settings::setHoverColor(QString color) {
+    m_hoverColor = color;
+    m_db->insertValue("Settings", HOVER_COLOR, color);
+    emit hoverColorChanged(color);
+}
+
+QString Settings::userName() const {
+    return m_user;
+}
+
+void Settings::setUserName(QString user) {
+    m_user = user;
+    m_db->insertValue("Settings", USER, user);
+    emit userNameChanged(user);
+}
+
+bool Settings::authorized() const {
+    return !m_user.isNull();
+}
+
+void Settings::setAuthorized(bool value) {
+    emit authorizedChanged(value);
+}
+
+//void Settings::setDefaultValues() {
+//    m_bgColor = ;
+//    m_tbbColor = ;
+//    m_themeColor = ;
+//    m_textColor = ;
+//    m_hoverColor = ;
+//    m_user = "";
+//}
