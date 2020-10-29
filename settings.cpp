@@ -68,7 +68,7 @@ QString Settings::backGroundColor() const {
 
 void Settings::setBackGroundColor(QString color) {
     m_bgColor = color;
-    m_db->insertValue("Settings", BACKGROUND_COLOR, color);
+    m_db->updateValue("Settings", BACKGROUND_COLOR, color);
     emit backGroundColorChanged(color);
 }
 
@@ -78,7 +78,7 @@ QString Settings::toolBarColor() const {
 
 void Settings::setToolBarColor(QString color) {
     m_tbbColor = color;
-    m_db->insertValue("Settings", TOOLBAR_COLOR, color);
+    m_db->updateValue("Settings", TOOLBAR_COLOR, color);
     emit toolBarColorChanged(color);
 }
 
@@ -88,7 +88,7 @@ QString Settings::themeColor() const {
 
 void Settings::setThemeColor(QString color) {
     m_themeColor = color;
-    m_db->insertValue("Settings", THEME_COLOR, color);
+    m_db->updateValue("Settings", THEME_COLOR, color);
     emit themeColorChanged(color);
 }
 
@@ -98,7 +98,7 @@ QString Settings::textColor() const {
 
 void Settings::setTextColor(QString color) {
     m_textColor = color;
-    m_db->insertValue("Settings", TEXT_COLOR, color);
+    m_db->updateValue("Settings", TEXT_COLOR, color);
     emit textColorChanged(color);
 }
 
@@ -108,7 +108,7 @@ QString Settings::hoverColor() const {
 
 void Settings::setHoverColor(QString color) {
     m_hoverColor = color;
-    m_db->insertValue("Settings", HOVER_COLOR, color);
+    m_db->updateValue("Settings", HOVER_COLOR, color);
     emit hoverColorChanged(color);
 }
 
@@ -118,7 +118,7 @@ QString Settings::userName() const {
 
 void Settings::setUserName(QString user) {
     m_user = user;
-    m_db->insertValue("Settings", USER, user);
+    m_db->updateValue("Settings", USER, user);
     emit userNameChanged(user);
 }
 
@@ -129,12 +129,3 @@ bool Settings::authorized() const {
 void Settings::setAuthorized(bool value) {
     emit authorizedChanged(value);
 }
-
-//void Settings::setDefaultValues() {
-//    m_bgColor = ;
-//    m_tbbColor = ;
-//    m_themeColor = ;
-//    m_textColor = ;
-//    m_hoverColor = ;
-//    m_user = "";
-//}

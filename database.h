@@ -41,6 +41,7 @@ public slots:
     bool insertIntoTable(QString tableName, QVariantMap data);
     bool insertIntoTable(QString tableName, QStringList values);
     bool insertValue(QString tableName, QString column, QVariant value);
+    bool updateValue(QString tableName, QString column, QVariant value);
     std::vector<QVariantList> readFromTable(QString tableName, int columns, QString value = "*");
 //    QString readString(QString tableName, QString value);
 //    QString readInt(QString tableName, QString value);

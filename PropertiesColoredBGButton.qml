@@ -8,7 +8,7 @@ Button {
     flat: true
 
     property string btnColor: ""
-    property string textColor: ""
+    property string textColor: "white"
     property string hoverColor: ""
     property string toolBarColor: ""
 
@@ -19,7 +19,7 @@ Button {
 
     onClicked: {
         Settings.backGroundColor = btnColor
-//        Settings.textColor = textColor
+        Settings.textColor = textColor
 //        Settings.hoverColor = hoverColor
         Settings.toolBarColor = toolBarColor
     }

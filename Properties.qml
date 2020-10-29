@@ -19,9 +19,7 @@ Item {
         id: content
         width: parent.width
         height: parent.height - 100
-//        anchors.top: header.bottom
         y: header.height + 50
-//        anchors.centerIn: parent
         Item {
             width: parent.width
             height: root.height / 4
@@ -40,19 +38,19 @@ Item {
                 anchors.centerIn: parent
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    PropertiesColoredBGButton { btnColor: "#ecf0f1"}
-                    PropertiesColoredBGButton { btnColor: "#ecf0f1"}
-                    PropertiesColoredBGButton { btnColor: "#ecf0f1"}
-                    PropertiesColoredBGButton { btnColor: "#ecf0f1"}
-                    PropertiesColoredBGButton { btnColor: "#ecf0f1"}
+                    PropertiesColoredBGButton { btnColor: "#ffffff"; toolBarColor: "#dcdde1"; textColor: "#2f3640" }
+                    PropertiesColoredBGButton { btnColor: "#f0f0f0"; toolBarColor: "#dcdde1"; textColor: "#2f3640" }
+                    PropertiesColoredBGButton { btnColor: "#d0d0d0"; toolBarColor: "#dcdde1"; textColor: "#2f3640" }
+                    PropertiesColoredBGButton { btnColor: "#dff9fb"; toolBarColor: "#dcdde1"; textColor: "#2f3640" }
+                    PropertiesColoredBGButton { btnColor: "#f5f6fa"; toolBarColor: "#dcdde1"; textColor: "#2f3640" }
                 }
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    PropertiesColoredBGButton { btnColor: "#1e272e"; toolBarColor: "#485460"}
-                    PropertiesColoredBGButton { btnColor: "#202020"; }
-                    PropertiesColoredBGButton { btnColor: "#303030"}
-                    PropertiesColoredBGButton { btnColor: "#404040"}
-                    PropertiesColoredBGButton { btnColor: "#505050"}
+                    PropertiesColoredBGButton { btnColor: "#1e272e"; toolBarColor: "#485460" }
+                    PropertiesColoredBGButton { btnColor: "#202020"; toolBarColor: "#303030" }
+                    PropertiesColoredBGButton { btnColor: "#303030"; toolBarColor: "#404040" }
+                    PropertiesColoredBGButton { btnColor: "#404040"; toolBarColor: "#505050" }
+                    PropertiesColoredBGButton { btnColor: "#505050"; toolBarColor: "#606060" }
                 }
             }
         }

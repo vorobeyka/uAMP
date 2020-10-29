@@ -16,7 +16,7 @@ Item {
     property string textColor: Settings.textColor//""//"white"
     property string hoverColor: Settings.hoverColor//""//"#BEC3C6"
     property int toolButtonHeight: 50
-    property double opacityMusicCotnroll: 0.5
+    property double opacityMusicCotnroll: 0.8
     property double opacityGradient: 0.5
 //    property string backGroundColor: "#ecf0f1"
 //    property string toolBarBackGroundColor: "#bdc3c7"

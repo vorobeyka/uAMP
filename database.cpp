@@ -20,6 +20,17 @@ bool DataBase::insertValue(QString tableName, QString column, QVariant value) {
     return true;
 }
 
+bool DataBase::updateValue(QString tableName, QString column, QVariant value) {
+    QSqlQuery query;
+    query.prepare("UPDATE " + tableName + " SET " + column + " = " + value.toString());
+    if (!query.exec()) {
+        qDebug() << "Error: failed to update " + value.toString() + " in " + column;
+        qDebug() << query.lastError();
+        return false;
+    }
+    return true;
+}
+
 void DataBase::connectToDataBase() {
       this->openDataBase();
 }
