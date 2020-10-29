@@ -3,7 +3,7 @@ import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.14
 
 Rectangle {
-    property bool openedToolBar: true
+    property bool openedToolBar: false
     id: mainToolBar
     color: settings.toolBarBackGroundColor
     height: parent.height - musicController.height
@@ -25,7 +25,7 @@ Rectangle {
             toolBtnWidth: toolButton.width
             width: parent.width > 50 ? parent.width - 10 : parent.width - 2
             anchors.horizontalCenter: parent.horizontalCenter
-            visible: isToolBarVisible
+            visible: _isAuthorized
         }
 
         Rectangle {
@@ -43,49 +43,49 @@ Rectangle {
             buttonGroup: btnGroup
             imgSource: "/images/music-queue"
             buttonText: "Music queue"
-            visible: isToolBarVisible
+            visible: _isAuthorized
         }
 
         ToolBtn {
             buttonGroup: btnGroup
             imgSource: "/images/clock"
             buttonText: "Recently played"
-            visible: isToolBarVisible
+            visible: _isAuthorized
         }
 
         ToolBtn {
             buttonGroup: btnGroup
             imgSource: "/images/music-library"
             buttonText: "Music library"
-            visible: isToolBarVisible
+            visible: _isAuthorized
         }
 
         ToolBtn {
             buttonGroup: btnGroup
             imgSource: "/images/music-playlist"
             buttonText: "Playlists"
-            visible: isToolBarVisible
+            visible: _isAuthorized
         }
 
         ToolBtn {
             buttonGroup: btnGroup
             imgSource: "/images/equalizer"
             buttonText: "Equalizer"
-            visible: isToolBarVisible
+            visible: _isAuthorized
         }
 
         ToolBtn {
             buttonGroup: btnGroup
             imgSource: "/images/radio"
             buttonText: "Radio"
-            visible: isToolBarVisible
+            visible: _isAuthorized
         }
 
         ToolBtn {
             buttonGroup: btnGroup
             imgSource: "/images/like"
             buttonText: "Favourite"
-            visible: isToolBarVisible
+            visible: _isAuthorized
         }
     }
     ToolBtn {

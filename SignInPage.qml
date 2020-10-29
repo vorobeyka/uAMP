@@ -7,8 +7,6 @@ Item {
     property string btnText: ""
     property string headerText: ""
 
-//    DialogError { id: errorDialog }
-
     Item {
         id: header
         width: authText.width
@@ -50,15 +48,17 @@ Item {
                 buttonText: btnText
                 onClicked: {
                     if (getLoginLenght() && getPasswordLenght()) {
-                        settings.userName = login.text
-                        settings.userPassword = password.text
-                        userPageVisible = true
-                        authVisible = false
-                        root.visible = false
-                        isToolBarVisible = true
-                        errorWrapper.visible = false
-                        password.clear()
-                        login.clear()
+                        if (checkUser()) {
+                            Settings.authorized = true
+                            Settings.userName = login.text
+                            root.visible = false
+                            errorWrapper.visible = false
+                            password.clear()
+                            login.clear()
+                        } else {
+                            errorText.text = "Error:\nIncorrect login or password"
+                            errorWrapper.visible = true
+                        }
                     } else {
                         if (!getLoginLenght()) errorText.text = "Error: \nLogin must be longer then 2 characters\nand not longer then 20 characters."
                         else errorText.text = "Error:\nPassword must be longer then 5 characters\nand not longer then 20 characters."
@@ -70,7 +70,7 @@ Item {
                 id: btnBack
                 width: 100
                 buttonText: "Back"
-                onClicked: { root.visible = false; authVisible = true }
+                onClicked: { root.visible = false; authVisible = true; login.text = ""; password.text = "" }
             }
         }
     }
@@ -89,4 +89,11 @@ Item {
     AppSettings { id: settings }
     function getPasswordLenght() { return password.text.length > 5 && password.text.length < 21; }
     function getLoginLenght() { return login.text.length > 2 && login.text.length < 21; }
+    function checkUser() {
+        if (btnText === "Create") {
+            Settings.createUser(login.text, password.text)
+            return true
+        } else if (Settings.checkUser(login.text, password.text)) return true
+        return false
+    }
 }

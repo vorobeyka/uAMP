@@ -13,7 +13,8 @@ Window {
     color: settings.backGroundColor
 
     property StackView mainStack: stackView
-    property bool isToolBarVisible: false
+//    property bool isToolBarVisible: false
+    property bool _isAuthorized: Settings.authorized
 
     CustomToolBar { id: mainToolBar }
 

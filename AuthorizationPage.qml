@@ -4,8 +4,8 @@ import QtQuick 2.4
 Item {
     id: root
 
-    property bool authVisible: true
-    property bool userPageVisible: false
+    property bool authVisible: !_isAuthorized
+    property bool userPageVisible: Settings.authorized
 
     Item {
         visible: authVisible

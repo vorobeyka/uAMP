@@ -58,74 +58,79 @@ bool Settings::insertDefaultValues() {
     return m_db->insertIntoTable("Settings", data);
 }
 
-bool Settings::insertValue() {
-    return false;
-}
+bool Settings::insertValue() { return false; }
 
-QString Settings::backGroundColor() const {
-    return m_bgColor;
-}
+QString Settings::backGroundColor() const { return m_bgColor; }
 
 void Settings::setBackGroundColor(QString color) {
     m_bgColor = color;
-    m_db->updateValue("Settings", BACKGROUND_COLOR, color);
+    m_db->updateValue("Settings", BACKGROUND_COLOR, "id = 1", color);
     emit backGroundColorChanged(color);
 }
 
-QString Settings::toolBarColor() const {
-    return m_tbbColor;
-}
+QString Settings::toolBarColor() const { return m_tbbColor; }
 
 void Settings::setToolBarColor(QString color) {
     m_tbbColor = color;
-    m_db->updateValue("Settings", TOOLBAR_COLOR, color);
+    m_db->updateValue("Settings", TOOLBAR_COLOR, "id = 1", color);
     emit toolBarColorChanged(color);
 }
 
-QString Settings::themeColor() const {
-    return m_themeColor;
-}
+QString Settings::themeColor() const { return m_themeColor; }
 
 void Settings::setThemeColor(QString color) {
     m_themeColor = color;
-    m_db->updateValue("Settings", THEME_COLOR, color);
+    m_db->updateValue("Settings", THEME_COLOR, "id=1", color);
     emit themeColorChanged(color);
 }
 
-QString Settings::textColor() const {
-    return m_textColor;
-}
+QString Settings::textColor() const { return m_textColor; }
 
 void Settings::setTextColor(QString color) {
     m_textColor = color;
-    m_db->updateValue("Settings", TEXT_COLOR, color);
+    m_db->updateValue("Settings", TEXT_COLOR, "id = 1", color);
     emit textColorChanged(color);
 }
 
-QString Settings::hoverColor() const {
-    return m_hoverColor;
-}
+QString Settings::hoverColor() const { return m_hoverColor; }
 
 void Settings::setHoverColor(QString color) {
     m_hoverColor = color;
-    m_db->updateValue("Settings", HOVER_COLOR, color);
+    m_db->updateValue("Settings", HOVER_COLOR, "id = 1", color);
     emit hoverColorChanged(color);
 }
 
-QString Settings::userName() const {
-    return m_user;
-}
+QString Settings::userName() const { return m_user; }
 
 void Settings::setUserName(QString user) {
     m_user = user;
-    m_db->updateValue("Settings", USER, user);
+    m_db->updateValue("Settings", USER, "id = 1", user);
     emit userNameChanged(user);
 }
 
-bool Settings::authorized() const {
-    return !m_user.isNull();
+bool Settings::authorized() const { return !m_user.isNull(); }
+
+void Settings::setAuthorized(bool value) { emit authorizedChanged(value); }
+
+bool Settings::checkUser(QString user, QString password) {
+    QVariantMap tmp;
+    tmp.insert("login", user);
+    QVariantList data = m_db->readRow(USERS_TABLE_NAME, 3, tmp);
+    if (!data.isEmpty()) {
+        if (data.at(1) == user && data.at(2) == password) {
+            setUserName(user);
+            setAuthorized(true);
+            return true;
+        }
+    }
+    return false;
 }
 
-void Settings::setAuthorized(bool value) {
-    emit authorizedChanged(value);
+void Settings::createUser(QString login, QString password) {
+    QVariantMap data;
+    data.insert("login", login);
+    data.insert("password", password);
+    m_db->insertIntoTable(USERS_TABLE_NAME, data);
+    setUserName(login);
+    setAuthorized(true);
 }

@@ -10,6 +10,7 @@
 #define TEXT_COLOR          "TextColor"
 #define HOVER_COLOR         "HoverColor"
 #define USER                "User"
+#define USERS_TABLE_NAME     "Users"
 
 class Settings : public QObject {
     Q_OBJECT
@@ -41,6 +42,10 @@ public:
     bool authorized() const;
     void setAuthorized(bool);
 
+public slots:
+    bool checkUser(QString login, QString password);
+    void createUser(QString login, QString password);
+
 signals:
     void backGroundColorChanged(QString value);
     void toolBarColorChanged(QString value);
@@ -64,7 +69,6 @@ private:
     bool readTable();
     bool insertValue();
     bool insertDefaultValues();
-//    void setDefaultValues();
 
 };
 

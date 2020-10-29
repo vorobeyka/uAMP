@@ -17,13 +17,7 @@ Item {
             Item {
                 height: 50
                 width: 100
-                CustomText { text: "userName" }
-            }
-
-            Item {
-                height: 50
-                width: 100
-                CustomText { text: "userPassword" }
+                CustomText { text: qsTr("User: ") + Settings.userName; textSize: 2}
             }
         }
     }
@@ -49,9 +43,10 @@ Item {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             onClicked: {
-                root.visible = false
-                isToolBarVisible = false
+                Settings.userName = ""
+                Settings.authorized = 0
                 authVisible = true
+//                root.visible = false
             }
         }
     }

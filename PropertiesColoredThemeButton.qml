@@ -3,7 +3,6 @@ import QtQuick.Controls 2.12
 
 Rectangle {
     id: root
-    anchors.fill: bg
     width: 40
     height: 40
     color: btnColor

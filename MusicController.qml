@@ -7,42 +7,44 @@ Item {
     anchors.bottom: parent.bottom
     width: parent.width
     height: 80
-    Drawer {
-        id: animationDrawer
-        width: root.width
-        height: root.height
 
-        Row {
-            anchors.fill: parent
-            spacing: 4
+//    Drawer {
+//        id: animationDrawer
+//        width: root.width
+//        height: root.height
 
-            AnimatedImage {
-                id: animation
-                source: "images/animation"
-                width: settings.windowWidth
-                height: settings.windowHeight
+//        Row {
+//            anchors.fill: parent
+//            spacing: 4
 
-                Rectangle {
-                    width: 50
-                    height: 30
-                    color: settings.themeColor
-                    anchors.right: parent.right
-                    anchors.top: parent.top
+//            AnimatedImage {
+//                id: animation
+//                source: "images/animation"
+//                width: settings.windowWidth
+//                height: settings.windowHeight
+//                visible: false
+//                enabled: false
+//                Rectangle {
+//                    width: 50
+//                    height: 30
+//                    color: settings.themeColor
+//                    anchors.right: parent.right
+//                    anchors.top: parent.top
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: animationDrawer.close()
-                    }
+//                    MouseArea {
+//                        anchors.fill: parent
+//                        onClicked: animationDrawer.close()
+//                    }
 
-                    Text {
-                        anchors.centerIn: parent
-                        font.pointSize: 20
-                        text: "\u25C0"
-                    }
-                }
-            }
-        }
-    }
+//                    Text {
+//                        anchors.centerIn: parent
+//                        font.pointSize: 20
+//                        text: "\u25C0"
+//                    }
+//                }
+//            }
+//        }
+//    }
     Rectangle {
         anchors.fill: parent
         opacity: settings.opacityMusicCotnroll
@@ -200,11 +202,11 @@ Item {
                     height: 20
                     width: 100
                 }
-                MusicControllerButton {
-                    visible: root.width >= 700 ? true : false
-                    imgSource: "images/full-screen"
-                    onClicked: { animationDrawer.open() }
-                }
+//                MusicControllerButton {
+//                    visible: root.width >= 700 ? true : false
+//                    imgSource: "images/full-screen"
+//                    onClicked: { animationDrawer.open() }
+//                }
             }
         }
     }

@@ -1,3 +1,4 @@
+
 #include "database.h"
 
 DataBase::DataBase(QString name, QObject *parent)
@@ -20,9 +21,12 @@ bool DataBase::insertValue(QString tableName, QString column, QVariant value) {
     return true;
 }
 
-bool DataBase::updateValue(QString tableName, QString column, QVariant value) {
+bool DataBase::updateValue(QString tableName, QString column, QString condition, QVariant value) {
     QSqlQuery query;
-    query.prepare("UPDATE " + tableName + " SET " + column + " = " + value.toString());
+    QString queryString = "UPDATE " + tableName + " " +
+                          "SET \"" + column + "\"=? WHERE " + condition;
+    query.prepare(queryString);
+    query.addBindValue(value);
     if (!query.exec()) {
         qDebug() << "Error: failed to update " + value.toString() + " in " + column;
         qDebug() << query.lastError();
@@ -170,7 +174,6 @@ std::vector<QVariantList> DataBase::readFromTable(QString tableName, int columns
 
     if (query.exec("SELECT " + value + " FROM " + tableName)) {
         while (query.next()) {
-            qDebug() << query.value("ThemeColor");
             QVariantList pack;
             for (int i = 0; i < columns; ++i)
                 pack.append(query.value(i));
@@ -178,6 +181,40 @@ std::vector<QVariantList> DataBase::readFromTable(QString tableName, int columns
         }
         qDebug() << "Info: sucksess to read from " + tableName;
     } else qDebug() << "Error: failed to read from " + tableName << query.lastError();
+    return data;
+}
+
+QVariant DataBase::readValue(QString tableName, QString value, QString column) {
+    QSqlQuery query;
+    QVariant data;
+
+    query.prepare("SELECT " + column + " FROM " + tableName +
+                  " WHERE " + column + "='" + value + "';");
+    if (!query.exec()) qDebug() << "Error: can`t read value: " << query.lastError();
+    else if (query.next()) data = query.value(0);
+    else qDebug() << "Info: not fund: " + value + " in " + column;
+    return data;
+}
+
+QVariantList DataBase::readRow(QString tableName, int columns, QVariantMap values) {
+    QSqlQuery query;
+    QVariantList data;
+    QString queryString = "SELECT * FROM " + tableName + " WHERE ";
+
+    for (QVariantMap::iterator i = values.begin(); i != values.end(); ++i) {
+        queryString += "\"" + i.key() + "\"=?";
+        if (i + 1 != values.end()) queryString += ",";
+        else queryString += ";";
+    }
+    query.prepare(queryString);
+    for (QVariantMap::iterator i = values.begin(); i != values.end(); ++i) {
+        query.addBindValue(i.value());
+    }
+    if (!query.exec()) qDebug() << "Error: can`t read row" << query.lastError();
+    else if (query.next()) {
+        for (int i = 0; i < columns; ++i)
+            data.push_back(query.value(i));
+    }
     return data;
 }
 

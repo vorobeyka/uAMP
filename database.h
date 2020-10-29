@@ -41,8 +41,11 @@ public slots:
     bool insertIntoTable(QString tableName, QVariantMap data);
     bool insertIntoTable(QString tableName, QStringList values);
     bool insertValue(QString tableName, QString column, QVariant value);
-    bool updateValue(QString tableName, QString column, QVariant value);
+    bool updateValue(QString tableName, QString column, QString condition, QVariant value);
+//    bool updateString(QString tableName, QString column, QString)
     std::vector<QVariantList> readFromTable(QString tableName, int columns, QString value = "*");
+    QVariant readValue(QString tableName, QString value, QString columns = "*");
+    QVariantList readRow(QString tableName, int columns, QVariantMap values);
 //    QString readString(QString tableName, QString value);
 //    QString readInt(QString tableName, QString value);
     bool removeRecord(const int id); // Удаление записи из таблицы по её id
@@ -52,16 +55,10 @@ public slots:
 private:
     // Сам объект базы данных, с которым будет производиться работа
     QSqlDatabase    db;
-
     const QString m_name;
     QString m_hostName;
-    /* Внутренние методы для работы с базой данных
-     * */
     bool openDataBase();        // Открытие базы данных
     bool restoreDataBase();     // Восстановление базы данных
-           // Закрытие базы данных
-//    bool createTable();         // Создание базы таблицы в базе данных
-
 
 };
 
