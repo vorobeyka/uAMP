@@ -30,8 +30,6 @@ MouseArea {
         }
     }
 
-
-
     Row {
         height: parent.height
         width: parent.width - 10

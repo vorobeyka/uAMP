@@ -54,7 +54,7 @@ bool Settings::insertDefaultValues() {
     data.insert(BACKGROUND_COLOR, "#303030");
     data.insert(TOOLBAR_COLOR, "#404040");
     data.insert(THEME_COLOR, "#12CBC4");
-    data.insert(TEXT_COLOR, "white");
+    data.insert(TEXT_COLOR, "#E0E0E0");
     data.insert(HOVER_COLOR, "#BEC3C6");
     data.insert(USER, "");
     return m_db->insertIntoTable("Settings", data);

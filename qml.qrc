@@ -21,6 +21,8 @@
         <file>PropertiesColoredBGButton.qml</file>
         <file>PropertiesColoredThemeButton.qml</file>
         <file>UserRadioButton.qml</file>
+        <file>UserPageAllMusics.qml</file>
+        <file>MusicDelegate.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="find-icon">resources/find-icon.png</file>

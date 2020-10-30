@@ -5,8 +5,8 @@ import QtGraphicalEffects 1.0
 
 MouseArea {
     id: root
-    width: 100
-    height: 40
+    width: text.width
+    height: 30
 
     property int xMouse: 0
     property bool gradientVisible: false
@@ -17,7 +17,7 @@ MouseArea {
     RadioButton {
         id: control
         width: parent.width
-        height: 3
+        height: 2
         checked: _checked
         ButtonGroup.group: buttonGroup
         anchors.bottom: root.bottom
@@ -34,20 +34,25 @@ MouseArea {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
-//    CustomGradient {
-//        xxMouse: xMouse
-//        visible: gradientVisible
-//    }
+    CustomText {
+        id: hoveredText
+        visible: !text.visible
+        text: buttonText
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: _themeColor
+    }
 
     hoverEnabled: true
     onEntered: {
-        text.color = _themeColor
+        text.visible = false
+//        text.color = _themeColor
         gradientVisible = true
     }
     onPositionChanged: { xMouse = mouse.x }
     onExited: {
         xMouse = 0
-        text.color = _textColor
+        text.visible = true
+//        text.color = _textColor
         gradientVisible = false
     }
     onClicked: { control.checked = true }
