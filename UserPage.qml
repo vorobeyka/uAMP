@@ -3,21 +3,46 @@ import QtQuick.Controls 2.12
 Item {
     id: root
 
-    Item {
+    Rectangle {
         id: header
         width: parent.width
-        height: 100
-
+        height: 40
+        color: _backGroundColor
+        border.color: _themeColor
+        border.width: 5
         Item {
             x: 10
-            height: 50
-            width: 100
+            height: 40
             CustomText { text: qsTr("User: ") + Settings.userName; textSize: 2}
         }
     }
 
-    Column {
+    Rectangle {
+        id: radioWrapper
+        width: parent.width
+        height: 40
+        color: _backGroundColor
+//        border.color: _themeColor
+        anchors.top: header.bottom
+        ButtonGroup { id: group }
+        Row {
+            x: 10
+            spacing: 10
+            UserRadioButton { buttonGroup: group; buttonText: "All musics" }
+            UserRadioButton { buttonGroup: group; buttonText: "Playlists" }
+            UserRadioButton { buttonGroup: group; buttonText: "blyat" }
+        }
+    }
 
+    Rectangle {
+        id: separator
+        color: _textColor
+        width: parent.width - 20
+        height: 2
+        radius: 1
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: radioWrapper.bottom
+        opacity: 0.5
     }
 
     CustomButton {
@@ -31,6 +56,4 @@ Item {
             authVisible = true
         }
     }
-
-    AppSettings { id: settings }
 }

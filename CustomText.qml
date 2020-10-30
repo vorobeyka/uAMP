@@ -5,5 +5,5 @@ Text {
 
     anchors.verticalCenter: parent.verticalCenter
     font.pixelSize: Qt.application.font.pixelSize * textSize
-    color: settings.textColor
+    color: _textColor
 }

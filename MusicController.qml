@@ -20,14 +20,14 @@ Item {
 //            AnimatedImage {
 //                id: animation
 //                source: "images/animation"
-//                width: settings.windowWidth
-//                height: settings.windowHeight
+//                width: _windowWidth
+//                height: _windowHeight
 //                visible: false
 //                enabled: false
 //                Rectangle {
 //                    width: 50
 //                    height: 30
-//                    color: settings.themeColor
+//                    color: _themeColor
 //                    anchors.right: parent.right
 //                    anchors.top: parent.top
 
@@ -47,8 +47,8 @@ Item {
 //    }
     Rectangle {
         anchors.fill: parent
-        opacity: settings.opacityMusicCotnroll
-        color: settings.themeColor
+        opacity: _opacityMusicCotnroll
+        color: _themeColor
 
     }
 
@@ -67,7 +67,7 @@ Item {
                 id: musicInfoBgColor
                 anchors.fill: parent
                 opacity: 0.5
-                color: musicInfo.pressed ? settings.backGroundColor : settings.hoverColor
+                color: musicInfo.pressed ? _backGroundColor : _hoverColor
                 visible: false
             }
 
@@ -77,7 +77,7 @@ Item {
                 Rectangle {
                     id: musicImg
                     opacity: 0.5
-                    color: settings.backGroundColor
+                    color: _backGroundColor
                     height: parent.height
                     width: height
                     visible: 10 + width * 2 > parent.width ? false : true
@@ -91,7 +91,7 @@ Item {
                         id: musicName
                         text: qsTr("syka")
                         font.pixelSize: Qt.application.font.pixelSize * 1.2
-                        color: settings.textColor
+                        color: _textColor
                     }
 
                     Text {
@@ -99,7 +99,7 @@ Item {
                         font.bold: true
                         text: qsTr("blyat")
                         font.pixelSize: Qt.application.font.pixelSize * 1.2
-                        color: settings.textColor
+                        color: _textColor
                     }
                 }
             }
@@ -151,7 +151,7 @@ Item {
                 Text {
                     id: currentAudioDuration
                     text: qsTr("syka")
-                    color: settings.textColor
+                    color: _textColor
                     font.pixelSize: Qt.application.font.pixelSize * 1.2
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -164,7 +164,7 @@ Item {
                 Text {
                     id: audioDuration
                     text: qsTr("blyat")
-                    color: settings.textColor
+                    color: _textColor
                     font.pixelSize: Qt.application.font.pixelSize * 1.2
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -194,7 +194,7 @@ Item {
                         id: coloredIcon
                         anchors.fill: icon
                         source: icon
-                        color: settings.textColor
+                        color: _textColor
                     }
                 }
                 CustomSlider {

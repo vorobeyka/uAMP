@@ -1,0 +1,54 @@
+import QtQuick 2.0
+import QtQuick.Controls 2.12
+import QtGraphicalEffects 1.0
+
+
+MouseArea {
+    id: root
+    width: 100
+    height: 40
+
+    property int xMouse: 0
+    property bool gradientVisible: false
+    property ButtonGroup buttonGroup: value
+    property string buttonText: ""
+    property bool _checked: false
+
+    RadioButton {
+        id: control
+        width: parent.width
+        height: 3
+        checked: _checked
+        ButtonGroup.group: buttonGroup
+        anchors.bottom: root.bottom
+        indicator: Rectangle {
+            anchors.fill: parent
+            color: control.down ? _toolBarBackGroundColor : _themeColor
+            visible: control.checked
+        }
+    }
+
+    CustomText {
+        id: text
+        text: buttonText
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+//    CustomGradient {
+//        xxMouse: xMouse
+//        visible: gradientVisible
+//    }
+
+    hoverEnabled: true
+    onEntered: {
+        text.color = _themeColor
+        gradientVisible = true
+    }
+    onPositionChanged: { xMouse = mouse.x }
+    onExited: {
+        xMouse = 0
+        text.color = _textColor
+        gradientVisible = false
+    }
+    onClicked: { control.checked = true }
+}

@@ -14,12 +14,12 @@ Slider {
         width: control.availableWidth
         height: implicitHeight
         radius: 2
-        color: settings.backGroundColor
+        color: _backGroundColor
 
         Rectangle {
             width: control.visualPosition * parent.width
             height: parent.height
-            color: settings.textColor
+            color: _textColor
             radius: 2
         }
     }
@@ -30,6 +30,6 @@ Slider {
         width: 16
         height: 16
         radius: 8
-        color: control.pressed ? settings.backGroundColor : settings.textColor
+        color: control.pressed ? _backGroundColor : _textColor
     }
 }

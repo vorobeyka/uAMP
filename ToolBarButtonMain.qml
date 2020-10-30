@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.14
 MouseArea {
     id: toolButton
     width: parent.width
-    height: settings.toolButtonHeight
+    height: _toolButtonHeight
 
     property bool gradientVisible: false
     property int xMouse: 0
@@ -14,7 +14,7 @@ MouseArea {
         anchors.centerIn: parent
         text: openedToolBar ? "\u25C0" : "\u2630"
         font.pixelSize: Qt.application.font.pixelSize * 2
-        color: settings.textColor
+        color: _textColor
     }
 
     CustomGradient {

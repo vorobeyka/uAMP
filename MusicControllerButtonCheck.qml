@@ -8,7 +8,7 @@ MouseArea {
     property int size: 30
     property bool isChecked: false
     property string imgSource: ""
-    property string buttonColor: isChecked ? settings.backGroundColor : settings.themeColor
+    property string buttonColor: isChecked ? _backGroundColor : _themeColor
 
     anchors.verticalCenter: parent.verticalCenter
     width: size
@@ -17,7 +17,7 @@ MouseArea {
     Rectangle {
         id: bgColor
         anchors.fill: parent
-        color: settings.themeColor
+        color: _themeColor
         radius: width / 2
         opacity: 0.8
         visible: false
@@ -36,14 +36,14 @@ MouseArea {
         id: coloredIcon
         anchors.fill: icon
         source: icon
-        color: settings.textColor
+        color: _textColor
     }
 
     hoverEnabled: true
-    onEntered: { bgColor.color = settings.hoverColor; bgColor.visible = true }
-    onPressed: { bgColor.color = settings.backGroundColor }
+    onEntered: { bgColor.color = _hoverColor; bgColor.visible = true }
+    onPressed: { bgColor.color = _backGroundColor }
     onReleased: {
-        if (root.containsMouse) bgColor.color = settings.hoverColor
+        if (root.containsMouse) bgColor.color = _hoverColor
         else bgColor.color = buttonColor
     }
     onPositionChanged: { xMouse = mouse.x }
@@ -51,6 +51,4 @@ MouseArea {
         bgColor.color = buttonColor
         if (!isChecked) bgColor.visible = false
     }
-
-    AppSettings { id: settings }
 }

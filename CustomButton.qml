@@ -14,7 +14,7 @@ MouseArea {
     Rectangle {
         id: bgColor
         anchors.fill: parent
-        color: settings.themeColor
+        color: _themeColor
         opacity: 0.8
         visible: false
         CustomGradient { xxMouse: xMouse }
@@ -30,13 +30,11 @@ MouseArea {
 
     hoverEnabled: true
     onEntered: { bgColor.visible = true }
-    onPressed: { bgColor.color = settings.backGroundColor }
+    onPressed: { bgColor.color = _backGroundColor }
     onReleased: {
-        if (root.containsMouse) bgColor.color = settings.hoverColor
-        else bgColor.color = settings.themeColor
+        if (root.containsMouse) bgColor.color = _hoverColor
+        else bgColor.color = _themeColor
     }
     onPositionChanged: { xMouse = mouse.x }
-    onExited: { bgColor.color = settings.themeColor; bgColor.visible = false }
-
-    AppSettings { id: settings }
+    onExited: { bgColor.color = _themeColor; bgColor.visible = false }
 }

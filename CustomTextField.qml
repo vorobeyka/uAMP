@@ -5,12 +5,10 @@ TextField {
     id: control
     width: parent.width
     font.pixelSize: Qt.application.font.pixelSize * 1.2
-    color: settings.textColor
+    color: _textColor
     background: Rectangle {
         anchors.fill: parent
-        color: settings.backGroundColor
-        border.color: control.activeFocus ? settings.themeColor : settings.textColor
+        color: _backGroundColor
+        border.color: control.activeFocus ? _themeColor : _textColor
     }
-
-    AppSettings { id: settings }
 }

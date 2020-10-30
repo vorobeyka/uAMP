@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>AppSettings.qml</file>
         <file>MusicList.qml</file>
         <file>ToolBtn.qml</file>
         <file>FindToolBtn.qml</file>
@@ -21,6 +20,7 @@
         <file>Properties.qml</file>
         <file>PropertiesColoredBGButton.qml</file>
         <file>PropertiesColoredThemeButton.qml</file>
+        <file>UserRadioButton.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="find-icon">resources/find-icon.png</file>

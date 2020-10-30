@@ -63,6 +63,4 @@ Item {
         anchors.fill: parent
         visible: userPageVisible
     }
-
-    AppSettings { id: settings }
 }

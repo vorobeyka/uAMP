@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 MouseArea {
     id: root
     width: parent.width
-    height: settings.toolButtonHeight
+    height: _toolButtonHeight
     anchors.horizontalCenter: parent.horizontalCenter
 
     property string imgSource: ""
@@ -25,7 +25,7 @@ MouseArea {
         indicator: Rectangle {
             width: 8
             height: control.height
-            color: control.down ? settings.toolBarBackGroundColor : settings.themeColor
+            color: control.down ? _toolBarBackGroundColor : _themeColor
             visible: control.checked
         }
     }
@@ -48,7 +48,7 @@ MouseArea {
             id: coloredToolIcon
             anchors.verticalCenter: parent.verticalCenter
             source: toolIcon
-            color: settings.textColor
+            color: _textColor
             width: 25
             height: 25
         }
@@ -72,7 +72,4 @@ MouseArea {
         gradientVisible = false
     }
     onClicked: { control.checked = true }
-
-
-    AppSettings { id: settings }
 }

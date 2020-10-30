@@ -85,7 +85,6 @@ Item {
         CustomText { id: errorText }
     }
 
-    AppSettings { id: settings }
     function getPasswordLenght() { return password.text.length > 5 && password.text.length < 21; }
     function getLoginLenght() { return login.text.length > 2 && login.text.length < 21; }
     function checkUser() {

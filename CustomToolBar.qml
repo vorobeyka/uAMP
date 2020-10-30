@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.14
 Rectangle {
     property bool openedToolBar: false
     id: mainToolBar
-    color: settings.toolBarBackGroundColor
+    color: _toolBarBackGroundColor
     height: parent.height - musicController.height
     width: openedToolBar ? parent.width * 0.3 : 50
 
@@ -32,7 +32,7 @@ Rectangle {
             id: separator
             width: parent.width > 50 ? parent.width - 10 : parent.width
             height: 2
-            color: settings.textColor
+            color: _textColor
             anchors.horizontalCenter: parent.horizontalCenter
             opacity: 0.3
             visible: openedToolBar
@@ -97,7 +97,7 @@ Rectangle {
         anchors.bottom: settingsButton.top
         onClicked: {
             mainStack.pop("AuthorizationPage.qml")
-            settings.initialItem = "authorization"
+            _initialItem = "authorization"
         }
     }
     ToolBtn {
@@ -107,9 +107,9 @@ Rectangle {
         anchors.bottom: parent.bottom
         buttonText: "Settings"
         onClicked: {
-            if (settings.initialItem !== "settings")
+            if (_initialItem !== "settings")
                 mainStack.push("Properties.qml")
-            settings.initialItem = "settings"
+            _initialItem = "settings"
         }
     }
 }

@@ -11,19 +11,19 @@ Rectangle {
 
     id: root
     height: toolBtnHeight
-    color: width > 50 ? settings.backGroundColor : settings.toolBarBackGroundColor
+    color: width > 50 ? _backGroundColor : _toolBarBackGroundColor
 
     TextField {
         id: searchField
-        width: parent.width - 2 - settings.toolButtonHeight
+        width: parent.width - 2 - _toolButtonHeight
         visible: openedToolBar
         anchors.verticalCenter: parent.verticalCenter
         font.pixelSize: Qt.application.font.pixelSize * 1.2
-        color: settings.textColor
+        color: _textColor
         background: Rectangle {
             anchors.fill: parent
-            color: settings.backGroundColor
-            border.color: settings.backGroundColor
+            color: _backGroundColor
+            border.color: _backGroundColor
         }
     }
 
@@ -41,7 +41,7 @@ Rectangle {
             id: coloredSearchIcon
             anchors.centerIn: parent
             source: searchIcon
-            color: settings.textColor
+            color: _textColor
             width: 25
             height: 25
         }
@@ -64,5 +64,4 @@ Rectangle {
             }
         }
     }
-    AppSettings { id: settings }
 }

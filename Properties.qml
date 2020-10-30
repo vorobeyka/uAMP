@@ -111,6 +111,4 @@ Item {
         width: parent.width
         height: 50
     }
-
-    AppSettings { id: settings }
 }

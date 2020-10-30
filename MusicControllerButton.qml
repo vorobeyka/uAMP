@@ -17,7 +17,7 @@ MouseArea {
     Rectangle {
         id: bgColor
         anchors.fill: parent
-        color: settings.themeColor
+        color: _themeColor
         radius: width / 2
         opacity: 0.8
         visible: false
@@ -38,7 +38,7 @@ MouseArea {
         visible: imgVisible
         anchors.fill: icon
         source: icon
-        color: settings.textColor
+        color: _textColor
     }
 
     Text {
@@ -46,19 +46,17 @@ MouseArea {
         visible: !imgVisible
         text: buttonText
         font.pixelSize: Qt.application.font.pixelSize * 1.2
-        color: settings.textColor
+        color: _textColor
         anchors.centerIn: parent
     }
 
     hoverEnabled: true
-    onEntered: { bgColor.color = settings.hoverColor; bgColor.visible = true }
-    onPressed: { bgColor.color = settings.backGroundColor }
+    onEntered: { bgColor.color = _hoverColor; bgColor.visible = true }
+    onPressed: { bgColor.color = _backGroundColor }
     onReleased: {
-        if (root.containsMouse) bgColor.color = settings.hoverColor
-        else bgColor.color = settings.themeColor
+        if (root.containsMouse) bgColor.color = _hoverColor
+        else bgColor.color = _themeColor
     }
     onPositionChanged: { xMouse = mouse.x }
-    onExited: { bgColor.color = settings.themeColor; bgColor.visible = false }
-
-    AppSettings { id: settings }
+    onExited: { bgColor.color = _themeColor; bgColor.visible = false }
 }

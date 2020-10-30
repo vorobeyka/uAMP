@@ -4,17 +4,31 @@ import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.14
 
 Window {
+    property int _windowWidth: root.width
+    property int _windowHeight: root.height
+    property string _userName: Settings.userName
+    property string _userPassword: ""
+    property string _initialItem: ""
+    property StackView mainStack: stackView
+    property bool _isAuthorized: Settings.authorized
+    property string _backGroundColor: Settings.backGroundColor//""//"#303030"
+    property string _toolBarBackGroundColor: Settings.toolBarColor//""//"#404040"
+    property string _themeColor: Settings.themeColor//""//"#12CBC4"
+    property string _textColor: Settings.textColor//""//"white"
+    property string _hoverColor: Settings.hoverColor//""//"#BEC3C6"
+    property int _toolButtonHeight: 50
+    property double _opacityMusicCotnroll: 0.8
+    property double _opacityGradient: 0.5
+
     id: root
     minimumWidth: 480
     minimumHeight: 680
     width: 800
     visible: true
     title: qsTr("Hello World")
-    color: settings.backGroundColor
+    color: _backGroundColor
 
-    property StackView mainStack: stackView
-//    property bool isToolBarVisible: false
-    property bool _isAuthorized: Settings.authorized
+
 
     CustomToolBar { id: mainToolBar }
 
@@ -28,9 +42,4 @@ Window {
     }
 
     MusicController { id: musicController }
-    AppSettings {
-        id: settings
-        windowWidth: root.width
-        windowHeight: root.height
-    }
 }

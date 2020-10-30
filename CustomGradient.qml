@@ -5,16 +5,16 @@ Item {
     anchors.fill: parent
 
     property int xxMouse: 0
-    property string gradientColor: settings.themeColor
+    property string gradientColor: _themeColor
 
     LinearGradient {
         width: xMouse
         height: parent.height
         start: Qt.point(0, 0)
         end: Qt.point(xxMouse, 0)
-        opacity: settings.opacityGradient
+        opacity: _opacityGradient
         gradient: Gradient {
-            GradientStop { position: 0.0; color: settings.toolBarBackGroundColor }
+            GradientStop { position: 0.0; color: _toolBarBackGroundColor }
             GradientStop { position: 1.0; color: gradientColor }
         }
     }
@@ -25,10 +25,10 @@ Item {
         width: parent.width - xxMouse
         start: Qt.point(0, 0)
         end: Qt.point(width, 0)
-        opacity: settings.opacityGradient
+        opacity: _opacityGradient
         gradient: Gradient {
             GradientStop { position: 0.0; color: gradientColor }
-            GradientStop { position: 1.0; color: settings.toolBarBackGroundColor }
+            GradientStop { position: 1.0; color: _toolBarBackGroundColor }
         }
     }
 }
