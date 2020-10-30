@@ -56,7 +56,6 @@ Item {
                             password.clear()
                             login.clear()
                         } else {
-                            errorText.text = "Error:\nIncorrect login or password"
                             errorWrapper.visible = true
                         }
                     } else {
@@ -91,9 +90,11 @@ Item {
     function getLoginLenght() { return login.text.length > 2 && login.text.length < 21; }
     function checkUser() {
         if (btnText === "Create") {
-            Settings.createUser(login.text, password.text)
-            return true
+            if (Settings.createUser(login.text, password.text)) return true
+            errorText.text = "This user exists";
+            return false
         } else if (Settings.checkUser(login.text, password.text)) return true
+        errorText.text = "Error:\nIncorrect login or password"
         return false
     }
 }

@@ -184,15 +184,16 @@ std::vector<QVariantList> DataBase::readFromTable(QString tableName, int columns
     return data;
 }
 
-QVariant DataBase::readValue(QString tableName, QString value, QString column) {
+QVariant DataBase::readValue(QString tableName, QVariant value, QString column) {
     QSqlQuery query;
     QVariant data;
 
     query.prepare("SELECT " + column + " FROM " + tableName +
-                  " WHERE " + column + "='" + value + "';");
+                  " WHERE \"" + column + "\"=?;");
+    query.addBindValue(value);
     if (!query.exec()) qDebug() << "Error: can`t read value: " << query.lastError();
     else if (query.next()) data = query.value(0);
-    else qDebug() << "Info: not fund: " + value + " in " + column;
+    else qDebug() << "Info: not fund: " + value.toString() + " in " + column;
     return data;
 }
 

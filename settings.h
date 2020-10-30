@@ -44,7 +44,7 @@ public:
 
 public slots:
     bool checkUser(QString login, QString password);
-    void createUser(QString login, QString password);
+    bool createUser(QString login, QString password);
 
 signals:
     void backGroundColorChanged(QString value);

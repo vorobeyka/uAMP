@@ -41,7 +41,9 @@ bool Settings::readTable() {
         m_tbbColor = m_settings.begin()->at(3).toString();
         m_textColor = m_settings.begin()->at(4).toString();
         m_themeColor = m_settings.begin()->at(5).toString();
-        m_user = m_settings.begin()->at(6).toString();
+        if (m_settings.begin()->at(6).toString().size() != 0)
+            m_user = m_settings.begin()->at(6).toString();
+//        qDebug() << m_user;
         return true;
     }
 }
@@ -126,11 +128,14 @@ bool Settings::checkUser(QString user, QString password) {
     return false;
 }
 
-void Settings::createUser(QString login, QString password) {
+bool Settings::createUser(QString login, QString password) {
+    if (!m_db->readValue(USERS_TABLE_NAME, login, "login").isNull())
+        return false;
     QVariantMap data;
     data.insert("login", login);
     data.insert("password", password);
     m_db->insertIntoTable(USERS_TABLE_NAME, data);
     setUserName(login);
     setAuthorized(true);
+    return true;
 }
