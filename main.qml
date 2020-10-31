@@ -22,8 +22,9 @@ Window {
 
     id: root
     minimumWidth: 480
-    minimumHeight: 680
+    minimumHeight: 600
     width: 800
+    height: 680
     visible: true
     title: qsTr("Hello World")
     color: _backGroundColor

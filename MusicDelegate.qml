@@ -3,7 +3,7 @@ import QtQuick 2.0
 MouseArea {
     id: root
     width: parent.width
-    height: 30
+    height: 40
 
     property string bgColor: _backGroundColor
     property int _ingdex: 0
@@ -16,6 +16,8 @@ MouseArea {
 
     Row {
         anchors.fill: parent
+
+
     }
 
     onClicked: console.log("syka")

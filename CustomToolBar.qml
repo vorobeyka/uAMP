@@ -80,13 +80,6 @@ Rectangle {
             buttonText: "Radio"
             visible: _isAuthorized
         }
-
-        ToolBtn {
-            buttonGroup: btnGroup
-            imgSource: "/images/like"
-            buttonText: "Favourite"
-            visible: _isAuthorized
-        }
     }
     ToolBtn {
         id: accountButton
