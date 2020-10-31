@@ -47,14 +47,14 @@ Item {
         opacity: 0.5
     }
 
-    Rectangle {
+    Item  {
         id: userStack
         width: parent.width - 20
         height: root.height - header.height - radioWrapper.height - separator.height
         anchors.top: separator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        color: _backGroundColor
-        border.color: _themeColor
+//        color: _backGroundColor
+//        border.color: _themeColor
 
         StackView {
             id: stackView

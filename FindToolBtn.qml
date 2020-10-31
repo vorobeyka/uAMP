@@ -44,6 +44,7 @@ Rectangle {
             color: _textColor
             width: 25
             height: 25
+            opacity: 0.8
         }
 
         CustomGradient {

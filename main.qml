@@ -22,7 +22,7 @@ Window {
 
     id: root
     minimumWidth: 480
-    minimumHeight: 600
+    minimumHeight: 610
     width: 800
     height: 680
     visible: true

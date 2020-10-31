@@ -46,5 +46,6 @@
         <file alias="repeat">resources/repeat.png</file>
         <file alias="full-screen">resources/full-screen.png</file>
         <file alias="animation">resources/animation.gif</file>
+        <file alias="add">resources/add.png</file>
     </qresource>
 </RCC>

@@ -15,6 +15,7 @@ MouseArea {
         text: openedToolBar ? "\u25C0" : "\u2630"
         font.pixelSize: Qt.application.font.pixelSize * 2
         color: _textColor
+        opacity: 0.8
     }
 
     CustomGradient {

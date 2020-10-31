@@ -45,7 +45,6 @@ MouseArea {
     hoverEnabled: true
     onEntered: {
         text.visible = false
-//        text.color = _themeColor
         gradientVisible = true
     }
     onPositionChanged: { xMouse = mouse.x }
