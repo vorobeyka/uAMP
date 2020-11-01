@@ -46,12 +46,12 @@ Rectangle {
             visible: _isAuthorized
         }
 
-        ToolBtn {
-            buttonGroup: btnGroup
-            imgSource: "/images/clock"
-            buttonText: "Recently played"
-            visible: _isAuthorized
-        }
+//        ToolBtn {
+//            buttonGroup: btnGroup
+//            imgSource: "/images/clock"
+//            buttonText: "Recently played"
+//            visible: _isAuthorized
+//        }
 
         ToolBtn {
             buttonGroup: btnGroup

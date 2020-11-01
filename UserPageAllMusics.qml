@@ -8,8 +8,6 @@ Item {
     Item {
         width: parent.width
         height: 50
-//        color: _backGroundColor
-//        border.color: _themeColor
 
         Row {
             x: 15
@@ -28,18 +26,16 @@ Item {
         Popup {
             id: sortPopup
             width: 100
-            height: 80
             padding: 0
             x: 100
             modal: true
             focus: true
-            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
             Column {
                 spacing: 0
                 anchors.fill: parent
                 Repeater {
-                    model: ["Title", "Artist", "Album", "Year"]
+                    model: ["Title", "Artist", "Album", "Rating", "Most played", "Newest"]
                     RadioButton {
                         width: parent.width
                         height: 20
@@ -50,7 +46,10 @@ Item {
                             color: parent.checked ? _themeColor : _toolBarBackGroundColor
                             CustomText { x: 10; text: modelData }
                         }
-                        onClicked: sortText.text = modelData
+                        onClicked: {
+                            sortPopup.close()
+                            sortText.text = modelData
+                        }
                     }
                 }
             }
@@ -62,7 +61,6 @@ Item {
         width: parent.width
         height: parent.height - 50
         y: 50
-//        anchors.fill: parent
         clip: true
         ScrollBar.vertical.interactive: false
         ScrollBar.horizontal.visible: false

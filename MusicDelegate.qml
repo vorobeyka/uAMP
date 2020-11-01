@@ -7,14 +7,51 @@ MouseArea {
 
     property string bgColor: _backGroundColor
     property int _index: 0
+    property bool likedIcon: true
 
     Rectangle {
         id: backGround
         anchors.fill: parent
         color: bgColor
 
+        StarsWrapper {
+            id: starsWrapper
+            anchors.right: likeWrapper.left
+            visible: root.width > 300
+            width: root.width > 300 ? 100 : 0
+        }
+
         Item {
-            id: tackDuration
+            id: likeWrapper
+            width: 40
+            height: 40
+            anchors.right: trackDuration.left
+
+            MouseArea {
+                anchors.fill: parent
+
+                Image {
+                    id: likeIcon
+                    width: 20
+                    height: 20
+                    anchors.centerIn: parent
+                    source: likedIcon ? "/images/like" : "/images/liked"
+                    visible: false
+                }
+
+                ColorOverlay {
+                    id: likeColoredIcon
+                    anchors.fill: likeIcon
+                    source: likeIcon
+                    color: _textColor
+                    opacity: 0.8
+                }
+                onClicked: likedIcon = !likedIcon
+            }
+        }
+
+        Item {
+            id: trackDuration
             width: 40
             height: 40
             anchors.right: parent.right
@@ -23,23 +60,23 @@ MouseArea {
     }
 
     Row {
-        width: parent.width - 40
+        width: parent.width - likeWrapper.width - trackDuration.width - starsWrapper.width
         height: parent.height
 
         Item {
             id: trackName
-            width: parent.width < 500 ? parent.width * 0.6 : parent.width * 0.3
+            width: parent.width > 250 ? parent.width < 400 ? parent.width * 0.6 : parent.width * 0.3 : parent.width
             height: 40
-            CustomText { id: nameText; text: "Track Name" }
+            CustomText { id: nameText; x:5; text: "Track Name" }
             Item {
                 id: trackButtons
                 height: 40
-                width: height * 2
+                width: 60
                 visible: false
                 anchors.right: parent.right
                 MouseArea {
                     id: playButton
-                    width: 40
+                    width: 30
                     height: 40
                     anchors.left: parent.left
 
@@ -63,7 +100,7 @@ MouseArea {
                 }
                 MouseArea {
                     id: addToPlaylistButton
-                    width: 40
+                    width: 30
                     height: 40
                     anchors.right: parent.right
 
@@ -84,54 +121,90 @@ MouseArea {
                         opacity: 0.8
                     }
 
-                    onClicked: console.log("blyat")
+                    onClicked: addPopup.open()
 
                     Popup {
-                        id: sortPopup
-                        width: 100
+                        id: addPopup
+                        width: 120
+                        height: 80
                         padding: 0
-                        x: 100
+                        x: parent.x
+                        y: parent.y
                         modal: true
                         focus: true
-                        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
                         Column {
                             id: column
-                            spacing: 0
-                            anchors.fill: parent
+                            Repeater {
+                                model: ["Add to queue", "Tag it"]
+                                MouseArea {
+                                    id: btnWrapper
+                                    width: 120
+                                    height: 40
 
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: _backGroundColor
+                                    }
+
+                                    Image {
+                                        id: btnIcon
+                                        width: 20
+                                        height: 20
+                                        source: !index ? "/images/music-queue" : "/images/music-note"
+                                        visible: false
+                                        anchors.verticalCenter: parent.verticalCenter
+                                    }
+
+                                    ColorOverlay {
+                                        id: btnColoredIcon
+                                        anchors.fill: btnIcon
+                                        source: btnIcon
+                                        color: _textColor
+                                        opacity: 0.8
+                                    }
+
+                                    CustomText { text: modelData; x: 30 }
+
+                                    onClicked: {
+                                        addPopup.close()
+                                        if (index === 1)
+                                            _tagEditor.open()
+//                                        console.log(modelData)
+                                    }
+                                }
+                            }
                         }
                     }
-
                 }
             }
         }
-
         Item {
             id: trackArtist
-            width: parent.width < 500 ? parent.width * 0.4 : parent.width * 0.2
+            width: parent.width < 400 ? parent.width * 0.4 : parent.width * 0.2
             height: 40
+            visible: parent.width > 250
             CustomText { text: "Artist" }
         }
         Item {
             id: trackAlbum
             width: parent.width * 0.2
             height: 40
-            visible: root.width > 700
+            visible: parent.width > 500
             CustomText { text: "Album" }
         }
         Item {
             id: trackYear
             width: parent.width - trackName.width - trackAlbum.width - trackArtist.width - trackGenre.width
             height: 40
-            visible: root.width > 502
+            visible: parent.width > 400
             CustomText { text: "Year" }
         }
         Item {
             id: trackGenre
             width: parent.width * 0.2
             height: 40
-            visible: root.width > 502
+            visible: parent.width > 400
             CustomText { text: "Genre" }
         }
     }

@@ -26,15 +26,33 @@ Item {
         }
     }
 
+    property int stackIndex: 0
     ButtonGroup { id: group }
     Row {
         id: radioWrapper
         x: 10
         spacing: 10
         anchors.top: header.bottom
-        UserRadioButton { buttonGroup: group; buttonText: "All musics"; _checked: true }
-        UserRadioButton { buttonGroup: group; buttonText: "Playlists" }
-        UserRadioButton { buttonGroup: group; buttonText: "Favourite" }
+
+        UserRadioButton {
+            buttonGroup: group
+            buttonText: "Library"
+            _checked: true
+            onClicked: {
+                stackIndex = 0
+                stackView.pop("UserPageAllMusics.qml")
+            }
+        }
+//        UserRadioButton { buttonGroup: group; buttonText: "Playlists" }
+        UserRadioButton {
+            buttonGroup: group
+            buttonText: "Favourite"
+            onClicked: {
+                if (!stackIndex)
+                    stackView.push("UserPageFavourite.qml")
+                stackIndex = 1
+            }
+        }
     }
 
     Rectangle {

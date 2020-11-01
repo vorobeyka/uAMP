@@ -23,6 +23,8 @@
         <file>UserRadioButton.qml</file>
         <file>UserPageAllMusics.qml</file>
         <file>MusicDelegate.qml</file>
+        <file>StarsWrapper.qml</file>
+        <file>UserPageFavourite.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="find-icon">resources/find-icon.png</file>
@@ -47,5 +49,9 @@
         <file alias="full-screen">resources/full-screen.png</file>
         <file alias="animation">resources/animation.gif</file>
         <file alias="add">resources/add.png</file>
+        <file alias="liked">resources/liked.png</file>
+        <file alias="star">resources/star.png</file>
+        <file alias="stared">resources/stared.png</file>
+        <file alias="music-note">resources/music-note.png</file>
     </qresource>
 </RCC>
