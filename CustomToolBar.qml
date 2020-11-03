@@ -4,10 +4,21 @@ import QtGraphicalEffects 1.14
 
 Rectangle {
     property bool openedToolBar: false
+//    property int _page: CustomToolBar.CurrentPage.User
     id: mainToolBar
     color: _toolBarBackGroundColor
     height: parent.height - musicController.height
     width: openedToolBar ? parent.width * 0.3 : 50
+
+//    enum CurrentPage {
+//        Queue,
+//        Library,
+//        Playlists,
+//        Equalizer,
+//        Radio,
+//        User,
+//        Settings
+//    }
 
     Column {
         id: columnButtons
@@ -44,20 +55,27 @@ Rectangle {
             imgSource: "/images/music-queue"
             buttonText: "Music queue"
             visible: _isAuthorized
+            onClicked: {
+                if (_initialItem !== "queue") {
+                    mainStack.pop()
+                    mainStack.push("MusicQueue.qml")
+                }
+                _initialItem = "queue"
+            }
         }
-
-//        ToolBtn {
-//            buttonGroup: btnGroup
-//            imgSource: "/images/clock"
-//            buttonText: "Recently played"
-//            visible: _isAuthorized
-//        }
 
         ToolBtn {
             buttonGroup: btnGroup
             imgSource: "/images/music-library"
             buttonText: "Music library"
             visible: _isAuthorized
+            onClicked: {
+                if (_initialItem !== "library") {
+                    mainStack.pop()
+                    mainStack.push("MusicLibraryPage.qml")
+                }
+                _initialItem = "library"
+            }
         }
 
         ToolBtn {
@@ -65,6 +83,13 @@ Rectangle {
             imgSource: "/images/music-playlist"
             buttonText: "Playlists"
             visible: _isAuthorized
+            onClicked: {
+                if (_initialItem !== "playlists") {
+                    mainStack.pop()
+                    mainStack.push("MusicPlaylists.qml")
+                }
+                _initialItem = "playlists"
+            }
         }
 
         ToolBtn {
@@ -72,6 +97,13 @@ Rectangle {
             imgSource: "/images/equalizer"
             buttonText: "Equalizer"
             visible: _isAuthorized
+            onClicked: {
+                if (_initialItem !== "equalizer") {
+                    mainStack.pop()
+                    mainStack.push("MusicEqualizer.qml")
+                }
+                _initialItem = "equalizer"
+            }
         }
 
         ToolBtn {
@@ -79,6 +111,13 @@ Rectangle {
             imgSource: "/images/radio"
             buttonText: "Radio"
             visible: _isAuthorized
+            onClicked: {
+                if (_initialItem !== "radio") {
+                    mainStack.pop()
+                    mainStack.push("MusicRadio.qml")
+                }
+                _initialItem = "radio"
+            }
         }
     }
     ToolBtn {
@@ -89,7 +128,7 @@ Rectangle {
         _checked: true
         anchors.bottom: settingsButton.top
         onClicked: {
-            mainStack.pop("AuthorizationPage.qml")
+            mainStack.pop()
             _initialItem = "authorization"
         }
     }
@@ -100,8 +139,10 @@ Rectangle {
         anchors.bottom: parent.bottom
         buttonText: "Settings"
         onClicked: {
-            if (_initialItem !== "settings")
+            if (_initialItem !== "settings") {
+                mainStack.pop()
                 mainStack.push("Properties.qml")
+            }
             _initialItem = "settings"
         }
     }

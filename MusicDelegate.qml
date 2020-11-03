@@ -8,6 +8,7 @@ MouseArea {
     property string bgColor: _backGroundColor
     property int _index: 0
     property bool likedIcon: true
+    property string someText: ""
 
     Rectangle {
         id: backGround
@@ -169,7 +170,7 @@ MouseArea {
                                     onClicked: {
                                         addPopup.close()
                                         if (index === 1)
-                                            _tagEditor.open()
+                                            _tagEditor.show()
 //                                        console.log(modelData)
                                     }
                                 }

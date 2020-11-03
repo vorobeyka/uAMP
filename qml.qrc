@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>MusicList.qml</file>
         <file>ToolBtn.qml</file>
         <file>FindToolBtn.qml</file>
         <file>CustomToolBar.qml</file>
@@ -25,6 +24,11 @@
         <file>MusicDelegate.qml</file>
         <file>StarsWrapper.qml</file>
         <file>UserPageFavourite.qml</file>
+        <file>MusicLibraryPage.qml</file>
+        <file>MusicQueue.qml</file>
+        <file>MusicPlaylists.qml</file>
+        <file>MusicEqualizer.qml</file>
+        <file>MusicRadio.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="find-icon">resources/find-icon.png</file>

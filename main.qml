@@ -1,6 +1,7 @@
 import QtQuick 2.14
 import QtQuick.Window 2.14
 import QtQuick.Controls 2.12
+import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.14
 
 Window {
@@ -19,7 +20,7 @@ Window {
     property double _opacityMusicCotnroll: 0.8
     property double _opacityGradient: 0.5
     property StackView mainStack: stackView
-    property Drawer _tagEditor: tagEditor
+    property Window _tagEditor: tagEditor
 
     id: root
     minimumWidth: 450
@@ -27,7 +28,7 @@ Window {
     width: 800
     height: 680
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("UAMP")
     color: _backGroundColor
 
 
@@ -45,53 +46,99 @@ Window {
 
     MusicController { id: musicController }
 
-    Drawer {
+    Window {
         id: tagEditor
-        width: root.width
-        height: root.height - musicController.height
-        background: Rectangle {
-            anchors.fill: parent
+        minimumWidth: 480
+        minimumHeight: 600
+        maximumHeight: 600
+        maximumWidth: 480
+        title: "Tag editor"
+        color: _backGroundColor
+        Rectangle {
+            id: tagHedaer
+            width: parent.width
+            height: 200
             color: _backGroundColor
-        }
 
-        ListModel {
-            id: modelId
-            ListElement {
-                name: "sss"
+            Image {
+                width: 150
+                height: 150
+                source: "/images/music-note"
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Column {
+                y: 30
+                width: parent.width - 150
+                height: parent.height - 30
+                anchors.right: parent.right
+                spacing: 5
+                Text { x:10; text: "Title"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
+                CustomTextField { id: trackTitle }
+                Text { x: 10; text: "Artist"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
+                CustomTextField {id: trackArtist }
+                Text { x: 10; text: "Year"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
+                CustomTextField {id: trackYear }
             }
         }
 
-        GridView {
-            id: grid
-            width: parent.width -30
-            height: parent.height
-            cellWidth: 300
-            cellHeight: 40
+        Column {
+            id: tagContent
+            width: parent.width
+            height: parent.height - tagHedaer.height - tagBottom.height
+            anchors.top: tagHedaer.bottom
+            spacing: 5
 
-            model: Rectangle {}
-            delegate: Rectangle {
-                width: parent.cellWidth * 0.9
-                height: parent.cellHeight * 0.9
-                color: _themeColor
-                border.color: _themeColor
-//                CustomText { text: mNumber }
+            Text { x:10; text: "Album"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
+            CustomTextField { id: trackAlbum }
+            Text { x: 10; text: "Genre"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
+            CustomTextField {id: trackGenre }
+//            Text { text: "Year"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
+//            CustomTextField { inputMethodHints: Qt.ImhNone }
+            Text { x: 10; text: "File path"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
+            CustomTextField { id: filePath; readOnly: true }
+            Text { x: 10; text: "Lyrics"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
+            Flickable {
+                id: trackLyrics
+                width: parent.width
+                height: 150
+                TextArea.flickable: TextArea {
+                    id: lyricsTxtArea
+                    anchors.fill: parent
+                    color: _textColor
+                    background: Rectangle {
+                        anchors.fill: parent
+                        color: _backGroundColor
+                        border.color: lyricsTxtArea.activeFocus ? _themeColor : _textColor
+                    }
+                }
             }
         }
-        Component.onCompleted: {
-            for (let i = 0; i < 10; ++i)
-                grid.model.append(Rectangle)
-        }
 
-        Button {
-            width: 30
-            height: parent.height
-            anchors.right: parent.right
-            background: Rectangle {
-                anchors.fill: parent
-                color: _themeColor
+        Item {
+            id: tagBottom
+            width: parent.width
+            height: 50
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+
+            CustomButton {
+                id: okBtn
+                buttonText: "Ok"
+                anchors.verticalCenter: parent.verticalCenter
+                x: parent.width / 2 - 150
+                width: 100
+                onClicked: tagEditor.close()
             }
-            CustomText { text: "\u25C0"; textSize: 2; anchors.centerIn: parent }
-            onClicked: tagEditor.close()
+
+            CustomButton {
+                id: cancelBtn
+                buttonText: "Cancel"
+                anchors.verticalCenter: parent.verticalCenter
+                x: parent.width / 2 + 50
+                width: 100
+                onClicked: tagEditor.close()
+            }
         }
     }
 }
