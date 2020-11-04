@@ -31,6 +31,7 @@
         <file>MusicRadio.qml</file>
         <file>MusicDelegatePlaylist.qml</file>
         <file>MusicPlaylistEdit.qml</file>
+        <file>MusicDelegateRadio.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="find-icon">resources/find-icon.png</file>

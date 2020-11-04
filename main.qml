@@ -5,6 +5,7 @@ import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.14
 
 Window {
+    property bool _isbusy: false
     property int _windowWidth: root.width
     property int _windowHeight: root.height
     property string _userName: Settings.userName
@@ -30,6 +31,8 @@ Window {
     visible: true
     title: qsTr("UAMP")
     color: _backGroundColor
+
+
 
 
 
@@ -138,6 +141,64 @@ Window {
                 x: parent.width / 2 + 50
                 width: 100
                 onClicked: tagEditor.close()
+            }
+        }
+    }
+    BusyIndicator {
+        id: control
+        running: true
+        x: root.width / 2 - 32
+        y: root.height / 2 - 32
+        contentItem: Item {
+            implicitWidth: 64
+            implicitHeight: 64
+
+            Item {
+                id: item
+                x: parent.width / 2 - 32
+                y: parent.height / 2 - 32
+                width: 64
+                height: 64
+                opacity: control.running ? 1 : 0
+
+                Behavior on opacity {
+                    OpacityAnimator {
+                        duration: 250
+                    }
+                }
+
+                RotationAnimator {
+                    target: item
+                    running: control.visible && control.running
+                    from: 0
+                    to: 360
+                    loops: Animation.Infinite
+                    duration: 1250
+                }
+
+                Repeater {
+                    id: repeater
+                    model: 6
+
+                    Rectangle {
+                        x: item.width / 2 - width / 2
+                        y: item.height / 2 - height / 2
+                        implicitWidth: 10
+                        implicitHeight: 10
+                        radius: 5
+                        color: _themeColor
+                        transform: [
+                            Translate {
+                                y: -Math.min(item.width, item.height) * 0.5 + 5
+                            },
+                            Rotation {
+                                angle: index / repeater.count * 360
+                                origin.x: 5
+                                origin.y: 5
+                            }
+                        ]
+                    }
+                }
             }
         }
     }

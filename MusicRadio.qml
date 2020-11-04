@@ -44,6 +44,7 @@ Item {
         }
     }
     Column {
+        id: content
         y: header.height + 10
         x: 10
         spacing: 10
@@ -53,33 +54,50 @@ Item {
             font.pixelSize: Qt.application.font.pixelSize * 1.2
         }
         Row {
-        CustomTextField {
-            id: inputStream
-            width: (root.width - 10) / 2
+            CustomTextField {
+                id: inputStream
+                width: (root.width - 20) / 2
+            }
+            CustomButton {
+                buttonText: "add"
+                width: (root.width - 20) / 2
+                height: inputStream.height
+            }
         }
-        CustomButton { buttonText: "add" }
+        CustomButton {
+            width: parent.width
+            buttonText: "play"
+        }
+        CustomButton {
+            width: parent.width
+            buttonText: "clear"
         }
     }
 
-//    ScrollView {
-//        id: scroll
-//        anchors.horizontalCenter: parent.horizontalCenter
-//        width: parent.width - 20
-//        height: parent.height - header.height - 50
-//        y: 50 + header.height
-//        clip: true
-//        ScrollBar.vertical.interactive: false
-//        ScrollBar.horizontal.visible: false
+    ScrollView {
+        Component.onCompleted: {
+            for (let i = 0; i < 5; ++i)
+                musicList.model.append({})
+        }
 
-//        ListView {
-//            id: musicList
-//            model: ListModel {}
-//            delegate: MusicDelegate {
-//                _index: model.index
-//                width: scroll.width
-//                height: 40
-//                bgColor: !(index % 2) ? _toolBarBackGroundColor : _backGroundColor
-//            }
-//        }
-//    }
+        id: scroll
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - 20
+        height: parent.height - header.height - content.height
+        y: content.height + header.height + 20
+        clip: true
+        ScrollBar.vertical.interactive: false
+        ScrollBar.horizontal.visible: false
+
+        ListView {
+            id: musicList
+            model: ListModel {}
+            delegate: MusicDelegateRadio {
+                _index: model.index
+                width: scroll.width
+                height: 40
+                bgColor: !(index % 2) ? _toolBarBackGroundColor : _backGroundColor
+            }
+        }
+    }
 }
