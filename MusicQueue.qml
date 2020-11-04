@@ -1,15 +1,65 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
+import QtQuick.Dialogs 1.2
+import QtQuick.Controls 2.12
 
 Item {
+    Dialog {
+        id: saveDialog
+        width: 200
+        height: 150
+
+        contentItem: Rectangle {
+            anchors.fill: parent
+            color: _backGroundColor
+            Item {
+                width: parent.width - 40
+                height: 80
+                anchors.horizontalCenter: parent.horizontalCenter
+                Text {
+                    y: 20
+                    text: "Enter playlist name"
+                    color: _textColor
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: Qt.application.font.pixelSize * 1.2
+                }
+
+                CustomTextField {
+                    id: dialogText;
+                    anchors.bottom: parent.bottom
+                }
+            }
+            Row {
+                height: 40
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 5
+                CustomButton {
+                    width: 50
+                    buttonText: "Ok"
+                    onClicked: {
+                        console.log(dialogText.text)
+                        saveDialog.close()
+                    }
+                }
+                CustomButton {
+                    width: 50
+                    buttonText: "Cancel"
+                    onClicked: saveDialog.close()
+                }
+            }
+        }
+    }
+
     Item {
         id: header
         width: parent.width
-        height: 50
+        height: parent.width > 500 ? 50 : 99
 
         Row {
+            id: roooow
             x: 10
-            height: parent.height - 1
+            height: parent.width > 500 ? parent.height - 1 : parent.height / 2 - 1
             spacing: 5
 
             Image {
@@ -33,29 +83,42 @@ Item {
 
         Row {
             anchors.rightMargin: 10
+            anchors.top: parent.width > 500 ? parent.top : roooow.bottom
             anchors.right: parent.right
-            height: parent.height - 1
+            height: parent.width > 500 ? parent.height : parent.height / 2 - 1
             spacing: 5
 
             CustomButton {
-                id: addBtn
+                id: addQueue
                 buttonText: "Add"
-                width: 100
+                width: 50
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: {
                     musicList.model.append({})
-                    console.log("add to library")
                 }
             }
-//            CustomButton {
-//                id: removeBtn
-//                buttonText: "Remove"
-//                width: 100
-//                height: 30
-//                anchors.verticalCenter: parent.verticalCenter
-//                onClicked: console.log("remove from library")
-//            }
+
+            CustomButton {
+                id: saveBtn
+                buttonText: "Save as playlist"
+                width: 120
+                height: 30
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: {
+                    saveDialog.open()
+                }
+            }
+            CustomButton {
+                id: clearQueue
+                buttonText: "Clear"
+                width: 100
+                height: 30
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: {
+                    musicList.model.clear()
+                }
+            }
         }
 
         Rectangle {
@@ -66,6 +129,80 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: header.bottom
             opacity: 0.5
+        }
+    }
+    Item {
+        anchors.top: header.bottom
+
+        width: parent.width
+        height: 50
+
+        Row {
+            x: 15
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 5
+            CustomText { text: "Sort by: " }
+            MouseArea {
+                id: sortButton
+                width: 60
+                height: 20
+                CustomText { id: sortText; text: "Title"; color: _themeColor }
+                onClicked: sortPopup.open()
+            }
+        }
+
+        Popup {
+            id: sortPopup
+            width: 100
+            padding: 0
+            x: 100
+            modal: true
+            focus: true
+
+            Column {
+                spacing: 0
+                anchors.fill: parent
+                Repeater {
+                    model: ["Title", "Artist", "Album", "Rating", "Most played", "Newest"]
+                    RadioButton {
+                        width: parent.width
+                        height: 20
+                        checked: !index ? true : false
+
+                        indicator: Rectangle {
+                            anchors.fill: parent
+                            color: parent.checked ? _themeColor : _toolBarBackGroundColor
+                            CustomText { x: 10; text: modelData }
+                        }
+                        onClicked: {
+                            sortPopup.close()
+                            sortText.text = modelData
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ScrollView {
+        id: scroll
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - 20
+        height: parent.height - header.height - 50
+        y: 50 + header.height
+        clip: true
+        ScrollBar.vertical.interactive: false
+        ScrollBar.horizontal.visible: false
+
+        ListView {
+            id: musicList
+            model: ListModel {}
+            delegate: MusicDelegate {
+                _index: model.index
+                width: scroll.width
+                height: 40
+                bgColor: !(index % 2) ? _toolBarBackGroundColor : _backGroundColor
+            }
         }
     }
 }

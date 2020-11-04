@@ -8,11 +8,12 @@ Item {
     Item {
         id: header
         width: parent.width
-        height: 50
+        height: width > 500 ? 50 : 99
 
         Row {
+            id: roooow
             x: 10
-            height: parent.height - 1
+            height: parent.width > 500 ? parent.height : parent.height / 2 - 1
             spacing: 5
 
             Image {
@@ -35,15 +36,17 @@ Item {
         }
 
         Row {
+            x: 10
             anchors.rightMargin: 10
+            anchors.top: parent.width > 500 ? parent.top : roooow.bottom
             anchors.right: parent.right
-            height: parent.height - 1
+            height: parent.width > 500 ? parent.height : parent.height / 2 - 1
             spacing: 5
 
             CustomButton {
                 id: addBtn
                 buttonText: "Add"
-                width: 100
+                width: 40
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: {
@@ -51,14 +54,22 @@ Item {
                     console.log("add to library")
                 }
             }
-//            CustomButton {
-//                id: removeBtn
-//                buttonText: "Remove"
-//                width: 100
-//                height: 30
-//                anchors.verticalCenter: parent.verticalCenter
-//                onClicked: console.log("remove from library")
-//            }
+            CustomButton {
+                id: addFolderBtn
+                buttonText: "Add from folder"
+                width: 130
+                height: 30
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: console.log("remove from library")
+            }
+            CustomButton {
+                id: removeBtn
+                buttonText: "Delete all"
+                width: 100
+                height: 30
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: console.log("remove from library")
+            }
         }
 
         Rectangle {
@@ -76,8 +87,8 @@ Item {
         id: scroll
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - 20
-        height: parent.height - 50
-        y: 50
+        height: parent.height - header.height
+        y: header.height
         clip: true
         ScrollBar.vertical.interactive: false
         ScrollBar.horizontal.visible: false
@@ -88,7 +99,6 @@ Item {
             delegate: MusicDelegate {
                 _index: model.index
                 width: scroll.width
-//                someText: appendText ? appendText : ""
                 height: 40
                 bgColor: !(index % 2) ? _toolBarBackGroundColor : _backGroundColor
             }

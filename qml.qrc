@@ -29,6 +29,8 @@
         <file>MusicPlaylists.qml</file>
         <file>MusicEqualizer.qml</file>
         <file>MusicRadio.qml</file>
+        <file>MusicDelegatePlaylist.qml</file>
+        <file>MusicPlaylistEdit.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="find-icon">resources/find-icon.png</file>
@@ -42,7 +44,7 @@
         <file alias="settings">resources/settings.png</file>
         <file alias="user">resources/user.png</file>
         <file alias="like">resources/like.png</file>
-        <file alias="play">resources/play.png</file>
+        <file alias="play">resources/play.svg</file>
         <file alias="pause">resources/pause.png</file>
         <file alias="stop">resources/stop.png</file>
         <file alias="back">resources/back.png</file>

@@ -18,7 +18,7 @@ MouseArea {
 
     RadioButton {
         id: control
-        width: 8
+        width: 0
         height: parent.height
         checked: _checked
         ButtonGroup.group: buttonGroup

@@ -8,8 +8,8 @@ MouseArea {
     property string bgColor: _backGroundColor
     property int _index: 0
     property bool likedIcon: true
+    property bool isInQueue: false
     property string someText: ""
-
     Rectangle {
         id: backGround
         anchors.fill: parent
@@ -137,7 +137,7 @@ MouseArea {
                         Column {
                             id: column
                             Repeater {
-                                model: ["Add to queue", "Tag it"]
+                                model: ["Add to queue", "Tag it", "Add to playlist", "Delete"]
                                 MouseArea {
                                     id: btnWrapper
                                     width: 120
@@ -152,7 +152,9 @@ MouseArea {
                                         id: btnIcon
                                         width: 20
                                         height: 20
-                                        source: !index ? "/images/music-queue" : "/images/music-note"
+                                        source: !index ? "/images/music-queue" : index === 1 ?
+                                                             "/images/music-note" : index === 2 ?
+                                                                 "/images/music-playlist" : "/images/cancel-icon"
                                         visible: false
                                         anchors.verticalCenter: parent.verticalCenter
                                     }
@@ -171,7 +173,6 @@ MouseArea {
                                         addPopup.close()
                                         if (index === 1)
                                             _tagEditor.show()
-//                                        console.log(modelData)
                                     }
                                 }
                             }
