@@ -80,7 +80,7 @@ Item {
                     }
                     CustomSlider {
                         id: slider
-                        y: 25
+                        y: 30
                         value: 0
                         from: -12
                         to: 12
@@ -110,11 +110,22 @@ Item {
                 width: parent.width - (rooooow.x) * 2
                 height: 30
                 flat: true
-//                background: Rectangle {
-//                    anchors.fill: combo
-//                    color: _backGroundColor
-//                    border.color: _themeColor
-//                }
+
+                background: Rectangle {
+                    anchors.fill: combo
+                    color: _backGroundColor
+                    border.color: _themeColor
+                }
+                contentItem: Text {
+                    leftPadding: 10
+//                    rightPadding: combo.indicator.width + combo.spacing
+                    text: combo.displayText
+                    font: combo.font
+                    color: combo.pressed ? _hoverColor : _textColor
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+
                 currentIndex: 0
                 model: ListModel {}
                 delegate: Rectangle {
