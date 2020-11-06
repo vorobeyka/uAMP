@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.14
 
 Window {
-    property bool _isbusy: false
+    property bool _isbusy: appcore.isBusy
     property int _windowWidth: root.width
     property int _windowHeight: root.height
     property string _userName: Settings.userName
@@ -22,6 +22,7 @@ Window {
     property double _opacityGradient: 0.5
     property StackView mainStack: stackView
     property Window _tagEditor: tagEditor
+    property BusyIndicator busy: control
 
     id: root
     minimumWidth: 450
@@ -146,7 +147,7 @@ Window {
     }
     BusyIndicator {
         id: control
-        running: true
+        running: _isbusy
         x: root.width / 2 - 32
         y: root.height / 2 - 32
         contentItem: Item {
@@ -201,5 +202,8 @@ Window {
                 }
             }
         }
+    }
+    Component.onCompleted: {
+        if (_isAuthorized) appcore.setUserName(Settings.userName)
     }
 }

@@ -32,6 +32,7 @@ public:
      * */
     void connectToDataBase();
     void closeDataBase();
+    bool isOpen();
     QStringList tables() {
         return db.tables();
     }

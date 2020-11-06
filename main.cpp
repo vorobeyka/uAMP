@@ -3,8 +3,10 @@
 #include <QQmlContext>
 
 #include "settings.h"
+#include "appcore.h"
 
 int main(int argc, char *argv[]) {
+    AppCore appCore;
     Settings settings;
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
@@ -13,6 +15,7 @@ int main(int argc, char *argv[]) {
     QQmlContext* context = engine.rootContext();
 
     context->setContextProperty("Settings", &settings);
+    context->setContextProperty("appcore", &appCore);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

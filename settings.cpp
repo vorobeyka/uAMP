@@ -19,13 +19,14 @@ Settings::~Settings() {
 }
 
 bool Settings::createTable() {
-    if (!m_db->createTable("Settings", QStringList() << "BGColor CHARACTER(20), "
-                      << "HoverColor CHARACTER(20), " << "TBBColor CHARACTER(20), "
-                      << "TextColor CHARACTER(20), " << "ThemeColor CHARACTER(20), "
-                      << "User CHARACTER(20)) ")) {
+    if (!m_db->createTable("Settings", QStringList() << "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                      << "BGColor CHARACTER(20), " << "HoverColor CHARACTER(20), "
+                      << "TBBColor CHARACTER(20), " << "TextColor CHARACTER(20), "
+                      << "ThemeColor CHARACTER(20), " << "User CHARACTER(20)) ")) {
         return false;
     }
-    if (!m_db->createTable("Users", QStringList() << "login VARCHAR(255),"
+    if (!m_db->createTable("Users", QStringList() << "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                           << "login VARCHAR(255),"
                            << "password VARCHAR(255))")) {
         return false;
     }

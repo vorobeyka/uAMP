@@ -8,6 +8,8 @@ DataBase::DataBase(QString name, QObject *parent)
 
 DataBase::~DataBase() {}
 
+bool DataBase::isOpen() { return db.isOpen(); }
+
 bool DataBase::insertValue(QString tableName, QString column, QVariant value) {
     qDebug() << "INSERT VALUE"  + value.toString();
     QSqlQuery query;
@@ -49,6 +51,7 @@ bool DataBase::openDataBase() {
     /* База данных открывается по заданному пути
      * и имени базы данных, если она существует
      * */
+
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName(m_hostName);
     db.setDatabaseName(m_name);
@@ -74,7 +77,7 @@ bool DataBase::createTable(QString tName, QStringList columns) {
     /* В данном случае используется формирование сырого SQL-запроса
      * */
     QSqlQuery query;
-    QString queryString = "CREATE TABLE IF NOT EXISTS " + tName + " (id INTEGER PRIMARY KEY AUTOINCREMENT, ";
+    QString queryString = "CREATE TABLE IF NOT EXISTS " + tName + " ";
     for (auto i : columns)
         queryString += i;
     if (!query.exec(queryString)) {
@@ -156,7 +159,7 @@ bool DataBase::insertIntoTable(QString tableName, QVariantMap data) {
 
 /* Второй метод для вставки записи в базу данных
  * */
-bool DataBase::insertIntoTable(QString tableName, QStringList values) {
+bool DataBase::insertIntoTable(QString tableName, QStringList columns, QStringList values) {
     QVariantMap map;
     (void)tableName;
     (void)values;

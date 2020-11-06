@@ -33,8 +33,10 @@ if(ANDROID)
       qml.qrc
       database.cpp
       settings.cpp
+      appcore.cpp
       settings.h
       database.h
+      appcore.h
     )
 else()
     add_executable(player
@@ -42,8 +44,10 @@ else()
       qml.qrc
       database.cpp
       settings.cpp
+      appcore.cpp
       settings.h
       database.h
+      appcore.h
     )
 endif()
 
