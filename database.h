@@ -40,7 +40,7 @@ public:
 public slots:
         // Добавление записей в таблицу
     bool insertIntoTable(QString tableName, QVariantMap data);
-    bool insertIntoTable(QString tableName, QStringList values);
+    bool insertIntoTable(QString tableName, QStringList columns, QStringList values);
     bool insertValue(QString tableName, QString column, QVariant value);
     bool updateValue(QString tableName, QString column, QString condition, QVariant value);
 //    bool updateString(QString tableName, QString column, QString)

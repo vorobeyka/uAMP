@@ -163,6 +163,7 @@ bool DataBase::insertIntoTable(QString tableName, QStringList columns, QStringLi
     QVariantMap map;
     (void)tableName;
     (void)values;
+    (void)columns;
 
     if(insertIntoTable(tableName, map))
         return true;

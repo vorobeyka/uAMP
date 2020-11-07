@@ -44,7 +44,7 @@ bool AppCore::createTable() {
 }
 
 bool AppCore::readTable() {
-    if (m_db->readFromTable())
+//    if (m_db->readFromTable())
     return false;
 }
 
