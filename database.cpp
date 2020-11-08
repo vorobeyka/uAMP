@@ -175,7 +175,6 @@ std::vector<QVariantList> DataBase::readFromTable(QString tableName, int columns
     QSqlQuery query;
     std::vector<QVariantList> data;
 
-
     if (query.exec("SELECT " + value + " FROM " + tableName)) {
         while (query.next()) {
             QVariantList pack;
@@ -225,12 +224,12 @@ QVariantList DataBase::readRow(QString tableName, int columns, QVariantMap value
 
 /* Метод для удаления записи из таблицы
  * */
-bool DataBase::removeRecord(const int id) {
+bool DataBase::removeRecord(const int id, QString tableName) {
     // Удаление строки из базы данных будет производитсья с помощью SQL-запроса
     QSqlQuery query;
 
     // Удаление производим по id записи, который передается в качестве аргумента функции
-    query.prepare("DELETE FROM " /*TABLE*/ " WHERE id= :ID ;");
+    query.prepare("DELETE FROM " + tableName + " WHERE id= :ID ;");
     query.bindValue(":ID", id);
 
     // Выполняем удаление

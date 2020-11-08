@@ -2,7 +2,7 @@
 
 
 Settings::Settings(QObject* parent) : QObject(parent){
-    m_db = new DataBase("Settings.db");
+    m_db = new DataBase("Settings.db", this);
     m_db->connectToDataBase();
 
     if (createTable()) {
@@ -44,7 +44,6 @@ bool Settings::readTable() {
         m_themeColor = m_settings.begin()->at(5).toString();
         if (m_settings.begin()->at(6).toString().size() != 0)
             m_user = m_settings.begin()->at(6).toString();
-//        qDebug() << m_user;
         return true;
     }
 }

@@ -203,7 +203,8 @@ Window {
             }
         }
     }
-    Component.onCompleted: {
-        if (_isAuthorized) appcore.setUserName(Settings.userName)
-    }
+//    Component.onCompleted: {
+//        if (_isAuthorized) appcore.setUserName(Settings.userName)
+//    }
+    Component.onDestruction: console.log("syka zakrili")
 }

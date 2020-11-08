@@ -49,7 +49,7 @@ public slots:
     QVariantList readRow(QString tableName, int columns, QVariantMap values);
 //    QString readString(QString tableName, QString value);
 //    QString readInt(QString tableName, QString value);
-    bool removeRecord(const int id); // Удаление записи из таблицы по её id
+    bool removeRecord(const int id, QString tableName); // Удаление записи из таблицы по её id
     bool createTable(QString tName, QStringList columns);
     // bool readFromTable();;
 
