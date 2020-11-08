@@ -1,4 +1,4 @@
-#ifndef DATABASE_H
+﻿#ifndef DATABASE_H
 #define DATABASE_H
 
 #include <QObject>
@@ -39,8 +39,9 @@ public:
 
 public slots:
         // Добавление записей в таблицу
+    int getRowsCount(QString tableName);
     bool insertIntoTable(QString tableName, QVariantMap data);
-    bool insertIntoTable(QString tableName, QStringList columns, QStringList values);
+    bool insertIntoTable(QString tableName, QVariantList values);
     bool insertValue(QString tableName, QString column, QVariant value);
     bool updateValue(QString tableName, QString column, QString condition, QVariant value);
 //    bool updateString(QString tableName, QString column, QString)

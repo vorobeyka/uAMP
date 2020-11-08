@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.14
 
 Window {
-    property bool _isbusy: appcore.isBusy
+    property bool _isbusy: Settings.isBusy
     property int _windowWidth: root.width
     property int _windowHeight: root.height
     property string _userName: Settings.userName
@@ -203,8 +203,9 @@ Window {
             }
         }
     }
-//    Component.onCompleted: {
-//        if (_isAuthorized) appcore.setUserName(Settings.userName)
-//    }
+    Component.onCompleted: {
+        Settings.isBusy = false
+        if (_isAuthorized) library.setUser(_userName)
+    }
     Component.onDestruction: console.log("syka zakrili")
 }

@@ -23,9 +23,12 @@ public:
     Q_PROPERTY(QString hoverColor READ hoverColor WRITE setHoverColor NOTIFY hoverColorChanged)
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
     Q_PROPERTY(bool authorized READ authorized WRITE setAuthorized NOTIFY authorizedChanged)
+    Q_PROPERTY(bool isBusy READ isBusy WRITE setIsBusy NOTIFY isBusyChanged)
 
     Settings(QObject* parent = nullptr);
     ~Settings();
+
+    DataBase* db() const;
 
     QString backGroundColor() const;
     void setBackGroundColor(QString);
@@ -41,6 +44,8 @@ public:
     void setUserName(QString);
     bool authorized() const;
     void setAuthorized(bool);
+    bool isBusy() const;
+    void setIsBusy(bool);
 
 public slots:
     bool checkUser(QString login, QString password);
@@ -54,10 +59,13 @@ signals:
     void hoverColorChanged(QString value);
     void userNameChanged(QString value);
     void authorizedChanged(bool value);
+    void isBusyChanged(bool value);
 
 private:
+    using T = std::vector<QVariantList>;
     DataBase* m_db;
-    std::vector<QVariantList> m_settings;
+    bool m_isBusy = true;
+    T m_settings;
     QString m_bgColor;
     QString m_tbbColor;
     QString m_themeColor;
@@ -69,6 +77,8 @@ private:
     bool readTable();
     bool insertValue();
     bool insertDefaultValues();
+
+    void initUser();
 
 };
 

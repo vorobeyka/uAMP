@@ -55,7 +55,7 @@ Item {
                             errorWrapper.visible = false
                             password.clear()
                             login.clear()
-//                            appcore.setUserName(Settings.userName)
+                            library.setUserName(_userName)
                         } else {
                             errorWrapper.visible = true
                         }

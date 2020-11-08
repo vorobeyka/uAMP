@@ -40,10 +40,11 @@ if(ANDROID)
       qml.qrc
       database.cpp
       settings.cpp
-      appcore.cpp
+      usermusics.cpp
+      musiclibrary.cpp
       settings.h
       database.h
-      appcore.h
+      musiclibrary.h
       3dparty/bass.h
     )
 else()
@@ -52,10 +53,11 @@ else()
       qml.qrc
       database.cpp
       settings.cpp
-      appcore.cpp
+      usermusics.cpp
+      musiclibrary.cpp
       settings.h
       database.h
-      appcore.h
+      musiclibrary.h
       3dparty/bass.h
     )
 endif()

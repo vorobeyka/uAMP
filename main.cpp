@@ -3,7 +3,7 @@
 #include <QQmlContext>
 
 #include "settings.h"
-#include "appcore.h"
+#include "musiclibrary.h"
 #include <iostream>
 #include <locale>
 #include <codecvt>
@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
 //    BASS_Init(-1,44100, BASS_DEVICE_3D,0,NULL);
 //    str=BASS_StreamCreateFile(FALSE, sstr.toLocal8Bit(), 0, 0, 0);
 //    BASS_ChannelPlay(str, FALSE);
-
-    AppCore appCore;
+    qDebug() << QDate::currentDate().toString();
     Settings settings;
+    MusicLibrary library(settings.db());
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     QQmlContext* context = engine.rootContext();
 
     context->setContextProperty("Settings", &settings);
-    context->setContextProperty("appcore", &appCore);
+    context->setContextProperty("library", &library);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

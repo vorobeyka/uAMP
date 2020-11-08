@@ -1,5 +1,6 @@
+#include <QThread>
+#include <QCoreApplication>
 #include "settings.h"
-
 
 Settings::Settings(QObject* parent) : QObject(parent){
     m_db = new DataBase("Settings.db", this);
@@ -42,8 +43,10 @@ bool Settings::readTable() {
         m_tbbColor = m_settings.begin()->at(3).toString();
         m_textColor = m_settings.begin()->at(4).toString();
         m_themeColor = m_settings.begin()->at(5).toString();
-        if (m_settings.begin()->at(6).toString().size() != 0)
+        if (m_settings.begin()->at(6).toString().size() != 0) {
             m_user = m_settings.begin()->at(6).toString();
+            initUser();
+        }
         return true;
     }
 }
@@ -114,6 +117,19 @@ bool Settings::authorized() const { return !m_user.isNull(); }
 
 void Settings::setAuthorized(bool value) { emit authorizedChanged(value); }
 
+bool Settings::isBusy() const { return m_isBusy; }
+
+DataBase* Settings::db() const { return m_db; }
+
+void Settings::setIsBusy(bool value) {
+    m_isBusy = value;
+    emit isBusyChanged(value);
+    if (m_isBusy) {
+        QThread::msleep(50);
+        QCoreApplication::processEvents();
+    }
+}
+
 bool Settings::checkUser(QString user, QString password) {
     QVariantMap tmp;
     tmp.insert("login", user);
@@ -122,6 +138,7 @@ bool Settings::checkUser(QString user, QString password) {
         if (data.at(1) == user && data.at(2) == password) {
             setUserName(user);
             setAuthorized(true);
+            initUser();
             return true;
         }
     }
@@ -137,5 +154,6 @@ bool Settings::createUser(QString login, QString password) {
     m_db->insertIntoTable(USERS_TABLE_NAME, data);
     setUserName(login);
     setAuthorized(true);
+    initUser();
     return true;
 }

@@ -88,21 +88,6 @@ bool DataBase::createTable(QString tName, QStringList columns) {
         qDebug() << "Table: " + tName + " created.";
         return true;
     }
-//    QSqlQuery query;
-//    if(!query.exec( "CREATE TABLE " TABLE " ("
-//                            "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-//                            TABLE_FNAME     " VARCHAR(255)    NOT NULL,"
-//                            TABLE_SNAME     " VARCHAR(255)    NOT NULL,"
-//                            TABLE_NIK       " VARCHAR(255)    NOT NULL"
-//                        " )"
-//                    )){
-//        qDebug() << "DataBase: error of create " << TABLE;
-//        qDebug() << query.lastError().text();
-//        return false;
-//    } else {
-//        return true;
-//    }
-//    return false;
 }
 
 /* Метод для вставки записи в базу данных
@@ -159,16 +144,23 @@ bool DataBase::insertIntoTable(QString tableName, QVariantMap data) {
 
 /* Второй метод для вставки записи в базу данных
  * */
-bool DataBase::insertIntoTable(QString tableName, QStringList columns, QStringList values) {
+bool DataBase::insertIntoTable(QString tableName, QVariantList values) {
     QVariantMap map;
-    (void)tableName;
-    (void)values;
-    (void)columns;
+    QSqlQuery query;
+    QString queryString = "INSERT INTO " + tableName + " VALUES(";
 
-    if(insertIntoTable(tableName, map))
-        return true;
-    else
+    for (int i = 0; i < values.length(); ++i)
+        queryString += "?, ";
+
+    queryString += ");";
+    query.prepare(queryString);
+    for (auto i : values)
+        query.addBindValue(i);
+    if (!query.exec()) {
+        qDebug() << "Can't insert values into " + tableName;
         return false;
+    }
+    return true;
 }
 
 std::vector<QVariantList> DataBase::readFromTable(QString tableName, int columns, QString value) {
@@ -241,4 +233,11 @@ bool DataBase::removeRecord(const int id, QString tableName) {
         return true;
     }
     return false;
+}
+
+int DataBase::getRowsCount(QString tableName) {
+    QSqlQuery query;
+    query.exec("SELECT MAX(id) FROM " + tableName + ";");
+    if (query.next()) return query.value(0).toInt();
+    return 0;
 }
