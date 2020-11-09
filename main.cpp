@@ -8,7 +8,7 @@
 #include <locale>
 #include <codecvt>
 #include <string>
-#include "3dparty/bass.h"
+#include <bass.h>
 
 const void* getFile(std::wstring* file){
     return file->data();

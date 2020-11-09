@@ -23,6 +23,15 @@ Window {
     property StackView mainStack: stackView
     property Window _tagEditor: tagEditor
     property BusyIndicator busy: control
+    property FileDialogFiles _files: files
+    property FileDialogFiles _folders: folders
+
+    FileDialogFiles { id: files; onAccepted: {
+            for (var i = 0; i < fileUrls.length; ++i)
+                Qt.openUrlExternally(fileUrls[i])
+        } }
+    FileDialogFiles { id: folders; selectFolder: true;
+        onAccepted: library.readFolder(folders.fileUrls) }
 
     id: root
     minimumWidth: 450

@@ -131,6 +131,7 @@ Item {
             opacity: 0.5
         }
     }
+
     Item {
         anchors.top: header.bottom
 

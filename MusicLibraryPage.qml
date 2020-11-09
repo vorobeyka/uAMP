@@ -49,10 +49,7 @@ Item {
                 width: 40
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: {
-                    musicList.model.append({})
-                    console.log("add to library")
-                }
+                onClicked: _files.open()
             }
             CustomButton {
                 id: addFolderBtn
@@ -60,7 +57,7 @@ Item {
                 width: 130
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: console.log("remove from library")
+                onClicked: _folders.open()
             }
             CustomButton {
                 id: removeBtn
@@ -80,6 +77,17 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: header.bottom
             opacity: 0.5
+        }
+    }
+
+    DropArea {
+        id: dropArea;
+        anchors.fill: parent
+        onEntered: {
+            drag.accept (Qt.LinkAction)
+        }
+        onDropped: {
+            console.log(drop.urls)
         }
     }
 

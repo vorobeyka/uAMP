@@ -21,6 +21,10 @@ QString MusicLibrary::currentPath(QString path) {
     return _path;
 }
 
+void MusicLibrary::setFileInfo(QString filePath) {
+    (void)filePath;
+}
+
 void MusicLibrary::pushFile(QVariantList data) {
     data.push_front(m_db->getRowsCount(m_user + "Library") + 1);
     m_db->insertIntoTable(m_user + "Library", data);
@@ -50,5 +54,5 @@ void MusicLibrary::readFile(QString filePath) {
 }
 
 void MusicLibrary::readFolder(QString folderPath) {
-    (void)folderPath;
+    qDebug() << folderPath;
 }

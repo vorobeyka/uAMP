@@ -1,8 +1,15 @@
 #ifndef MUSICLIBRARY_H
 #define MUSICLIBRARY_H
 
-#include "database.h"
+#define TAGLIB_STATIC
+
+#include <QFileInfo>
+#include <QFileInfoList>
 #include <QObject>
+#include <tag.h>
+#include <fileref.h>
+
+#include "database.h"
 
 #if defined(Q_OS_WIN)
     #define OS 1
@@ -11,6 +18,10 @@
 #elif defined(Q_OS_LINUX)
     #define OS 3
 #endif
+
+using namespace TagLib;
+
+
 
 class MusicLibrary : public QObject {
     Q_OBJECT
@@ -29,6 +40,7 @@ private:
 
     QString currentPath(QString);
 
+    void setFileInfo(QString);
     void pushFile(QVariantList);
 
 };
