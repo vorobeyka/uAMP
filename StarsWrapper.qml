@@ -6,7 +6,18 @@ Item {
     width: 100
     height: 40
 
+    Connections {
+        target: library
+
+        onSetRating: {
+            if (cppIndex === id) {
+                setStars(rate)
+            }
+        }
+    }
+
     property int _count: 0
+    property int cppIndex: 0
 
     Row {
         width: 100
@@ -39,18 +50,25 @@ Item {
                     opacity: 0.8
                 }
                 onClicked: {
-                    for (let i = 0; i <= index; ++i)
-                        repeater.itemAt(i).imgSource = "/images/stared"
-                    for (let i = index + 1; i < repeater.count; ++i)
-                        repeater.itemAt(i).imgSource = "/images/star"
+                    library.rate(cppIndex, index)
+                    setStars(index)
                 }
             }
         }
     }
 
+    function setStars(to) {
+        for (let i = 0; i <= to; ++i)
+            repeater.itemAt(i).imgSource = "/images/stared"
+        if (!to) to = -1
+        for (let i = to + 1; i < repeater.count; ++i)
+            repeater.itemAt(i).imgSource = "/images/star"
+    }
+
     Component.onCompleted: {
-        for (let i = 1; i <= _count; ++i) {
-            repeater.itemAt(i - 1).starIcon.source = "/images/stared"
-        }
+        setStars(_count)
+//        for (let i = 1; i <= _count; ++i) {
+//            repeater.itemAt(i - 1).starIcon.source = "/images/stared"
+//        }
     }
 }

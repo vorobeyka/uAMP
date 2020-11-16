@@ -17,12 +17,14 @@ MouseArea {
     RadioButton {
         id: control
         width: parent.width
-        height: 2
+        height: 0
         checked: _checked
         ButtonGroup.group: buttonGroup
         anchors.bottom: root.bottom
         indicator: Rectangle {
-            anchors.fill: parent
+            y: -2
+            width: parent.width
+            height: 2
             color: control.down ? _toolBarBackGroundColor : _themeColor
             visible: control.checked
         }
@@ -51,7 +53,6 @@ MouseArea {
     onExited: {
         xMouse = 0
         text.visible = true
-//        text.color = _textColor
         gradientVisible = false
     }
     onClicked: { control.checked = true }

@@ -146,7 +146,7 @@ bool Settings::checkUser(QString user, QString password) {
 }
 
 bool Settings::createUser(QString login, QString password) {
-    if (!m_db->readValue(USERS_TABLE_NAME, login, "login").isNull())
+    if (!m_db->readValue(USERS_TABLE_NAME, login, "login", "login").isNull())
         return false;
     QVariantMap data;
     data.insert("login", login);

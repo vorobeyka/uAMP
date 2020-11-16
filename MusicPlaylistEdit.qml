@@ -52,8 +52,11 @@ Item {
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: {
-                    mainStack.pop()
-                    mainStack.push("MusicPlaylists.qml")
+                    _currentPage.visible = false
+                    _currentPage = _musicPlaylistPage
+                    _currentPage.visible = true
+//                    mainStack.pop()
+//                    mainStack.push("MusicPlaylists.qml")
                     _initialItem = "playlists"
                 }
             }
@@ -64,9 +67,9 @@ Item {
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: {
-                    console.log("Remove playlist index")
-                    mainStack.pop()
-                    mainStack.push("MusicPlaylists.qml")
+                    _currentPage.visible = false
+                    _currentPage = _musicPlaylistPage
+                    _currentPage.visible = true
                     _initialItem = "playlists"
                 }
             }

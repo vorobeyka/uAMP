@@ -46,7 +46,7 @@ public slots:
     bool updateValue(QString tableName, QString column, QString condition, QVariant value);
 //    bool updateString(QString tableName, QString column, QString)
     std::vector<QVariantList> readFromTable(QString tableName, int columns, QString value = "*");
-    QVariant readValue(QString tableName, QVariant value, QString columns = "*");
+    QVariant readValue(QString tableName, QVariant value, QString condColumn, QString readColumn = "*");
     QVariantList readRow(QString tableName, int columns, QVariantMap values);
 //    QString readString(QString tableName, QString value);
 //    QString readInt(QString tableName, QString value);

@@ -7,9 +7,20 @@ MouseArea {
 
     property string bgColor: _backGroundColor
     property int _index: 0
-    property bool likedIcon: true
+    property int _cppIndex: 0
+    property bool likedIcon: false
     property bool isInQueue: false
     property string someText: ""
+    property string album: ""
+    property string title: ""
+    property string artist: ""
+    property string year: ""
+    property string genre: ""
+    property int rating: 0
+    property string duration: "0"
+    property int playedTimes: 0
+    property string date: ""
+
     Rectangle {
         id: backGround
         anchors.fill: parent
@@ -20,6 +31,8 @@ MouseArea {
             anchors.right: likeWrapper.left
             visible: root.width > 300
             width: root.width > 300 ? 100 : 0
+            _count: rating
+            cppIndex: _cppIndex
         }
 
         Item {
@@ -36,7 +49,7 @@ MouseArea {
                     width: 20
                     height: 20
                     anchors.centerIn: parent
-                    source: likedIcon ? "/images/like" : "/images/liked"
+                    source: !likedIcon ? "/images/like" : "/images/liked"
                     visible: false
                 }
 
@@ -47,7 +60,15 @@ MouseArea {
                     color: _textColor
                     opacity: 0.8
                 }
-                onClicked: likedIcon = !likedIcon
+                onClicked: {
+                    likedIcon = !likedIcon
+                    if (likedIcon) {
+                        library.setFavourite(_cppIndex)
+                        library.likeTrack(_cppIndex)
+                    } else {
+                        library.unsetFavourite(_cppIndex)
+                    }
+                }
             }
         }
 
@@ -56,7 +77,7 @@ MouseArea {
             width: 40
             height: 40
             anchors.right: parent.right
-            CustomText { text: "time" }
+            CustomText { text: duration }
         }
     }
 
@@ -68,7 +89,7 @@ MouseArea {
             id: trackName
             width: parent.width > 250 ? parent.width < 400 ? parent.width * 0.6 : parent.width * 0.3 : parent.width
             height: 40
-            CustomText { id: nameText; x:5; text: "Track Name" }
+            CustomText { id: nameText; x:5; text: title; width: parent.width - 5; clip: true }
             Item {
                 id: trackButtons
                 height: 40
@@ -186,32 +207,32 @@ MouseArea {
             width: parent.width < 400 ? parent.width * 0.4 : parent.width * 0.2
             height: 40
             visible: parent.width > 250
-            CustomText { text: "Artist" }
+            CustomText { text: artist; width: parent.width - 5; clip: true }
         }
         Item {
             id: trackAlbum
             width: parent.width * 0.2
             height: 40
             visible: parent.width > 500
-            CustomText { text: "Album" }
+            CustomText { text: album; width: parent.width - 5; clip: true }
         }
         Item {
             id: trackYear
             width: parent.width - trackName.width - trackAlbum.width - trackArtist.width - trackGenre.width
             height: 40
             visible: parent.width > 400
-            CustomText { text: "Year" }
+            CustomText { text: year; width: parent.width - 5; clip: true }
         }
         Item {
             id: trackGenre
             width: parent.width * 0.2
             height: 40
             visible: parent.width > 400
-            CustomText { text: "Genre" }
+            CustomText { text: genre; width: parent.width - 5; clip: true }
         }
     }
 
     hoverEnabled: true
-    onEntered: { trackButtons.visible = true }
-    onExited: { trackButtons.visible = false }
+    onEntered: { trackButtons.visible = true; nameText.width = nameText.width - 65 }
+    onExited: { trackButtons.visible = false; nameText.width = trackName.width - 5 }
 }

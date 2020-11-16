@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.14
 
 Window {
-    property bool _isbusy: Settings.isBusy
+    property bool _isbusy: library.isBusy
     property int _windowWidth: root.width
     property int _windowHeight: root.height
     property string _userName: Settings.userName
@@ -20,18 +20,40 @@ Window {
     property int _toolButtonHeight: 50
     property double _opacityMusicCotnroll: 0.8
     property double _opacityGradient: 0.5
-    property StackView mainStack: stackView
+//    property StackView mainStack: stackView
     property Window _tagEditor: tagEditor
     property BusyIndicator busy: control
     property FileDialogFiles _files: files
     property FileDialogFiles _folders: folders
 
-    FileDialogFiles { id: files; onAccepted: {
+    property Item _currentPage: _authPage
+    property AuthorizationPage _authPage: authPage
+    property MusicQueue _musicQueuePage: musicQueuePage
+    property MusicLibraryPage _musicLibraryPage: musicLibraryPage
+    property MusicPlaylists _musicPlaylistPage: musicPlaylistPage
+    property MusicPlaylistEdit _musicPlaylistEditPage: musicPlaylistEditPage
+    property MusicEqualizer _musicEqualizerPage: musicEqualizerPage
+    property MusicRadio _musicRadioPage: musicRadioPage
+    property Properties _properties: properties
+
+    FileDialogFiles {
+        id: files
+        onAccepted: {
+            library.isBusy = true
             for (var i = 0; i < fileUrls.length; ++i)
-                Qt.openUrlExternally(fileUrls[i])
-        } }
-    FileDialogFiles { id: folders; selectFolder: true;
-        onAccepted: library.readFolder(folders.fileUrls) }
+                library.readFile(fileUrls[i].toString(), 1)
+            library.isBusy = false
+        }
+    }
+    FileDialogFiles {
+        id: folders
+        selectFolder: true
+        onAccepted: {
+            library.isBusy = true
+            library.readFolder(fileUrl.toString())
+            library.isBusy = false
+        }
+    }
 
     id: root
     minimumWidth: 450
@@ -42,20 +64,44 @@ Window {
     title: qsTr("UAMP")
     color: _backGroundColor
 
-
-
-
-
     CustomToolBar { id: mainToolBar }
 
-    StackView {
+    Item {
         id: stackView
-        initialItem: "AuthorizationPage.qml"
         x: mainToolBar.width
         width: parent.width - mainToolBar.width
         height: parent.height - musicController.height
         clip: true
+
+        AuthorizationPage { id: authPage; anchors.fill: parent; visible: true }
+
+        MusicQueue { id: musicQueuePage; anchors.fill: parent; visible: false }
+
+        MusicLibraryPage { id: musicLibraryPage; anchors.fill: parent; visible: false }
+
+        MusicPlaylists { id: musicPlaylistPage; anchors.fill: parent; visible: false }
+
+        MusicPlaylistEdit { id: musicPlaylistEditPage; anchors.fill: parent; visible: false }
+
+        MusicEqualizer { id: musicEqualizerPage; anchors.fill: parent; visible: false }
+
+        MusicRadio { id: musicRadioPage; anchors.fill: parent; visible: false }
+
+        Properties { id: properties; anchors.fill: parent; visible: false }
     }
+
+
+//    StackView {
+//        id: stackView
+//        initialItem: "AuthorizationPage.qml"
+//        x: mainToolBar.width
+//        width: parent.width - mainToolBar.width
+//        height: parent.height - musicController.height
+//        clip: true
+//        Component.onCompleted: {
+//            stackView.push("MusicLibraryPage.qml")
+//        }
+//    }
 
     MusicController { id: musicController }
 

@@ -41,8 +41,9 @@ Item {
             onExited: { isHovered = false }
             onClicked: {
                 if (_initialItem !== "pledit") {
-                    mainStack.pop()
-                    mainStack.push("MusicPlaylistEdit.qml")
+                    _currentPage.visible = false
+                    _currentPage = _musicPlaylistEditPage
+                    _currentPage.visible = true
                 }
                 _initialItem = "pledit"
                 console.log("playlist index = ", _index)

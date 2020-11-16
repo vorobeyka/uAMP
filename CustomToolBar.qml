@@ -57,8 +57,11 @@ Rectangle {
             visible: _isAuthorized
             onClicked: {
                 if (_initialItem !== "queue") {
-                    mainStack.pop()
-                    mainStack.push("MusicQueue.qml")
+//                    mainStack.pop()
+//                    mainStack.push("MusicQueue.qml")
+                    _currentPage.visible = false
+                    _currentPage = _musicQueuePage
+                    _currentPage.visible = true
                 }
                 _initialItem = "queue"
             }
@@ -71,8 +74,11 @@ Rectangle {
             visible: _isAuthorized
             onClicked: {
                 if (_initialItem !== "library") {
-                    mainStack.pop()
-                    mainStack.push("MusicLibraryPage.qml")
+//                    mainStack.pop()
+//                    mainStack.push("MusicLibraryPage.qml")
+                    _currentPage.visible = false
+                    _currentPage = _musicLibraryPage
+                    _currentPage.visible = true
                 }
                 _initialItem = "library"
             }
@@ -85,8 +91,11 @@ Rectangle {
             visible: _isAuthorized
             onClicked: {
                 if (_initialItem !== "playlists") {
-                    mainStack.pop()
-                    mainStack.push("MusicPlaylists.qml")
+//                    mainStack.pop()
+//                    mainStack.push("MusicPlaylists.qml")
+                    _currentPage.visible = false
+                    _currentPage = _musicPlaylistPage
+                    _currentPage.visible = true
                 }
                 _initialItem = "playlists"
             }
@@ -99,8 +108,11 @@ Rectangle {
             visible: _isAuthorized
             onClicked: {
                 if (_initialItem !== "equalizer") {
-                    mainStack.pop()
-                    mainStack.push("MusicEqualizer.qml")
+//                    mainStack.pop()
+//                    mainStack.push("MusicEqualizer.qml")
+                    _currentPage.visible = false
+                    _currentPage = _musicEqualizerPage
+                    _currentPage.visible = true
                 }
                 _initialItem = "equalizer"
             }
@@ -113,8 +125,11 @@ Rectangle {
             visible: _isAuthorized
             onClicked: {
                 if (_initialItem !== "radio") {
-                    mainStack.pop()
-                    mainStack.push("MusicRadio.qml")
+//                    mainStack.pop()
+//                    mainStack.push("MusicRadio.qml")
+                    _currentPage.visible = false
+                    _currentPage = _musicRadioPage
+                    _currentPage.visible = true
                 }
                 _initialItem = "radio"
             }
@@ -128,7 +143,13 @@ Rectangle {
         _checked: true
         anchors.bottom: settingsButton.top
         onClicked: {
-            mainStack.pop()
+//            mainStack.pop()
+            if (_initialItem != "authorization") {
+                _currentPage.visible = false
+                _currentPage = _authPage
+                _currentPage.visible = true
+            }
+
             _initialItem = "authorization"
         }
     }
@@ -140,8 +161,11 @@ Rectangle {
         buttonText: "Settings"
         onClicked: {
             if (_initialItem !== "settings") {
-                mainStack.pop()
-                mainStack.push("Properties.qml")
+                _currentPage.visible = false
+                _currentPage = _properties
+                _currentPage.visible = true
+//                mainStack.pop()
+//                mainStack.push("Properties.qml")
             }
             _initialItem = "settings"
         }

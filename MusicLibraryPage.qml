@@ -5,6 +5,41 @@ import QtGraphicalEffects 1.0
 Item {
     id: root
 
+    Connections {
+        target: library
+        onLikeTrack: {
+            for (let i = 0; i < listModel.count; ++i) {
+                if (musicList.children[0].children[i]._cppIndex === id) {
+                    musicList.children[0].children[i].likedIcon = true
+                    break;
+                }
+            }
+        }
+
+        onUnsetFavouriteTrack: {
+            for (let i = 0; i < listModel.count; ++i) {
+                if (musicList.children[0].children[i]._cppIndex === id) {
+                    musicList.children[0].children[i].likedIcon = false
+                    break;
+                }
+            }
+        }
+
+        onSetTrackProperties: {
+            musicList.model.append({
+                                 _cIndex: pack[0],
+                                 _title: pack[1],
+                                 _artist: pack[2],
+                                 _year: pack[4],
+                                 _album: pack[3],
+                                 _genre: pack[5],
+                                 _rating: pack[6],
+                                 _duration: pack[8],
+                                 _like: pack[7]
+            })
+        }
+    }
+
     Item {
         id: header
         width: parent.width
@@ -103,12 +138,21 @@ Item {
 
         ListView {
             id: musicList
-            model: ListModel {}
+            model: ListModel { id: listModel }
             delegate: MusicDelegate {
                 _index: model.index
+                _cppIndex: _cIndex
                 width: scroll.width
                 height: 40
                 bgColor: !(index % 2) ? _toolBarBackGroundColor : _backGroundColor
+                title: _title
+                artist: _artist
+                year: _year
+                album: _album
+                genre: _genre
+                rating: _rating
+                duration: _duration
+                likedIcon: _like
             }
         }
     }

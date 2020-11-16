@@ -55,7 +55,7 @@ Item {
                             errorWrapper.visible = false
                             password.clear()
                             login.clear()
-                            library.setUserName(_userName)
+                            library.setUser(_userName)
                         } else {
                             errorWrapper.visible = true
                         }

@@ -3,6 +3,8 @@ import QtQuick.Controls 2.12
 Item {
     id: root
 
+    property bool isLibraryVisible: true
+
     Item {
         id: header
         width: parent.width
@@ -17,7 +19,6 @@ Item {
             width: 100
             buttonText: "Log out"
             anchors.right: parent.right
-//            anchors.bottom: parent.bottom
             onClicked: {
                 Settings.userName = ""
                 Settings.authorized = 0
@@ -39,18 +40,20 @@ Item {
             buttonText: "Library"
             _checked: true
             onClicked: {
-                stackIndex = 0
-                stackView.pop("UserPageAllMusics.qml")
+                isLibraryVisible = true
+//                stackIndex = 0
+//                stackView.pop("UserPageAllMusics.qml")
             }
         }
-//        UserRadioButton { buttonGroup: group; buttonText: "Playlists" }
+
         UserRadioButton {
             buttonGroup: group
             buttonText: "Favourite"
             onClicked: {
-                if (!stackIndex)
-                    stackView.push("UserPageFavourite.qml")
-                stackIndex = 1
+                isLibraryVisible = false
+//                if (!stackIndex)
+//                    stackView.push("UserPageFavourite.qml")
+//                stackIndex = 1
             }
         }
     }
@@ -71,14 +74,25 @@ Item {
         height: root.height - header.height - radioWrapper.height - separator.height
         anchors.top: separator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-//        color: _backGroundColor
-//        border.color: _themeColor
 
-        StackView {
-            id: stackView
-            initialItem: "UserPageAllMusics.qml"
+        UserPageAllMusics {
+            id: userLibrary
             anchors.fill: parent
             clip: true
+            visible: isLibraryVisible
         }
+
+        UserPageFavourite {
+            id: userFavourite
+            anchors.fill: parent
+            visible: !isLibraryVisible
+        }
+
+//        StackView {
+//            id: stackView
+//            initialItem: "UserPageAllMusics.qml"
+//            anchors.fill: parent
+//            clip: true
+//        }
     }
 }

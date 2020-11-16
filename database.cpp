@@ -132,7 +132,7 @@ bool DataBase::insertIntoTable(QString tableName, QVariantMap data) {
 //    query.bindValue(":TextColor",         data[3].toString());
 
     // После чего выполняется запросом методом exec()
-    if(!query.exec()){
+    if(!query.exec()) {
         qDebug() << "error insert into " << tableName;
         qDebug() << query.lastError().text();
         return false;
@@ -149,15 +149,17 @@ bool DataBase::insertIntoTable(QString tableName, QVariantList values) {
     QSqlQuery query;
     QString queryString = "INSERT INTO " + tableName + " VALUES(";
 
-    for (int i = 0; i < values.length(); ++i)
+    for (int i = 0; i < values.length() - 1; ++i)
         queryString += "?, ";
 
-    queryString += ");";
+    queryString += "?);";
     query.prepare(queryString);
-    for (auto i : values)
+    for (auto i : values) {
         query.addBindValue(i);
+    }
     if (!query.exec()) {
         qDebug() << "Can't insert values into " + tableName;
+        qDebug() <<query.lastError();
         return false;
     }
     return true;
@@ -179,16 +181,16 @@ std::vector<QVariantList> DataBase::readFromTable(QString tableName, int columns
     return data;
 }
 
-QVariant DataBase::readValue(QString tableName, QVariant value, QString column) {
+QVariant DataBase::readValue(QString tableName, QVariant value, QString condColumn, QString readColumn) {
     QSqlQuery query;
     QVariant data;
 
-    query.prepare("SELECT " + column + " FROM " + tableName +
-                  " WHERE \"" + column + "\"=?;");
+    query.prepare("SELECT " + readColumn + " FROM " + tableName +
+                  " WHERE \"" + condColumn + "\"=?;");
     query.addBindValue(value);
     if (!query.exec()) qDebug() << "Error: can`t read value: " << query.lastError();
     else if (query.next()) data = query.value(0);
-    else qDebug() << "Info: not fund: " + value.toString() + " in " + column;
+    else qDebug() << "Info: not fund: " + value.toString() + " in " + condColumn;
     return data;
 }
 
