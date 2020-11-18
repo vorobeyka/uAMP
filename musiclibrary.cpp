@@ -158,6 +158,9 @@ void MusicLibrary::setFavourite(QVariant id) {
          << m_db->readValue(m_libraryName, id, "id", "Rating")
          << m_db->readValue(m_libraryName, id, "id", "Like").toBool()
          << m_db->readValue(m_libraryName, id, "id", "Duration");
+    for (auto i : pack) {
+        qDebug() << i;
+    }
     emit setFavouriteTrack(pack);
     emit likeTrack(id.toInt());
 }

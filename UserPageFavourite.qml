@@ -6,29 +6,36 @@ Item {
     Connections {
         target: library
         onUnsetFavouriteTrack: {
-            for (let i = 0; i < listModel.count; ++i) {
-                console.log(musicList.children[0].children[i]._index)
-                if (musicList.children[0].children[i]._cppIndex === id) {
-                    console.log(musicList.children[0].children[i]._index)
-                    musicList.model.remove(musicList.children[0].children[i]._index)
 
+            for (let i = 0; i < listModel.count; ++i) {
+                console.log(listModel.get(i).cIndex)
+                if (listModel.get(i)._cIndex === id) {
+//                    listModel.move(i, listModel.count - 1, 1)
+                    listModel.remove(i, 1)
+//                    musicList.children[0].children[i].visible = false
                     break;
                 }
             }
+//            for (let j = 0; j < listModel.count; j++) {
+//                console.log(musicList.children[0].children[j].title)
+//            }
+
+//            console.log(listModel.count)
         }
 
         onSetFavouriteTrack: {
             listModel.append({
-                             _cIndex: pack[0],
-                             _title: pack[1],
-                             _artist: pack[2],
-                             _year: pack[4],
-                             _album: pack[3],
-                             _genre: pack[5],
-                             _rating: pack[6],
-                             _duration: pack[8],
-                             _like: pack[7]
+                             "_cIndex": pack[0],
+                             "_title": pack[1],
+                             "_artist": pack[2],
+                             "_year": pack[4],
+                             "_album": pack[3],
+                             "_genre": pack[5],
+                             "_rating": pack[6],
+                             "_duration": pack[8],
+                             "_like": pack[7]
             })
+            console.log(listModel.count)
         }
     }
 

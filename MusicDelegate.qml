@@ -10,6 +10,7 @@ MouseArea {
     property int _cppIndex: 0
     property bool likedIcon: false
     property bool isInQueue: false
+    property bool isFavourite: false
     property string someText: ""
     property string album: ""
     property string title: ""
@@ -61,11 +62,11 @@ MouseArea {
                     opacity: 0.8
                 }
                 onClicked: {
-                    likedIcon = !likedIcon
-                    if (likedIcon) {
+                    if (!likedIcon) {
+                        console.log("pizda like it")
                         library.setFavourite(_cppIndex)
-                        library.likeTrack(_cppIndex)
                     } else {
+                        console.log("syka blyat")
                         library.unsetFavourite(_cppIndex)
                     }
                 }
