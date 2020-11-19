@@ -22,6 +22,18 @@ MouseArea {
     property int playedTimes: 0
     property string date: ""
 
+    Connections {
+        target: library
+
+        function onLikeTrack(id) {
+            if (_cppIndex === id) likedIcon = true
+        }
+
+        function onUnsetFavouriteTrack(id) {
+            if (_cppIndex === id) likedIcon = false
+        }
+    }
+
     Rectangle {
         id: backGround
         anchors.fill: parent
@@ -62,13 +74,8 @@ MouseArea {
                     opacity: 0.8
                 }
                 onClicked: {
-                    if (!likedIcon) {
-                        console.log("pizda like it")
-                        library.setFavourite(_cppIndex)
-                    } else {
-                        console.log("syka blyat")
-                        library.unsetFavourite(_cppIndex)
-                    }
+                    if (!likedIcon) library.setFavourite(_cppIndex)
+                    else library.unsetFavourite(_cppIndex)
                 }
             }
         }
@@ -193,8 +200,16 @@ MouseArea {
 
                                     onClicked: {
                                         addPopup.close()
-                                        if (index === 1)
-                                            _tagEditor.show()
+                                        switch(index) {
+                                        case 0: library.addToQueue(_cppIndex)
+                                            break;
+                                        case 1: library.loadTagEditor(_cppIndex)
+                                            break;
+                                        case 2: console.log("add to playlist")
+                                            break;
+                                        case 3: console.log("remove track")
+                                            break;
+                                        }
                                     }
                                 }
                             }

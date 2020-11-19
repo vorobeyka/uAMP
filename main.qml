@@ -20,7 +20,6 @@ Window {
     property int _toolButtonHeight: 50
     property double _opacityMusicCotnroll: 0.8
     property double _opacityGradient: 0.5
-//    property StackView mainStack: stackView
     property Window _tagEditor: tagEditor
     property BusyIndicator busy: control
     property FileDialogFiles _files: files
@@ -113,6 +112,25 @@ Window {
         maximumWidth: 480
         title: "Tag editor"
         color: _backGroundColor
+
+        property int _id: 0
+
+        Connections {
+            target: library
+
+            function onLoadTags(id, title, artist, year, album, genre, fPath, lyrics) {
+                tagEditor.show()
+                _id = id
+                trackTitle.text = title
+                trackArtist.text = artist
+                trackYear.text = year
+                trackAlbum.text = album
+                trackGenre.text = genre
+                trackFilePath.text = fPath
+                trackLyrics.text = lyrics
+            }
+        }
+
         Rectangle {
             id: tagHedaer
             width: parent.width
@@ -152,10 +170,8 @@ Window {
             CustomTextField { id: trackAlbum }
             Text { x: 10; text: "Genre"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
             CustomTextField {id: trackGenre }
-//            Text { text: "Year"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
-//            CustomTextField { inputMethodHints: Qt.ImhNone }
             Text { x: 10; text: "File path"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
-            CustomTextField { id: filePath; readOnly: true }
+            CustomTextField { id: trackFilePath; readOnly: true }
             Text { x: 10; text: "Lyrics"; color: _textColor; font.pixelSize: Qt.application.font.pixelSize * 1.2 }
             Flickable {
                 id: trackLyrics

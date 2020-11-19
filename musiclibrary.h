@@ -40,6 +40,8 @@ public slots:
     void setFavourite(QVariant);
     void unsetFavourite(QVariant);
     void rate(QVariant, QVariant);
+    void addToQueue(QVariant);
+    void
 
 signals:
     void setTrackProperties(QVariantList pack);
@@ -48,14 +50,15 @@ signals:
     void unsetFavouriteTrack(int id);
     void likeTrack(int id);
     void setRating(int id, int rate);
+    void setInQueue(QVariantList pack);
 
 private:
     DataBase* m_db;
     QString m_user;
     QString m_libraryName = "";
 
+    QVariantList getPackById(QVariant);
     QString currentPath(QString);
-
     QString getDuration(int time);
     bool m_isBusy = false;
 

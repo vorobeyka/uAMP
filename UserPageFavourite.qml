@@ -5,25 +5,17 @@ import QtQuick.Layouts 1.12
 Item {
     Connections {
         target: library
-        onUnsetFavouriteTrack: {
+        function onUnsetFavouriteTrack(id) {
 
             for (let i = 0; i < listModel.count; ++i) {
-                console.log(listModel.get(i).cIndex)
                 if (listModel.get(i)._cIndex === id) {
-//                    listModel.move(i, listModel.count - 1, 1)
                     listModel.remove(i, 1)
-//                    musicList.children[0].children[i].visible = false
                     break;
                 }
             }
-//            for (let j = 0; j < listModel.count; j++) {
-//                console.log(musicList.children[0].children[j].title)
-//            }
-
-//            console.log(listModel.count)
         }
 
-        onSetFavouriteTrack: {
+        function onSetFavouriteTrack(pack) {
             listModel.append({
                              "_cIndex": pack[0],
                              "_title": pack[1],
@@ -35,7 +27,6 @@ Item {
                              "_duration": pack[8],
                              "_like": pack[7]
             })
-            console.log(listModel.count)
         }
     }
 

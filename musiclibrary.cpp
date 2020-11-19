@@ -61,16 +61,7 @@ void MusicLibrary::loadData() {
     loadEqualizer();
     loadRadio();
     for (int i = 1; i <= m_db->getRowsCount(m_libraryName); ++i) {
-        QVariantList data;
-        title = m_db->readValue(m_libraryName, i, "id", "Title").toString();
-        if (title.toString().isEmpty()) title = m_db->readValue(m_libraryName, i, "id", "FileName");
-        data << i << title << m_db->readValue(m_libraryName, i, "id", "Artist")
-             << m_db->readValue(m_libraryName, i, "id", "Album")
-             << m_db->readValue(m_libraryName, i, "id", "Year")
-             << m_db->readValue(m_libraryName, i, "id", "Genre")
-             << m_db->readValue(m_libraryName, i, "id", "Rating")
-             << m_db->readValue(m_libraryName, i, "id", "Like").toBool()
-             << m_db->readValue(m_libraryName, i, "id", "Duration");
+        QVariantList data = getPackById(i);
         emit setTrackProperties(data);
         if (data[7].toBool()) emit setFavouriteTrack(data);
     }
@@ -148,20 +139,7 @@ void MusicLibrary::setIsBusy(bool value) {
 
 void MusicLibrary::setFavourite(QVariant id) {
     m_db->updateValue(m_libraryName, "Like", "id=" + id.toString(), 1);
-    QVariantList pack;
-    QVariant title = m_db->readValue(m_libraryName, id, "id", "Title");
-    if (title.toString().isEmpty()) title = m_db->readValue(m_libraryName, id, "id", "FileName");
-    pack << id << title << m_db->readValue(m_libraryName, id, "id", "Artist")
-         << m_db->readValue(m_libraryName, id, "id", "Album")
-         << m_db->readValue(m_libraryName, id, "id", "Year")
-         << m_db->readValue(m_libraryName, id, "id", "Genre")
-         << m_db->readValue(m_libraryName, id, "id", "Rating")
-         << m_db->readValue(m_libraryName, id, "id", "Like").toBool()
-         << m_db->readValue(m_libraryName, id, "id", "Duration");
-    for (auto i : pack) {
-        qDebug() << i;
-    }
-    emit setFavouriteTrack(pack);
+    emit setFavouriteTrack(getPackById(id));
     emit likeTrack(id.toInt());
 }
 
@@ -173,4 +151,22 @@ void MusicLibrary::unsetFavourite(QVariant cppId) {
 void MusicLibrary::rate(QVariant cppId, QVariant rating) {
     m_db->updateValue(m_libraryName, "Rating", "id=" + cppId.toString(), rating.toInt());
     emit setRating(cppId.toInt(), rating.toInt());
+}
+
+void MusicLibrary::addToQueue(QVariant id) {
+    emit setInQueue(getPackById(id));
+}
+
+QVariantList MusicLibrary::getPackById(QVariant id) {
+    QVariantList pack;
+    QVariant title = m_db->readValue(m_libraryName, id, "id", "Title");
+    if (title.toString().isEmpty()) title = m_db->readValue(m_libraryName, id, "id", "FileName");
+    pack << id << title << m_db->readValue(m_libraryName, id, "id", "Artist")
+         << m_db->readValue(m_libraryName, id, "id", "Album")
+         << m_db->readValue(m_libraryName, id, "id", "Year")
+         << m_db->readValue(m_libraryName, id, "id", "Genre")
+         << m_db->readValue(m_libraryName, id, "id", "Rating")
+         << m_db->readValue(m_libraryName, id, "id", "Like").toBool()
+         << m_db->readValue(m_libraryName, id, "id", "Duration");
+    return pack;
 }

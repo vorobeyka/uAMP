@@ -7,35 +7,17 @@ Item {
 
     Connections {
         target: library
-        onLikeTrack: {
-            for (let i = 0; i < listModel.count; ++i) {
-                if (musicList.children[0].children[i]._cppIndex === id) {
-                    musicList.children[0].children[i].likedIcon = true
-                    break;
-                }
-            }
-        }
-
-        onUnsetFavouriteTrack: {
-            for (let i = 0; i < listModel.count; ++i) {
-                if (musicList.children[0].children[i]._cppIndex === id) {
-                    musicList.children[0].children[i].likedIcon= false
-                    break;
-                }
-            }
-        }
-
-        onSetTrackProperties: {
-            musicList.model.append({
-                                 _cIndex: pack[0],
-                                 _title: pack[1],
-                                 _artist: pack[2],
-                                 _year: pack[4],
-                                 _album: pack[3],
-                                 _genre: pack[5],
-                                 _rating: pack[6],
-                                 _duration: pack[8],
-                                 _like: pack[7]
+        function onSetTrackProperties(pack) {
+            listModel.append({
+                             "_cIndex": pack[0],
+                             "_title": pack[1],
+                             "_artist": pack[2],
+                             "_year": pack[4],
+                             "_album": pack[3],
+                             "_genre": pack[5],
+                             "_rating": pack[6],
+                             "_duration": pack[8],
+                             "_like": pack[7]
             })
         }
     }

@@ -9,7 +9,7 @@ Item {
     Connections {
         target: library
 
-        onSetRating: {
+        function onSetRating(id) {
             if (cppIndex === id) {
                 setStars(rate)
             }
@@ -67,8 +67,5 @@ Item {
 
     Component.onCompleted: {
         setStars(_count)
-//        for (let i = 1; i <= _count; ++i) {
-//            repeater.itemAt(i - 1).starIcon.source = "/images/stared"
-//        }
     }
 }
