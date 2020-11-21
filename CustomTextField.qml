@@ -6,6 +6,10 @@ TextField {
     width: parent.width
     font.pixelSize: Qt.application.font.pixelSize * 1.2
     color: _textColor
+    text: txt
+
+    property string txt: ""
+
     background: Rectangle {
         anchors.fill: parent
         color: _backGroundColor

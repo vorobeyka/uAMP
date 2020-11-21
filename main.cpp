@@ -4,6 +4,7 @@
 
 #include "settings.h"
 #include "musiclibrary.h"
+#include "liveimage.h"
 #include <iostream>
 #include <locale>
 #include <codecvt>
@@ -20,7 +21,8 @@ int main(int argc, char *argv[]) {
 //    BASS_Init(-1,44100, BASS_DEVICE_3D,0,NULL);
 //    str=BASS_StreamCreateFile(FALSE, sstr.toLocal8Bit(), 0, 0, 0);
 //    BASS_ChannelPlay(str, FALSE);
-    qDebug() << QDate::currentDate().toString();
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    qmlRegisterType<LiveImage>("ImageProvider", 1, 0, "LiveImage");
     Settings settings;
     MusicLibrary library(settings.db());
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

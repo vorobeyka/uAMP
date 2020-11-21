@@ -3,6 +3,7 @@ import QtQuick.Window 2.14
 import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.14
+import ImageProvider 1.0
 
 Window {
     property bool _isbusy: library.isBusy
@@ -44,6 +45,7 @@ Window {
             library.isBusy = false
         }
     }
+
     FileDialogFiles {
         id: folders
         selectFolder: true
@@ -51,6 +53,28 @@ Window {
             library.isBusy = true
             library.readFolder(fileUrl.toString())
             library.isBusy = false
+        }
+    }
+
+    Connections {
+        target: library
+
+        function onErrorHandle(msg) {
+            errorText.text = msg
+            errorDialog.open()
+        }
+
+    }
+
+    Dialog {
+        id: errorDialog
+        standardButtons: Dialog.Ok
+        width: 300
+        height: 150
+        contentItem: Rectangle {
+            anchors.fill: parent
+            color: _backGroundColor
+            CustomText { id: errorText }
         }
     }
 
@@ -104,6 +128,9 @@ Window {
 
     MusicController { id: musicController }
 
+    property int _id: 0
+    property bool isImage: library.isImage
+
     Window {
         id: tagEditor
         minimumWidth: 480
@@ -113,35 +140,128 @@ Window {
         title: "Tag editor"
         color: _backGroundColor
 
-        property int _id: 0
+
 
         Connections {
             target: library
 
-            function onLoadTags(id, title, artist, year, album, genre, fPath, lyrics) {
+            function onLoadTags(pack) {
+                _id = pack[0]
+                trackTitle.text = pack[1]
+                trackArtist.text = pack[2]
+                trackYear.text = pack[3]
+                trackAlbum.text = pack[4]
+                trackGenre.text = pack[5]
+                trackFilePath.text = pack[6]
+                lyricsTxtArea.text = pack[7]
+                imageProvider.image = pack[8]
                 tagEditor.show()
-                _id = id
-                trackTitle.text = title
-                trackArtist.text = artist
-                trackYear.text = year
-                trackAlbum.text = album
-                trackGenre.text = genre
-                trackFilePath.text = fPath
-                trackLyrics.text = lyrics
+            }
+
+            function onSetNewImage(img) {
+                imageProvider.image = img
             }
         }
 
-        Rectangle {
+        Item {
             id: tagHedaer
             width: parent.width
             height: 200
-            color: _backGroundColor
 
-            Image {
-                width: 150
-                height: 150
-                source: "/images/music-note"
+            Item {
+                id: imageProviderWrapper
+                x: 5
+                width: 140
+                height: 140
                 anchors.verticalCenter: parent.verticalCenter
+
+                LiveImage {
+                    id: imageProvider
+                    anchors.fill: parent
+                }
+
+                MouseArea {
+                   id: mouseArea
+                   anchors.fill: parent
+                   hoverEnabled: true
+                   onEntered: {
+                       coloredUploadImg.visible = true
+                       coloredDownloadImg.visible = isImage
+                   }
+                   onExited: {
+                       coloredUploadImg.visible = false
+                       coloredDownloadImg.visible = false
+                   }
+                }
+
+                Image {
+                    id: uploadImg
+                    width: 40
+                    height: 40
+                    x: isImage ? parent.width * 0.2 : parent.width / 2 - 15
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: false
+                    source: "/images/upload"
+                }
+
+                ColorOverlay {
+                    id: coloredUploadImg
+                    anchors.fill: uploadImg
+                    source: uploadImg
+                    color: _themeColor
+                    visible: false
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            fileDialog.open()
+                        }
+
+                        FileDialog {
+                            id: fileDialog
+                            title: "Choose an image"
+                            nameFilters: ["images (*.jpg *.png *.jpeg)"]
+                            folder: shortcuts.home
+                            onAccepted: library.setImage(fileUrl)
+                            visible: false
+                        }
+                    }
+                }
+
+                Image {
+                    id: downloadImg
+                    width: 40
+                    height: 40
+                    x: parent.width * 0.6
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: false
+                    source: "/images/download"
+                }
+
+                ColorOverlay {
+                    id: coloredDownloadImg
+                    anchors.fill: downloadImg
+                    source: downloadImg
+                    color: _themeColor
+                    visible: false
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            downloadFileDialog.open()
+                        }
+
+                        FileDialog {
+                            id: downloadFileDialog
+                            title: "Save dialog"
+                            nameFilters: ["all files (*)"]
+                            folder: shortcuts.home
+                            selectFolder: true
+                            onAccepted: library.saveImage(fileUrl)
+                            visible: false
+                        }
+                    }
+                }
             }
 
             Column {
@@ -203,7 +323,18 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 x: parent.width / 2 - 150
                 width: 100
-                onClicked: tagEditor.close()
+                onClicked: {
+                    library.saveTags([_id,
+                                      trackTitle.text,
+                                      trackArtist.text,
+                                      trackYear.text,
+                                      trackAlbum.text,
+                                      trackGenre.text,
+                                      trackFilePath.text,
+                                      lyricsTxtArea.text])
+//                    library.saveLyricsAndImage()
+                    tagEditor.close()
+                }
             }
 
             CustomButton {

@@ -9,7 +9,20 @@
 #include <tag.h>
 #include <fileref.h>
 #include <bass.h>
+#include <QImage>
+#include <QFileInfo>
+#include <QTime>
+#include <QCoreApplication>
+#include <QDir>
+#include <QBuffer>
+#include <id3v2frame.h>
+#include <frames/attachedpictureframe.h>
+#include <id3v2tag.h>
+#include <unsynchronizedlyricsframe.h>
+#include <mpegfile.h>
+#include <attachedpictureframe.h>
 
+#include "imagefile.h"
 #include "database.h"
 
 #if defined(Q_OS_WIN)
@@ -26,12 +39,15 @@ class MusicLibrary : public QObject {
     Q_OBJECT
 public:
     Q_PROPERTY(bool isBusy READ isBusy WRITE setIsBusy NOTIFY isBusyChanged)
+    Q_PROPERTY(bool isImage READ isImage WRITE setIsImage NOTIFY isImageChanged)
 
     MusicLibrary(DataBase* db, QObject* parent = nullptr);
     ~MusicLibrary();
 
     bool isBusy() const;
     void setIsBusy(bool value);
+    bool isImage() const;
+    void setIsImage(bool value);
 
 public slots:
     void readFile(QString, bool);
@@ -41,26 +57,41 @@ public slots:
     void unsetFavourite(QVariant);
     void rate(QVariant, QVariant);
     void addToQueue(QVariant);
-    void
+    void loadTagEditor(QVariant);
+    void saveImage(QString);
+    void setImage(QString);
+    void saveTags(QVariantList);
 
 signals:
     void setTrackProperties(QVariantList pack);
     void isBusyChanged(bool value);
+    void isImageChanged(bool value);
     void setFavouriteTrack(QVariantList pack);
     void unsetFavouriteTrack(int id);
     void likeTrack(int id);
     void setRating(int id, int rate);
     void setInQueue(QVariantList pack);
+    void loadTags(QVariantList pack);
+    void setNewImage(QImage img);
+    void errorHandle(QString);
+    void updateTrack(QVariantList);
 
 private:
     DataBase* m_db;
     QString m_user;
     QString m_libraryName = "";
+    QImage m_imgTrack;
+    QImage m_newImgTrack;
+    ByteVector m_imgData;
+    bool m_isImage = false;
+    bool m_isBusy = false;
 
     QVariantList getPackById(QVariant);
     QString currentPath(QString);
     QString getDuration(int time);
-    bool m_isBusy = false;
+    QString getLyrics(QString);
+    QImage getImage(QString);
+    bool checkSuffix(QString, QString);
 
     void pushFile(QVariantList);
     void loadData();

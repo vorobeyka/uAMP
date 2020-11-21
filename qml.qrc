@@ -61,5 +61,7 @@
         <file alias="star">resources/star.png</file>
         <file alias="stared">resources/stared.png</file>
         <file alias="music-note">resources/music-note.png</file>
+	<file alias="download">resources/download.png</file>
+	<file alias="upload">resources/upload.png</file>
     </qresource>
 </RCC>
