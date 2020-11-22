@@ -32,6 +32,16 @@ MouseArea {
         function onUnsetFavouriteTrack(id) {
             if (_cppIndex === id) likedIcon = false
         }
+
+        function onUpdateTrack(data) {
+            if (_cppIndex === data[0]) {
+                title = data[1]
+                artist = data[2]
+                year = data[3]
+                album = data[4]
+                genre = data[5]
+            }
+        }
     }
 
     Rectangle {

@@ -9,6 +9,7 @@ void MusicLibrary::setUser(QString value) {
     m_user = value;
     qDebug() << "set " + value + " user in library class";
     m_libraryName = m_user + "Library";
+    m_librarySort = m_db->readValue("Users", m_user, "login", "librarySort");
     if (value.isEmpty()) clearData();
     else loadData();
 }
@@ -27,8 +28,21 @@ void MusicLibrary::pushFile(QVariantList data) {
 }
 
 void MusicLibrary::loadLibrary() {
-
+    for (int i = 1; i <= m_db->getRowsCount(m_libraryName); ++i) {
+        QVariantList data = getPackById(i);
+        emit setTrackProperties(data);
+        if (data[7].toBool()) emit setFavouriteTrack(data);
+    }
 }
+
+void MusicLibrary::loadSortedLibrary() {
+    QVariantList sortedIds = m_db->readSortedValues(m_libraryName, "id", getSortedString(m_librarySort.toInt()));
+    for (auto i : sortedIds) {
+        QVariantList data = getPackById(i);
+        emit setSortedLibraryTracks(data);
+    }
+}
+
 void MusicLibrary::loadFavourite() {
 
 }
@@ -45,22 +59,32 @@ void MusicLibrary::loadRadio() {
 
 }
 
+QString MusicLibrary::getSortedString(int value) {
+    switch (value) {
+    case E_TITLE:       return "Title";
+    case E_ARTIST:      return "Artist";
+    case E_ALBUM:       return "Album";
+    case E_RATING:      return "Rating";
+    case E_MOST_PLAYED: return "PlayedTimes";
+    case E_NEWEST:      return "Date";
+    case E_YEAR:        return "Year";
+    default:            return "id";
+    }
+}
+
 void MusicLibrary::loadData() {
     setIsBusy(true);
+
     QCoreApplication::processEvents();
-    QVariant title;
 
     loadLibrary();
+    loadSortedLibrary();
     loadFavourite();
     loadPlaylists();
     loadQueue();
     loadEqualizer();
     loadRadio();
-    for (int i = 1; i <= m_db->getRowsCount(m_libraryName); ++i) {
-        QVariantList data = getPackById(i);
-        emit setTrackProperties(data);
-        if (data[7].toBool()) emit setFavouriteTrack(data);
-    }
+
     setIsBusy(false);
 }
 
@@ -71,8 +95,15 @@ void MusicLibrary::clearData() {
 void MusicLibrary::readFile(QString filePath, bool pathFlag) {
     QCoreApplication::processEvents();
     QString _filePath = pathFlag ? currentPath(filePath) : filePath;
+    qDebug() <<_filePath;
+    if (!checkSfx(_filePath.split(".").last())) {
+        qDebug() << "che blyat";
+        emit errorHandle("Error: can't open file\nChoose .mp4 .mp3 .mp2 .mp1 .wav .ogg .aiff .aac");
+        return;
+    }
     FileRef file(_filePath.toLocal8Bit().toStdString().c_str());
     if (file.isNull()) {
+        errorHandle("Error: can't read tags from file\n" + _filePath);
         return;
     }
     QVariantList data;
@@ -96,7 +127,10 @@ void MusicLibrary::readFile(QString filePath, bool pathFlag) {
     data.append(QDate::currentDate().toString()); //SET CURRENT DATE  12
     emit setTrackProperties(QVariantList() << m_db->getRowsCount(m_libraryName) + 1 << (!data[2].toString().isEmpty() ? data[2].toString() : data[0].toString())
                                            << data[3] << data[4] << data[5].toString() << data[6] << data[7] << data[8].toBool() << data[9]);
+    emit setSortedLibraryTracks(QVariantList() << m_db->getRowsCount(m_libraryName) + 1 << (!data[2].toString().isEmpty() ? data[2].toString() : data[0].toString())
+                                               << data[3] << data[4] << data[5].toString() << data[6] << data[7] << data[8].toBool() << data[9]);
     pushFile(data);
+
 }
 
 QString MusicLibrary::getDuration(int time) {
@@ -138,6 +172,23 @@ bool MusicLibrary::isImage() const { return m_isImage; }
 void MusicLibrary::setIsImage(bool value) {
     m_isImage = value;
     emit isImageChanged(value);
+}
+
+QVariant MusicLibrary::librarySort() const { return m_librarySort; }
+
+void MusicLibrary::setLibrarySort(QVariant value) {
+    if (value.toInt() == m_librarySort.toInt()) return;
+
+    setIsBusy(true);
+    QCoreApplication::processEvents();
+    m_librarySort = value;
+    m_db->updateValue("Users", "librarySort", "\"login\"='" + m_user+"'", value.toInt());
+    emit clearSortedLibrary();
+    emit librarySortChanged(m_librarySort);
+
+    loadSortedLibrary();
+
+    setIsBusy(false);
 }
 
 void MusicLibrary::setFavourite(QVariant id) {
@@ -308,4 +359,9 @@ bool MusicLibrary::checkSuffix(QString str, QString suff) {
         }
     }
     return true;
+}
+
+bool MusicLibrary::checkSfx(QString str) {
+    return str == "mp4" || str == "mp3" || str == "mp2" || str == "mp1"
+           || str == ".wav" || str == ".ogg" || str == ".aiff" || str == ".aac";
 }

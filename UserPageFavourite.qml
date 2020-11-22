@@ -34,7 +34,7 @@ Item {
         anchors.fill: parent
         id: scroll
         clip: true
-        ScrollBar.vertical.interactive: false
+//        ScrollBar.vertical.interactive: false
         ScrollBar.horizontal.visible: false
 
         ListView {

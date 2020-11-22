@@ -7,25 +7,7 @@ Item {
 
     Connections {
         target: library
-//        function onLikeTrack(id) {
-//            for (let i = 0; i < listModel.count; ++i) {
-//                if (musicList.children[0].children[i]._cppIndex === id) {
-//                    musicList.children[0].children[i].likedIcon = true
-//                    break;
-//                }
-//            }
-//        }
-
-//        function onUnsetFavouriteTrack(id) {
-//            for (let i = 0; i < listModel.count; ++i) {
-//                if (musicList.children[0].children[i]._cppIndex === id) {
-//                    musicList.children[0].children[i].likedIcon = false
-//                    break;
-//                }
-//            }
-//        }
-
-        function onSetTrackProperties(pack) {
+        function onSetSortedLibraryTracks(pack) {
             listModel.append({
                              "_cIndex": pack[0],
                              "_title": pack[1],
@@ -38,6 +20,12 @@ Item {
                              "_like": pack[7]
             })
         }
+
+        function onSetLibrarySort(index) {
+            sortText.text = sortRepeater.itemAt(index).modelText
+        }
+
+        function onClearSortedLibrary() { listModel.clear() }
     }
 
     Item {
@@ -119,10 +107,73 @@ Item {
         id: dropArea;
         anchors.fill: parent
         onEntered: {
-            drag.accept (Qt.LinkAction)
+            drag.accept(Qt.LinkAction)
         }
+
         onDropped: {
-            console.log(drop.urls)
+            for (var i = 0; i < drop.urls.length; ++i)
+                library.readFile(drop.urls[i], 1)
+        }
+    }
+
+    Item {
+        width: parent.width
+        height: 50
+        y: header.height
+
+        Row {
+            x: 15
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 5
+            CustomText { text: "Sort by: " }
+            MouseArea {
+                id: sortButton
+                width: 60
+                height: 20
+                CustomText { id: sortText; color: _themeColor }
+                onClicked: sortPopup.open()
+                Component.onCompleted: {
+                    let itemIndex = library.libSortedValue
+                    sortText.text = sortRepeater.itemAt(itemIndex).modelText
+                    sortRepeater.itemAt(itemIndex).checked = true
+                }
+            }
+        }
+
+        Popup {
+            id: sortPopup
+            width: 100
+            padding: 0
+            x: 100
+            modal: true
+            focus: true
+
+            Column {
+                spacing: 0
+                anchors.fill: parent
+                Repeater {
+                    id: sortRepeater
+                    model: ["Unsorted", "Title", "Artist", "Album", "Rating", "Most played", "Newest", "Year"]
+                    RadioButton {
+                        width: parent.width
+                        height: 20
+                        checked: false
+                        property int _index: index
+                        property string modelText: modelData
+
+                        indicator: Rectangle {
+                            anchors.fill: parent
+                            color: parent.checked ? _themeColor : _toolBarBackGroundColor
+                            CustomText { x: 10; text: modelText }
+                        }
+                        onClicked: {
+                            sortPopup.close()
+                            sortText.text = modelData
+                            library.libSortedValue = _index
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -130,10 +181,10 @@ Item {
         id: scroll
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - 20
-        height: parent.height - header.height
-        y: header.height
+        height: parent.height - header.height - 50
+        y: header.height + 50
         clip: true
-        ScrollBar.vertical.interactive: false
+//        ScrollBar.vertical.interactive: false
         ScrollBar.horizontal.visible: false
 
         ListView {

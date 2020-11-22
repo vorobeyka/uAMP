@@ -40,6 +40,7 @@ class MusicLibrary : public QObject {
 public:
     Q_PROPERTY(bool isBusy READ isBusy WRITE setIsBusy NOTIFY isBusyChanged)
     Q_PROPERTY(bool isImage READ isImage WRITE setIsImage NOTIFY isImageChanged)
+    Q_PROPERTY(QVariant libSortedValue READ librarySort WRITE setLibrarySort NOTIFY librarySortChanged)
 
     MusicLibrary(DataBase* db, QObject* parent = nullptr);
     ~MusicLibrary();
@@ -48,6 +49,8 @@ public:
     void setIsBusy(bool value);
     bool isImage() const;
     void setIsImage(bool value);
+    QVariant librarySort() const;
+    void setLibrarySort(QVariant value);
 
 public slots:
     void readFile(QString, bool);
@@ -64,6 +67,8 @@ public slots:
 
 signals:
     void setTrackProperties(QVariantList pack);
+    void setSortedLibraryTracks(QVariantList pack);
+    void setQueueTracks(QVariantList pack);
     void isBusyChanged(bool value);
     void isImageChanged(bool value);
     void setFavouriteTrack(QVariantList pack);
@@ -75,6 +80,15 @@ signals:
     void setNewImage(QImage img);
     void errorHandle(QString);
     void updateTrack(QVariantList);
+    void librarySortChanged(QVariant);
+
+    // clear lists
+    void clearSortedLibrary();
+    void clearQueue();
+    void clearLibrary();
+    void clearRadio();
+    void clearEqualizer();
+    // end clear lists
 
 private:
     DataBase* m_db;
@@ -83,19 +97,35 @@ private:
     QImage m_imgTrack;
     QImage m_newImgTrack;
     ByteVector m_imgData;
+    QVariant m_librarySort;
+    int m_queueSort;
     bool m_isImage = false;
     bool m_isBusy = false;
+
+    enum SortTypes {
+        E_UNSORTED,
+        E_TITLE,
+        E_ARTIST,
+        E_ALBUM,
+        E_RATING,
+        E_MOST_PLAYED,
+        E_NEWEST,
+        E_YEAR
+    };
 
     QVariantList getPackById(QVariant);
     QString currentPath(QString);
     QString getDuration(int time);
     QString getLyrics(QString);
+    QString getSortedString(int);
     QImage getImage(QString);
     bool checkSuffix(QString, QString);
+    bool checkSfx(QString);
 
     void pushFile(QVariantList);
     void loadData();
     void loadLibrary();
+    void loadSortedLibrary();
     void loadFavourite();
     void loadPlaylists();
     void loadQueue();

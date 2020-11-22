@@ -9,10 +9,8 @@ Item {
     Connections {
         target: library
 
-        function onSetRating(id) {
-            if (cppIndex === id) {
-                setStars(rate)
-            }
+        function onSetRating(id, rate) {
+            if (cppIndex === id) setStars(rate)
         }
     }
 
@@ -50,18 +48,17 @@ Item {
                     opacity: 0.8
                 }
                 onClicked: {
-                    library.rate(cppIndex, index)
-                    setStars(index)
+                    library.rate(cppIndex, index + 1)
+                    setStars(index + 1)
                 }
             }
         }
     }
 
     function setStars(to) {
-        for (let i = 0; i <= to; ++i)
+        for (let i = 0; i < to; ++i)
             repeater.itemAt(i).imgSource = "/images/stared"
-        if (!to) to = -1
-        for (let i = to + 1; i < repeater.count; ++i)
+        for (let i = to; i < repeater.count; ++i)
             repeater.itemAt(i).imgSource = "/images/star"
     }
 

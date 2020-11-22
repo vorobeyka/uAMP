@@ -27,8 +27,8 @@ bool Settings::createTable() {
         return false;
     }
     if (!m_db->createTable("Users", QStringList() << "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                           << "login VARCHAR(255),"
-                           << "password VARCHAR(255))")) {
+                           << "login VARCHAR(255)," << "password VARCHAR(255),"
+                           << "librarySort TINYINT," << "queueSort TINYINT)")) {
         return false;
     }
     return true;
@@ -60,6 +60,7 @@ bool Settings::insertDefaultValues() {
     data.insert(TEXT_COLOR, "#E0E0E0");
     data.insert(HOVER_COLOR, "#BEC3C6");
     data.insert(USER, "");
+
     return m_db->insertIntoTable("Settings", data);
 }
 
@@ -148,10 +149,14 @@ bool Settings::checkUser(QString user, QString password) {
 bool Settings::createUser(QString login, QString password) {
     if (!m_db->readValue(USERS_TABLE_NAME, login, "login", "login").isNull())
         return false;
-    QVariantMap data;
-    data.insert("login", login);
-    data.insert("password", password);
-    m_db->insertIntoTable(USERS_TABLE_NAME, data);
+//    QVariantMap data;
+//    data.insert("login", login);
+//    data.insert("password", password);
+//    data.insert("librarySort", "0");
+//    data.insert("queueSort", "0");
+    m_db->insertIntoTable(USERS_TABLE_NAME, QVariantList() << m_db->getRowsCount(USERS_TABLE_NAME) + 1
+                          << login << password << 0 << 0);
+//    m_db->insertIntoTable(USERS_TABLE_NAME, data);
     setUserName(login);
     setAuthorized(true);
     initUser();

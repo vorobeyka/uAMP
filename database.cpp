@@ -216,6 +216,20 @@ QVariantList DataBase::readRow(QString tableName, int columns, QVariantMap value
     return data;
 }
 
+QVariantList DataBase::readSortedValues(QString tableName, QString valueToRead, QString valueToSort) {
+    QVariantList rez;
+    QSqlQuery query;
+    if (query.exec("SELECT " + valueToRead + " FROM " + tableName + " ORDER BY " + valueToSort + " ASC;")) {
+        while (query.next()) {
+            rez << query.value(0);
+        }
+    } else {
+        qDebug() << "ERROR: can't read sorted data ";
+        qDebug() << query.lastError();
+    }
+    return rez;
+}
+
 /* Метод для удаления записи из таблицы
  * */
 bool DataBase::removeRecord(const int id, QString tableName) {

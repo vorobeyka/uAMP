@@ -48,6 +48,7 @@ public slots:
     std::vector<QVariantList> readFromTable(QString tableName, int columns, QString value = "*");
     QVariant readValue(QString tableName, QVariant value, QString condColumn, QString readColumn = "*");
     QVariantList readRow(QString tableName, int columns, QVariantMap values);
+    QVariantList readSortedValues(QString tableName, QString valueToRead, QString valueToSort);
 //    QString readString(QString tableName, QString value);
 //    QString readInt(QString tableName, QString value);
     bool removeRecord(const int id, QString tableName); // Удаление записи из таблицы по её id
