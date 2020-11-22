@@ -30,8 +30,8 @@ find_library(TAGLIB libtag)
 set(TAGLIB_PATH "${CMAKE_SOURCE_DIR}/3dparty/taglib/taglib")
 
 include_directories(
-#    ../build-project-Desktop_Qt_5_15_0_MSVC2015_64bit-Debug/3dparty/taglib
-    ../build-prog-Desktop_x86_windows_msvc2019_pe_64bit-Debug/3dparty/taglib
+    ../build-project-Desktop_Qt_5_15_0_MSVC2015_64bit-Debug/3dparty/taglib
+#    ../build-prog-Desktop_x86_windows_msvc2019_pe_64bit-Debug/3dparty/taglib
     ${TAGLIB_PATH}/ape
     ${TAGLIB_PATH}/asf
     ${TAGLIB_PATH}/flac
@@ -62,6 +62,7 @@ add_executable(player
   musiclibrary.cpp
   liveimage.cpp
   musicHelp.cpp
+  musicTags.cpp
   settings.h
   database.h
   musiclibrary.h

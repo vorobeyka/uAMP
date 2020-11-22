@@ -48,3 +48,27 @@ QString MusicLibrary::getDuration(int time) {
         tmp.push_back(rez[j]);
     return tmp;
 }
+
+void MusicLibrary::setFavourite(QVariant id) {
+    m_db->updateValue(m_libraryName, "Like", "id=" + id.toString(), 1);
+    emit setFavouriteTrack(getPackById(id));
+    emit likeTrack(id.toInt());
+}
+
+void MusicLibrary::unsetFavourite(QVariant cppId) {
+    m_db->updateValue(m_libraryName, "Like", "id=" + cppId.toString(), 0);
+    emit unsetFavouriteTrack(cppId.toInt());
+}
+
+void MusicLibrary::rate(QVariant cppId, QVariant rating) {
+    m_db->updateValue(m_libraryName, "Rating", "id=" + cppId.toString(), rating.toInt());
+    emit setRating(cppId.toInt(), rating.toInt());
+}
+
+QString MusicLibrary::currentPath(QString path) {
+    QString _path = "";
+
+    for (int i = OS == 1 ? 8 : 7; i < path.length(); ++i)
+            _path.push_back(path[i]);
+    return _path;
+}

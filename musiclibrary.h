@@ -94,6 +94,7 @@ private:
     DataBase* m_db;
     QString m_user;
     QString m_libraryName = "";
+    QString m_queueName = "";
     QImage m_imgTrack;
     QImage m_newImgTrack;
     ByteVector m_imgData;
