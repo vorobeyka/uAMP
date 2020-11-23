@@ -21,6 +21,7 @@
 #include <unsynchronizedlyricsframe.h>
 #include <mpegfile.h>
 #include <attachedpictureframe.h>
+#include <QThread>
 
 #include "imagefile.h"
 #include "database.h"
@@ -64,11 +65,14 @@ public slots:
     void saveImage(QString);
     void setImage(QString);
     void saveTags(QVariantList);
+    void deleteFromQueue(int id);
+    void deleteFromLibrary(QVariant id);
+    void deleteAllFromQueue();
+    void deleteAllFromLibrary();
 
 signals:
     void setTrackProperties(QVariantList pack);
     void setSortedLibraryTracks(QVariantList pack);
-    void setQueueTracks(QVariantList pack);
     void isBusyChanged(bool value);
     void isImageChanged(bool value);
     void setFavouriteTrack(QVariantList pack);
@@ -82,10 +86,14 @@ signals:
     void updateTrack(QVariantList);
     void librarySortChanged(QVariant);
 
+    void deleteTrackFromLibrary(int);
+    void deleteTrackFromQueue(int);
+
     // clear lists
     void clearSortedLibrary();
     void clearQueue();
     void clearLibrary();
+    void clearFavourite();
     void clearRadio();
     void clearEqualizer();
     // end clear lists
@@ -99,9 +107,9 @@ private:
     QImage m_newImgTrack;
     ByteVector m_imgData;
     QVariant m_librarySort;
-    int m_queueSort;
+    bool m_reverseSort = false;
     bool m_isImage = false;
-    bool m_isBusy = false;
+    bool m_isBusy { false };
 
     enum SortTypes {
         E_UNSORTED,
@@ -115,6 +123,7 @@ private:
     };
 
     QVariantList getPackById(QVariant);
+    QVariantList getPackQueue(int);
     QString currentPath(QString);
     QString getDuration(int time);
     QString getLyrics(QString);
@@ -126,7 +135,7 @@ private:
     void pushFile(QVariantList);
     void loadData();
     void loadLibrary();
-    void loadSortedLibrary();
+    void loadSortedQueue();
     void loadFavourite();
     void loadPlaylists();
     void loadQueue();

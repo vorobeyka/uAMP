@@ -182,6 +182,8 @@ MouseArea {
                                     width: 120
                                     height: 40
 
+                                    visible: isInQueue && !index ? false : true
+
                                     Rectangle {
                                         anchors.fill: parent
                                         color: _backGroundColor
@@ -217,7 +219,7 @@ MouseArea {
                                             break;
                                         case 2: console.log("add to playlist")
                                             break;
-                                        case 3: console.log("remove track")
+                                        case 3: isInQueue ? library.deleteFromQueue(_cppIndex) : library.deleteFromLibrary(_cppIndex)
                                             break;
                                         }
                                     }

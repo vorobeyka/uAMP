@@ -230,6 +230,30 @@ QVariantList DataBase::readSortedValues(QString tableName, QString valueToRead, 
     return rez;
 }
 
+QVariantList DataBase::readReverseSortedValues(QString tableName, QString valueToRead, QString valueToSort) {
+    QVariantList rez;
+    QSqlQuery query;
+    if (query.exec("SELECT " + valueToRead + " FROM " + tableName + " ORDER BY " + valueToSort + " DESC;")) {
+        while (query.next()) {
+            rez << query.value(0);
+        }
+    } else {
+        qDebug() << "ERROR: can't read sorted data ";
+        qDebug() << query.lastError();
+    }
+    return rez;
+}
+
+QVariantList DataBase::readColumnWithQueue(QString queueString) {
+    QVariantList rez;
+    QSqlQuery query;
+    query.exec(queueString);
+    while (query.next()) {
+        rez << query.value(0);
+    }
+    return rez;
+}
+
 /* Метод для удаления записи из таблицы
  * */
 bool DataBase::removeRecord(const int id, QString tableName) {
@@ -239,6 +263,24 @@ bool DataBase::removeRecord(const int id, QString tableName) {
     // Удаление производим по id записи, который передается в качестве аргумента функции
     query.prepare("DELETE FROM " + tableName + " WHERE id= :ID ;");
     query.bindValue(":ID", id);
+
+    // Выполняем удаление
+    if(!query.exec()){
+        qDebug() << "error delete row ";// << /*TABLE*/;
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::removeRecord(QString condition, QString tableName) {
+    // Удаление строки из базы данных будет производитсья с помощью SQL-запроса
+    QSqlQuery query;
+
+    // Удаление производим по id записи, который передается в качестве аргумента функции
+    query.prepare("DELETE FROM " + tableName + " WHERE " + condition + ";");
 
     // Выполняем удаление
     if(!query.exec()){

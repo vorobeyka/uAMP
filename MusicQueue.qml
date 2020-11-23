@@ -20,6 +20,26 @@ Item {
                              "_like": pack[7]
             })
         }
+
+        function onClearQueue() { listModel.clear() }
+
+        function onDeleteTrackFromLibrary(id) {
+            for (let i = 0; i < listModel.count; ++i) {
+                if (listModel.get(i)._cIndex === id) {
+                    listModel.remove(i, 1)
+                    i--;
+                }
+            }
+        }
+
+        function onDeleteTrackFromQueue(id) {
+            for (let i = 0; i < listModel.count; ++i) {
+                if (listModel.get(i)._cIndex === id) {
+                    listModel.remove(i, 1)
+                    break;
+                }
+            }
+        }
     }
 
     Dialog {
@@ -123,9 +143,7 @@ Item {
                 width: 120
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: {
-                    saveDialog.open()
-                }
+                onClicked: { saveDialog.open() }
             }
             CustomButton {
                 id: clearQueue
@@ -133,9 +151,7 @@ Item {
                 width: 100
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: {
-                    musicList.model.clear()
-                }
+                onClicked: { library.deleteAllFromQueue() }
             }
         }
 
@@ -151,10 +167,9 @@ Item {
     }
 
     Item {
-        anchors.top: header.bottom
-
         width: parent.width
         height: 50
+        y: header.height
 
         Row {
             x: 15
@@ -165,8 +180,13 @@ Item {
                 id: sortButton
                 width: 60
                 height: 20
-                CustomText { id: sortText; text: "Title"; color: _themeColor }
+                CustomText { id: sortText; color: _themeColor }
                 onClicked: sortPopup.open()
+                Component.onCompleted: {
+                    let itemIndex = library.libSortedValue
+                    sortText.text = sortRepeater.itemAt(itemIndex).modelText
+                    sortRepeater.itemAt(itemIndex).checked = true
+                }
             }
         }
 
@@ -182,20 +202,25 @@ Item {
                 spacing: 0
                 anchors.fill: parent
                 Repeater {
-                    model: ["Title", "Artist", "Album", "Rating", "Most played", "Newest"]
+                    id: sortRepeater
+                    model: ["Unsorted", "Title", "Artist", "Album", "Rating", "Most played", "Newest", "Year"]
                     RadioButton {
                         width: parent.width
                         height: 20
-                        checked: !index ? true : false
+                        checked: false
+                        property int _index: index
+                        property string modelText: modelData
 
                         indicator: Rectangle {
                             anchors.fill: parent
                             color: parent.checked ? _themeColor : _toolBarBackGroundColor
-                            CustomText { x: 10; text: modelData }
+                            CustomText { x: 10; text: modelText }
                         }
                         onClicked: {
+                            library.isBusy = true
                             sortPopup.close()
                             sortText.text = modelData
+                            library.libSortedValue = _index
                         }
                     }
                 }
@@ -217,6 +242,7 @@ Item {
             id: musicList
             model: ListModel { id: listModel }
             delegate: MusicDelegate {
+                isInQueue: true
                 _index: model.index
                 _cppIndex: _cIndex
                 width: scroll.width

@@ -28,6 +28,17 @@ Item {
                              "_like": pack[7]
             })
         }
+
+        function onClearFavourite() { listModel.clear() }
+
+        function onDeleteTrackFromLibrary(id) {
+            for (let i = 0; i < listModel.count; ++i) {
+                if (listModel.get(i)._cIndex === id) {
+                    listModel.remove(i, 1)
+                    break;
+                }
+            }
+        }
     }
 
     ScrollView {

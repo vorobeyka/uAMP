@@ -50,7 +50,7 @@ QString MusicLibrary::getLyrics(QString filePath) {
 
     if (!f.isValid()) {
         qDebug() << "blyat";
-        setIsBusy(false);
+//        setIsBusy(false);
         return "";
     }
 

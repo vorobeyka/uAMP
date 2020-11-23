@@ -21,6 +21,32 @@ Item {
                              "_like": pack[7]
             })
         }
+
+        function onClearLibrary() { listModel.clear() }
+
+        function onDeleteTrackFromLibrary(id) {
+            for (let i = 0; i < listModel.count; ++i) {
+                if (listModel.get(i)._cIndex === id) {
+                    listModel.remove(i, 1)
+                    break;
+                }
+            }
+        }
+    }
+
+    DropArea {
+        id: dropArea;
+        anchors.fill: parent
+        onEntered: {
+            drag.accept(Qt.LinkAction)
+        }
+
+        onDropped: {
+            library.isBusy = true
+            for (var i = 0; i < drop.urls.length; ++i)
+                library.readFile(drop.urls[i], 1)
+            library.isBusy = false
+        }
     }
 
     ScrollView {

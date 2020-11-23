@@ -22,7 +22,7 @@ Window {
     property double _opacityMusicCotnroll: 0.8
     property double _opacityGradient: 0.5
     property Window _tagEditor: tagEditor
-    property BusyIndicator busy: control
+//    property BusyIndicator busy: control
     property FileDialogFiles _files: files
     property FileDialogFiles _folders: folders
 
@@ -68,13 +68,20 @@ Window {
 
     Dialog {
         id: errorDialog
-        standardButtons: Dialog.Ok
+        title: "Error"
         width: 300
         height: 150
         contentItem: Rectangle {
             anchors.fill: parent
             color: _backGroundColor
-            CustomText { id: errorText }
+            CustomText { id: errorText; anchors.horizontalCenter: parent.horizontalCenter }
+            CustomButton {
+                width: 100
+                buttonText: "OK"
+                onClicked: errorDialog.close()
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+            }
         }
     }
 
@@ -406,7 +413,6 @@ Window {
         }
     }
     Component.onCompleted: {
-        Settings.isBusy = false
         if (_isAuthorized) library.setUser(_userName)
     }
     Component.onDestruction: console.log("syka zakrili")

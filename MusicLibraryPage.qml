@@ -7,7 +7,7 @@ Item {
 
     Connections {
         target: library
-        function onSetSortedLibraryTracks(pack) {
+        function onSetTrackProperties(pack) {
             listModel.append({
                              "_cIndex": pack[0],
                              "_title": pack[1],
@@ -21,11 +21,16 @@ Item {
             })
         }
 
-        function onSetLibrarySort(index) {
-            sortText.text = sortRepeater.itemAt(index).modelText
-        }
+        function onClearLibrary() { listModel.clear() }
 
-        function onClearSortedLibrary() { listModel.clear() }
+        function onDeleteTrackFromLibrary(id) {
+            for (let i = 0; i < listModel.count; ++i) {
+                if (listModel.get(i)._cIndex === id) {
+                    listModel.remove(i, 1)
+                    break;
+                }
+            }
+        }
     }
 
     Item {
@@ -88,7 +93,10 @@ Item {
                 width: 100
                 height: 30
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: console.log("remove from library")
+                onClicked: {
+                    library.isBusy = true
+                    library.deleteAllFromLibrary()
+                }
             }
         }
 
@@ -111,69 +119,10 @@ Item {
         }
 
         onDropped: {
+            library.isBusy = true
             for (var i = 0; i < drop.urls.length; ++i)
                 library.readFile(drop.urls[i], 1)
-        }
-    }
-
-    Item {
-        width: parent.width
-        height: 50
-        y: header.height
-
-        Row {
-            x: 15
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: 5
-            CustomText { text: "Sort by: " }
-            MouseArea {
-                id: sortButton
-                width: 60
-                height: 20
-                CustomText { id: sortText; color: _themeColor }
-                onClicked: sortPopup.open()
-                Component.onCompleted: {
-                    let itemIndex = library.libSortedValue
-                    sortText.text = sortRepeater.itemAt(itemIndex).modelText
-                    sortRepeater.itemAt(itemIndex).checked = true
-                }
-            }
-        }
-
-        Popup {
-            id: sortPopup
-            width: 100
-            padding: 0
-            x: 100
-            modal: true
-            focus: true
-
-            Column {
-                spacing: 0
-                anchors.fill: parent
-                Repeater {
-                    id: sortRepeater
-                    model: ["Unsorted", "Title", "Artist", "Album", "Rating", "Most played", "Newest", "Year"]
-                    RadioButton {
-                        width: parent.width
-                        height: 20
-                        checked: false
-                        property int _index: index
-                        property string modelText: modelData
-
-                        indicator: Rectangle {
-                            anchors.fill: parent
-                            color: parent.checked ? _themeColor : _toolBarBackGroundColor
-                            CustomText { x: 10; text: modelText }
-                        }
-                        onClicked: {
-                            sortPopup.close()
-                            sortText.text = modelData
-                            library.libSortedValue = _index
-                        }
-                    }
-                }
-            }
+            library.isBusy = false
         }
     }
 
@@ -181,8 +130,8 @@ Item {
         id: scroll
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - 20
-        height: parent.height - header.height - 50
-        y: header.height + 50
+        height: parent.height - header.height
+        y: header.height
         clip: true
 //        ScrollBar.vertical.interactive: false
         ScrollBar.horizontal.visible: false

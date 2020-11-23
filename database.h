@@ -44,14 +44,17 @@ public slots:
     bool insertIntoTable(QString tableName, QVariantList values);
     bool insertValue(QString tableName, QString column, QVariant value);
     bool updateValue(QString tableName, QString column, QString condition, QVariant value);
-//    bool updateString(QString tableName, QString column, QString)
+
+
     std::vector<QVariantList> readFromTable(QString tableName, int columns, QString value = "*");
     QVariant readValue(QString tableName, QVariant value, QString condColumn, QString readColumn = "*");
     QVariantList readRow(QString tableName, int columns, QVariantMap values);
     QVariantList readSortedValues(QString tableName, QString valueToRead, QString valueToSort);
-//    QString readString(QString tableName, QString value);
-//    QString readInt(QString tableName, QString value);
+    QVariantList readReverseSortedValues(QString tableName, QString valueToRead, QString valueToSort);
+    QVariantList readColumnWithQueue(QString queueString);
+    
     bool removeRecord(const int id, QString tableName); // Удаление записи из таблицы по её id
+    bool removeRecord(QString condition, QString tableName);
     bool createTable(QString tName, QStringList columns);
     // bool readFromTable();;
 

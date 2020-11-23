@@ -17,5 +17,6 @@ void Settings::initUser() {
                       << "lib_id INTEGER," << "Title CHARACTER(255), " << "Artist CHARACTER(255), "
                       << "Album CHARACTER(255), " << "Year CHARACTER(255), "
                       << "Genre CHARACTER(255), " << "Rating TINYINT, "
-                      << "Like TINYINT, " << "Duration CHARACTER(255))");
+                      << "Like TINYINT, " << "Duration CHARACTER(255), "
+                      << "PlayedTimes INTEGER, " << "Date TEXT)");
 }

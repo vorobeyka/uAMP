@@ -10,7 +10,6 @@ void MusicLibrary::setUser(QString value) {
     qDebug() << "set " + value + " user in library class";
     m_libraryName = m_user + "Library";
     m_queueName = m_user + "Queue";
-    m_librarySort = m_db->readValue("Users", m_user, "login", "librarySort");
     if (value.isEmpty()) clearData();
     else loadData();
 }
@@ -21,36 +20,41 @@ void MusicLibrary::pushFile(QVariantList data) {
 }
 
 void MusicLibrary::loadLibrary() {
-    for (int i = 1; i <= m_db->getRowsCount(m_libraryName); ++i) {
+    QVariantList ids = m_db->readSortedValues(m_libraryName, "id", "id");
+    for (auto i : ids) {
         QVariantList data = getPackById(i);
         emit setTrackProperties(data);
         if (data[7].toBool()) emit setFavouriteTrack(data);
     }
 }
 
-void MusicLibrary::loadSortedLibrary() {
-    QVariantList sortedIds = m_db->readSortedValues(m_libraryName, "id", getSortedString(m_librarySort.toInt()));
+void MusicLibrary::loadSortedQueue() {
+    QCoreApplication::processEvents();
+    QVariantList sortedIds = m_reverseSort ? m_db->readReverseSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()))
+              : m_db->readSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()));
     for (auto i : sortedIds) {
-        QVariantList data = getPackById(i);
-        emit setSortedLibraryTracks(data);
+        QVariantList data = getPackQueue(i.toInt());
+//        data <<
+        emit setInQueue(data);
     }
 }
 
 void MusicLibrary::loadFavourite() {
 
 }
+
 void MusicLibrary::loadPlaylists() {
 
 }
+
 void MusicLibrary::loadQueue() {
-    QVariantList musicsIds = m_db->readSortedValues(m_queueName, "lib_id", "id");
-    for (auto i : musicsIds) {
-        QVariantList data = getPackById(i);
-        emit addToQueue(data);
+    QCoreApplication::processEvents();
+    QVariantList ids = m_db->readSortedValues(m_queueName, "id", "id");
+//    QVariantList musicsIds = m_db->readSortedValues(m_queueName, "lib_id", "id");
+    for (auto i : ids) {
+        QVariantList data = getPackQueue(i.toInt());
+        emit setInQueue(data);
     }
-//    for (int i = 1; i <= m_db->getRowsCount(m_queueName); ++i) {
-//        QVariantList data = getPackById();
-//    }
 }
 void MusicLibrary::loadEqualizer() {
 
@@ -78,7 +82,6 @@ void MusicLibrary::loadData() {
     QCoreApplication::processEvents();
 
     loadLibrary();
-    loadSortedLibrary();
     loadFavourite();
     loadPlaylists();
     loadQueue();
@@ -89,21 +92,30 @@ void MusicLibrary::loadData() {
 }
 
 void MusicLibrary::clearData() {
+    m_librarySort = 0;
+    m_reverseSort = false;
     qDebug() << "cleared Data";
 }
 
 void MusicLibrary::readFile(QString filePath, bool pathFlag) {
+//    setIsBusy(true);
     QCoreApplication::processEvents();
     QString _filePath = pathFlag ? currentPath(filePath) : filePath;
-    qDebug() <<_filePath;
+    if (!m_db->readValue(m_libraryName, _filePath, "FilePath", "FilePath").isNull()) {
+        emit errorHandle("Error: this track alredy exists\n" + _filePath);
+        setIsBusy(false);
+        return;
+    }
     if (!checkSfx(_filePath.split(".").last())) {
         qDebug() << "che blyat";
         emit errorHandle("Error: can't open file\nChoose .mp4 .mp3 .mp2 .mp1 .wav .ogg .aiff .aac");
+        setIsBusy(false);
         return;
     }
     FileRef file(_filePath.toLocal8Bit().toStdString().c_str());
     if (file.isNull()) {
         errorHandle("Error: can't read tags from file\n" + _filePath);
+        setIsBusy(false);
         return;
     }
     QVariantList data;
@@ -130,7 +142,7 @@ void MusicLibrary::readFile(QString filePath, bool pathFlag) {
     emit setSortedLibraryTracks(QVariantList() << m_db->getRowsCount(m_libraryName) + 1 << (!data[2].toString().isEmpty() ? data[2].toString() : data[0].toString())
                                                << data[3] << data[4] << data[5].toString() << data[6] << data[7] << data[8].toBool() << data[9]);
     pushFile(data);
-
+//    setIsBusy(false);
 }
 
 void MusicLibrary::readFolder(QString folderPath) {
@@ -145,30 +157,32 @@ void MusicLibrary::readFolder(QString folderPath) {
 QVariant MusicLibrary::librarySort() const { return m_librarySort; }
 
 void MusicLibrary::setLibrarySort(QVariant value) {
-    if (value.toInt() == m_librarySort.toInt()) return;
-
     setIsBusy(true);
+    QThread::msleep(50);
+    QCoreApplication::processEvents();
+    if (value.toInt() == m_librarySort.toInt()) m_reverseSort = !m_reverseSort;
+    else m_reverseSort = false;
+
     QCoreApplication::processEvents();
     m_librarySort = value;
-    m_db->updateValue("Users", "librarySort", "\"login\"='" + m_user+"'", value.toInt());
-    emit clearSortedLibrary();
+    emit clearQueue();
     emit librarySortChanged(m_librarySort);
 
-    loadSortedLibrary();
-
+    loadSortedQueue();
     setIsBusy(false);
 }
 
 void MusicLibrary::addToQueue(QVariant id) {
     QCoreApplication::processEvents();
     QVariantList data = getPackById(id);
-    emit setInQueue(getPackById(data));
+    emit setInQueue(data);
     data.push_front(m_db->getRowsCount(m_queueName) + 1);
     m_db->insertIntoTable(m_queueName, data);
 }
 
 void MusicLibrary::loadTagEditor(QVariant id) {
     setIsBusy(true);
+    QThread::msleep(50);
     QCoreApplication::processEvents();
     QVariantList pack;
     QString filePath = m_db->readValue(m_libraryName, id, "id", "FilePath").toString();
@@ -194,6 +208,24 @@ QVariantList MusicLibrary::getPackById(QVariant id) {
          << m_db->readValue(m_libraryName, id, "id", "Genre")
          << m_db->readValue(m_libraryName, id, "id", "Rating")
          << m_db->readValue(m_libraryName, id, "id", "Like").toBool()
-         << m_db->readValue(m_libraryName, id, "id", "Duration");
+         << m_db->readValue(m_libraryName, id, "id", "Duration")
+         << m_db->readValue(m_libraryName, id, "id", "PlayedTimes")
+         << m_db->readValue(m_libraryName, id, "id", "Date");
+    return pack;
+}
+
+QVariantList MusicLibrary::getPackQueue(int id) {
+    QVariantList pack;
+    QVariant title = m_db->readValue(m_queueName, id, "id", "Title");
+    if (title.toString().isEmpty()) title = m_db->readValue(m_queueName, id, "id", "FileName");
+    pack << id << title << m_db->readValue(m_queueName, id, "id", "Artist")
+         << m_db->readValue(m_queueName, id, "id", "Album")
+         << m_db->readValue(m_queueName, id, "id", "Year")
+         << m_db->readValue(m_queueName, id, "id", "Genre")
+         << m_db->readValue(m_queueName, id, "id", "Rating")
+         << m_db->readValue(m_queueName, id, "id", "Like").toBool()
+         << m_db->readValue(m_queueName, id, "id", "Duration")
+         << m_db->readValue(m_queueName, id, "id", "PlayedTimes")
+         << m_db->readValue(m_queueName, id, "id", "Date");
     return pack;
 }

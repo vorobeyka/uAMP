@@ -72,3 +72,43 @@ QString MusicLibrary::currentPath(QString path) {
             _path.push_back(path[i]);
     return _path;
 }
+
+void MusicLibrary::deleteFromLibrary(QVariant id) {
+    setIsBusy(true);
+    QThread::msleep(50);
+    QCoreApplication::processEvents();
+    QVariantList ids = m_db->readColumnWithQueue("SELECT ID FROM " + m_queueName + " WHERE lib_id=" + id.toString() + ";");
+    m_db->removeRecord(id.toInt(), m_libraryName);
+    m_db->removeRecord("lib_id=" + id.toString(), m_queueName);
+    for (auto i : ids) {
+        deleteTrackFromQueue(i.toInt());
+    }
+    emit deleteTrackFromLibrary(id.toInt());
+    setIsBusy(false);
+}
+
+void MusicLibrary::deleteFromQueue(int id) {
+    m_db->removeRecord(id, m_queueName);
+    emit deleteTrackFromQueue(id);
+}
+
+void MusicLibrary::deleteAllFromLibrary() {
+    QThread::msleep(50);
+    QCoreApplication::processEvents();
+
+    emit clearLibrary();
+    emit clearFavourite();
+
+    for (int i = 1; i <= m_db->getRowsCount(m_libraryName); ++i)
+        m_db->removeRecord(i, m_libraryName);
+    deleteAllFromQueue();
+    setIsBusy(false);
+}
+
+void MusicLibrary::deleteAllFromQueue() {
+    QThread::msleep(50);
+    QCoreApplication::processEvents();
+    emit clearQueue();
+    for (int i = 1; i <= m_db->getRowsCount(m_queueName); ++i)
+        m_db->removeRecord(i, m_queueName);
+}

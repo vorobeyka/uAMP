@@ -27,8 +27,7 @@ bool Settings::createTable() {
         return false;
     }
     if (!m_db->createTable("Users", QStringList() << "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                           << "login VARCHAR(255)," << "password VARCHAR(255),"
-                           << "librarySort TINYINT," << "queueSort TINYINT)")) {
+                           << "login VARCHAR(255)," << "password VARCHAR(255))")) {
         return false;
     }
     return true;
