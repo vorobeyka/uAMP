@@ -11,6 +11,7 @@ MouseArea {
     property bool likedIcon: false
     property bool isInQueue: false
     property bool isFavourite: false
+    property int _qIndex: 0
     property string someText: ""
     property string album: ""
     property string title: ""
@@ -219,7 +220,7 @@ MouseArea {
                                             break;
                                         case 2: console.log("add to playlist")
                                             break;
-                                        case 3: isInQueue ? library.deleteFromQueue(_cppIndex) : library.deleteFromLibrary(_cppIndex)
+                                        case 3: isInQueue ? library.deleteFromQueue(_qIndex) : library.deleteFromLibrary(_cppIndex)
                                             break;
                                         }
                                     }

@@ -65,7 +65,7 @@ public slots:
     void saveImage(QString);
     void setImage(QString);
     void saveTags(QVariantList);
-    void deleteFromQueue(int id);
+    void deleteFromQueue(QVariant id);
     void deleteFromLibrary(QVariant id);
     void deleteAllFromQueue();
     void deleteAllFromLibrary();

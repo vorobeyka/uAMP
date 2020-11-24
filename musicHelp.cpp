@@ -51,17 +51,20 @@ QString MusicLibrary::getDuration(int time) {
 
 void MusicLibrary::setFavourite(QVariant id) {
     m_db->updateValue(m_libraryName, "Like", "id=" + id.toString(), 1);
+    m_db->updateValue(m_queueName, "Like", "lib_id=" + id.toString(), 1);
     emit setFavouriteTrack(getPackById(id));
     emit likeTrack(id.toInt());
 }
 
 void MusicLibrary::unsetFavourite(QVariant cppId) {
     m_db->updateValue(m_libraryName, "Like", "id=" + cppId.toString(), 0);
+    m_db->updateValue(m_queueName, "Like", "lib_id=" + cppId.toString(), 0);
     emit unsetFavouriteTrack(cppId.toInt());
 }
 
 void MusicLibrary::rate(QVariant cppId, QVariant rating) {
     m_db->updateValue(m_libraryName, "Rating", "id=" + cppId.toString(), rating.toInt());
+    m_db->updateValue(m_queueName, "Rating", "lib_id=" + cppId.toString(), rating.toInt());
     emit setRating(cppId.toInt(), rating.toInt());
 }
 
@@ -77,19 +80,18 @@ void MusicLibrary::deleteFromLibrary(QVariant id) {
     setIsBusy(true);
     QThread::msleep(50);
     QCoreApplication::processEvents();
-    QVariantList ids = m_db->readColumnWithQueue("SELECT ID FROM " + m_queueName + " WHERE lib_id=" + id.toString() + ";");
+    QVariantList ids = m_db->readColumnWithQueue("SELECT id FROM " + m_queueName + " WHERE lib_id=" + id.toString() + ";");
     m_db->removeRecord(id.toInt(), m_libraryName);
-    m_db->removeRecord("lib_id=" + id.toString(), m_queueName);
     for (auto i : ids) {
-        deleteTrackFromQueue(i.toInt());
+        deleteFromQueue(i.toInt());
     }
     emit deleteTrackFromLibrary(id.toInt());
     setIsBusy(false);
 }
 
-void MusicLibrary::deleteFromQueue(int id) {
-    m_db->removeRecord(id, m_queueName);
-    emit deleteTrackFromQueue(id);
+void MusicLibrary::deleteFromQueue(QVariant id) {
+    m_db->removeRecord(id.toInt(), m_queueName);
+    emit deleteTrackFromQueue(id.toInt());
 }
 
 void MusicLibrary::deleteAllFromLibrary() {

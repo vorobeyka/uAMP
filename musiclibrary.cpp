@@ -30,11 +30,17 @@ void MusicLibrary::loadLibrary() {
 
 void MusicLibrary::loadSortedQueue() {
     QCoreApplication::processEvents();
-    QVariantList sortedIds = m_reverseSort ? m_db->readReverseSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()))
+    QVariantList sortedIds = m_reverseSort ? m_db->readReverseSortedValues(m_queueName, "lib_id", getSortedString(m_librarySort.toInt()))
+              : m_db->readSortedValues(m_queueName, "lib_id", getSortedString(m_librarySort.toInt()));
+    QVariantList ids = m_reverseSort ? m_db->readReverseSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()))
               : m_db->readSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()));
-    for (auto i : sortedIds) {
-        QVariantList data = getPackQueue(i.toInt());
-//        data <<
+//    for (auto i : sortedIds) {
+//        QVariantList data = getPackById(i);
+//        emit setInQueue(data);
+//    }
+    for (int i = 0; i < sortedIds.count(); ++i) {
+        QVariantList data = getPackById(sortedIds[i]);
+        data << ids[i];
         emit setInQueue(data);
     }
 }
@@ -49,13 +55,19 @@ void MusicLibrary::loadPlaylists() {
 
 void MusicLibrary::loadQueue() {
     QCoreApplication::processEvents();
+    QVariantList sortedIds = m_db->readSortedValues(m_queueName, "lib_id", "id");
     QVariantList ids = m_db->readSortedValues(m_queueName, "id", "id");
-//    QVariantList musicsIds = m_db->readSortedValues(m_queueName, "lib_id", "id");
-    for (auto i : ids) {
-        QVariantList data = getPackQueue(i.toInt());
+//    for (auto i : ids) {
+//        QVariantList data = getPackById(i);
+//        emit setInQueue(data);
+//    }
+    for (int i = 0; i < sortedIds.count(); ++i) {
+        QVariantList data = getPackById(sortedIds[i]);
+        data << ids[i];
         emit setInQueue(data);
     }
 }
+
 void MusicLibrary::loadEqualizer() {
 
 }
@@ -175,7 +187,7 @@ void MusicLibrary::setLibrarySort(QVariant value) {
 void MusicLibrary::addToQueue(QVariant id) {
     QCoreApplication::processEvents();
     QVariantList data = getPackById(id);
-    emit setInQueue(data);
+    emit setInQueue(QVariantList() << data << m_db->getRowsCount(m_queueName) + 1);
     data.push_front(m_db->getRowsCount(m_queueName) + 1);
     m_db->insertIntoTable(m_queueName, data);
 }

@@ -17,8 +17,10 @@ Item {
                              "_genre": pack[5],
                              "_rating": pack[6],
                              "_duration": pack[8],
-                             "_like": pack[7]
+                             "_like": pack[7],
+                             "_queueIndex": pack[11]
             })
+//            console.log(pack[])
         }
 
         function onClearQueue() { listModel.clear() }
@@ -34,7 +36,7 @@ Item {
 
         function onDeleteTrackFromQueue(id) {
             for (let i = 0; i < listModel.count; ++i) {
-                if (listModel.get(i)._cIndex === id) {
+                if (listModel.get(i)._queueIndex === id) {
                     listModel.remove(i, 1)
                     break;
                 }
@@ -245,6 +247,7 @@ Item {
                 isInQueue: true
                 _index: model.index
                 _cppIndex: _cIndex
+                _qIndex: _queueIndex
                 width: scroll.width
                 height: 40
                 bgColor: !(index % 2) ? _toolBarBackGroundColor : _backGroundColor
