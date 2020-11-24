@@ -63,6 +63,7 @@ add_executable(player
   liveimage.cpp
   musicHelp.cpp
   musicTags.cpp
+  playlists.cpp
   settings.h
   database.h
   musiclibrary.h

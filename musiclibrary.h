@@ -69,6 +69,7 @@ public slots:
     void deleteFromLibrary(QVariant id);
     void deleteAllFromQueue();
     void deleteAllFromLibrary();
+    void clearData();
 
 signals:
     void setTrackProperties(QVariantList pack);
@@ -90,7 +91,6 @@ signals:
     void deleteTrackFromQueue(int);
 
     // clear lists
-    void clearSortedLibrary();
     void clearQueue();
     void clearLibrary();
     void clearFavourite();
@@ -123,7 +123,6 @@ private:
     };
 
     QVariantList getPackById(QVariant);
-    QVariantList getPackQueue(int);
     QString currentPath(QString);
     QString getDuration(int time);
     QString getLyrics(QString);
@@ -141,7 +140,6 @@ private:
     void loadQueue();
     void loadEqualizer();
     void loadRadio();
-    void clearData();
 
 };
 

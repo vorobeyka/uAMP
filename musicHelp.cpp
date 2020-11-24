@@ -51,20 +51,20 @@ QString MusicLibrary::getDuration(int time) {
 
 void MusicLibrary::setFavourite(QVariant id) {
     m_db->updateValue(m_libraryName, "Like", "id=" + id.toString(), 1);
-    m_db->updateValue(m_queueName, "Like", "lib_id=" + id.toString(), 1);
+//    m_db->updateValue(m_queueName, "Like", "lib_id=" + id.toString(), 1);
     emit setFavouriteTrack(getPackById(id));
     emit likeTrack(id.toInt());
 }
 
 void MusicLibrary::unsetFavourite(QVariant cppId) {
     m_db->updateValue(m_libraryName, "Like", "id=" + cppId.toString(), 0);
-    m_db->updateValue(m_queueName, "Like", "lib_id=" + cppId.toString(), 0);
+//    m_db->updateValue(m_queueName, "Like", "lib_id=" + cppId.toString(), 0);
     emit unsetFavouriteTrack(cppId.toInt());
 }
 
 void MusicLibrary::rate(QVariant cppId, QVariant rating) {
     m_db->updateValue(m_libraryName, "Rating", "id=" + cppId.toString(), rating.toInt());
-    m_db->updateValue(m_queueName, "Rating", "lib_id=" + cppId.toString(), rating.toInt());
+//    m_db->updateValue(m_queueName, "Rating", "lib_id=" + cppId.toString(), rating.toInt());
     emit setRating(cppId.toInt(), rating.toInt());
 }
 

@@ -37,6 +37,15 @@ public:
         return db.tables();
     }
 
+    std::vector<QVariantList> readFromTable(QString tableName, int columns, QString value = "*");
+    QVariant readValue(QString tableName, QVariant value, QString condColumn, QString readColumn = "*");
+    QVariantList readRow(QString tableName, int columns, QVariantMap values);
+    QVariantList readSortedValues(QString tableName, QString valueToRead, QString valueToSort);
+    QVariantList readReverseSortedValues(QString tableName, QString valueToRead, QString valueToSort);
+    QVariantList sortedValues(QString queryString);
+    QVariantList reverseSortedValues(QString queryString);
+    QVariantList readColumnWithQueue(QString queueString);
+
 public slots:
         // Добавление записей в таблицу
     int getRowsCount(QString tableName);
@@ -45,14 +54,6 @@ public slots:
     bool insertValue(QString tableName, QString column, QVariant value);
     bool updateValue(QString tableName, QString column, QString condition, QVariant value);
 
-
-    std::vector<QVariantList> readFromTable(QString tableName, int columns, QString value = "*");
-    QVariant readValue(QString tableName, QVariant value, QString condColumn, QString readColumn = "*");
-    QVariantList readRow(QString tableName, int columns, QVariantMap values);
-    QVariantList readSortedValues(QString tableName, QString valueToRead, QString valueToSort);
-    QVariantList readReverseSortedValues(QString tableName, QString valueToRead, QString valueToSort);
-    QVariantList readColumnWithQueue(QString queueString);
-    
     bool removeRecord(const int id, QString tableName); // Удаление записи из таблицы по её id
     bool removeRecord(QString condition, QString tableName);
     bool createTable(QString tName, QStringList columns);

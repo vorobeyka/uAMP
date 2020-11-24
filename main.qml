@@ -357,6 +357,7 @@ Window {
     BusyIndicator {
         id: control
         running: _isbusy
+        visible: _isbusy
         x: root.width / 2 - 32
         y: root.height / 2 - 32
         contentItem: Item {
@@ -413,7 +414,12 @@ Window {
         }
     }
     Component.onCompleted: {
-        if (_isAuthorized) library.setUser(_userName)
+        if (_isAuthorized) {
+            library.setUser(_userName)
+//            player.setUser(_userName)
+//            equalizer.setUser(_userName)
+//            radio.setUser(_userName)
+        }
     }
     Component.onDestruction: console.log("syka zakrili")
 }

@@ -244,6 +244,34 @@ QVariantList DataBase::readReverseSortedValues(QString tableName, QString valueT
     return rez;
 }
 
+QVariantList DataBase::sortedValues(QString queryString) {
+    QVariantList rez;
+    QSqlQuery query;
+    if (query.exec(queryString + " asc;")) {
+        while (query.next()) {
+            rez << query.value(0);
+        }
+    } else {
+        qDebug() << "ERROR: can't read sorted data ";
+        qDebug() << query.lastError();
+    }
+    return rez;
+}
+
+QVariantList DataBase::reverseSortedValues(QString queryString) {
+    QVariantList rez;
+    QSqlQuery query;
+    if (query.exec(queryString + " desc;")) {
+        while (query.next()) {
+            rez << query.value(0);
+        }
+    } else {
+        qDebug() << "ERROR: can't read sorted data ";
+        qDebug() << query.lastError();
+    }
+    return rez;
+}
+
 QVariantList DataBase::readColumnWithQueue(QString queueString) {
     QVariantList rez;
     QSqlQuery query;

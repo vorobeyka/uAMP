@@ -30,14 +30,25 @@ void MusicLibrary::loadLibrary() {
 
 void MusicLibrary::loadSortedQueue() {
     QCoreApplication::processEvents();
-    QVariantList sortedIds = m_reverseSort ? m_db->readReverseSortedValues(m_queueName, "lib_id", getSortedString(m_librarySort.toInt()))
-              : m_db->readSortedValues(m_queueName, "lib_id", getSortedString(m_librarySort.toInt()));
-    QVariantList ids = m_reverseSort ? m_db->readReverseSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()))
-              : m_db->readSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()));
-//    for (auto i : sortedIds) {
-//        QVariantList data = getPackById(i);
-//        emit setInQueue(data);
-//    }
+//    QVariantList sortedIds = m_reverseSort ? m_db->readReverseSortedValues(m_queueName, "lib_id", getSortedString(m_librarySort.toInt()))
+//              : m_db->readSortedValues(m_queueName, "lib_id", getSortedString(m_librarySort.toInt()));
+//    QVariantList ids = m_reverseSort ? m_db->readReverseSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()))
+//              : m_db->readSortedValues(m_queueName, "id", getSortedString(m_librarySort.toInt()));
+    QVariantList sortedIds = m_reverseSort ?
+                             m_db->reverseSortedValues("select " + m_libraryName + ".id from " + m_libraryName +
+                                                       " inner join " + m_queueName +" on " + m_queueName + ".lib_id=" +
+                                                       m_libraryName + ".id order by " + getSortedString(m_librarySort.toInt())) :
+                             m_db->sortedValues("select " + m_libraryName + ".id from " + m_libraryName +
+                                                " inner join " + m_queueName +" on " + m_queueName + ".lib_id=" +
+                                                m_libraryName + ".id order by " + getSortedString(m_librarySort.toInt()));
+    QVariantList ids = m_reverseSort ?
+                             m_db->reverseSortedValues("select " + m_queueName + ".id from " + m_libraryName +
+                                                       " inner join " + m_queueName +" on " + m_queueName + ".lib_id=" +
+                                                       m_libraryName + ".id order by " + getSortedString(m_librarySort.toInt())) :
+                             m_db->sortedValues("select " + m_queueName + ".id from " + m_libraryName +
+                                                " inner join " + m_queueName +" on " + m_queueName + ".lib_id=" +
+                                                m_libraryName + ".id order by " + getSortedString(m_librarySort.toInt()));
+
     for (int i = 0; i < sortedIds.count(); ++i) {
         QVariantList data = getPackById(sortedIds[i]);
         data << ids[i];
@@ -57,10 +68,6 @@ void MusicLibrary::loadQueue() {
     QCoreApplication::processEvents();
     QVariantList sortedIds = m_db->readSortedValues(m_queueName, "lib_id", "id");
     QVariantList ids = m_db->readSortedValues(m_queueName, "id", "id");
-//    for (auto i : ids) {
-//        QVariantList data = getPackById(i);
-//        emit setInQueue(data);
-//    }
     for (int i = 0; i < sortedIds.count(); ++i) {
         QVariantList data = getPackById(sortedIds[i]);
         data << ids[i];
@@ -107,6 +114,9 @@ void MusicLibrary::clearData() {
     m_librarySort = 0;
     m_reverseSort = false;
     qDebug() << "cleared Data";
+    emit clearQueue();
+    emit clearLibrary();
+    emit clearFavourite();
 }
 
 void MusicLibrary::readFile(QString filePath, bool pathFlag) {
@@ -186,8 +196,9 @@ void MusicLibrary::setLibrarySort(QVariant value) {
 
 void MusicLibrary::addToQueue(QVariant id) {
     QCoreApplication::processEvents();
-    QVariantList data = getPackById(id);
-    emit setInQueue(QVariantList() << data << m_db->getRowsCount(m_queueName) + 1);
+    QVariantList data;
+    emit setInQueue(QVariantList() << getPackById(id) << m_db->getRowsCount(m_queueName) + 1);
+    data << id;
     data.push_front(m_db->getRowsCount(m_queueName) + 1);
     m_db->insertIntoTable(m_queueName, data);
 }
@@ -223,21 +234,5 @@ QVariantList MusicLibrary::getPackById(QVariant id) {
          << m_db->readValue(m_libraryName, id, "id", "Duration")
          << m_db->readValue(m_libraryName, id, "id", "PlayedTimes")
          << m_db->readValue(m_libraryName, id, "id", "Date");
-    return pack;
-}
-
-QVariantList MusicLibrary::getPackQueue(int id) {
-    QVariantList pack;
-    QVariant title = m_db->readValue(m_queueName, id, "id", "Title");
-    if (title.toString().isEmpty()) title = m_db->readValue(m_queueName, id, "id", "FileName");
-    pack << id << title << m_db->readValue(m_queueName, id, "id", "Artist")
-         << m_db->readValue(m_queueName, id, "id", "Album")
-         << m_db->readValue(m_queueName, id, "id", "Year")
-         << m_db->readValue(m_queueName, id, "id", "Genre")
-         << m_db->readValue(m_queueName, id, "id", "Rating")
-         << m_db->readValue(m_queueName, id, "id", "Like").toBool()
-         << m_db->readValue(m_queueName, id, "id", "Duration")
-         << m_db->readValue(m_queueName, id, "id", "PlayedTimes")
-         << m_db->readValue(m_queueName, id, "id", "Date");
     return pack;
 }

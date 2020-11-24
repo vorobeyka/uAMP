@@ -148,14 +148,8 @@ bool Settings::checkUser(QString user, QString password) {
 bool Settings::createUser(QString login, QString password) {
     if (!m_db->readValue(USERS_TABLE_NAME, login, "login", "login").isNull())
         return false;
-//    QVariantMap data;
-//    data.insert("login", login);
-//    data.insert("password", password);
-//    data.insert("librarySort", "0");
-//    data.insert("queueSort", "0");
     m_db->insertIntoTable(USERS_TABLE_NAME, QVariantList() << m_db->getRowsCount(USERS_TABLE_NAME) + 1
-                          << login << password << 0 << 0);
-//    m_db->insertIntoTable(USERS_TABLE_NAME, data);
+                          << login << password);
     setUserName(login);
     setAuthorized(true);
     initUser();

@@ -56,6 +56,9 @@ Item {
                             password.clear()
                             login.clear()
                             library.setUser(_userName)
+                            //            player.setUser(_userName)
+                            //            equalizer.setUser(_userName)
+                            //            radio.setUser(_userName)
                         } else {
                             errorWrapper.visible = true
                         }

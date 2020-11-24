@@ -17,12 +17,22 @@ Item {
         }
         CustomButton {
             width: 100
+            buttonText: "Delete user"
+            anchors.right: logOutBtn.left
+            onClicked: {
+                console.log("delete user pushed")
+            }
+        }
+        CustomButton {
+            id: logOutBtn
+            width: 100
             buttonText: "Log out"
             anchors.right: parent.right
             onClicked: {
                 Settings.userName = ""
                 Settings.authorized = 0
                 authVisible = true
+                library.clearData()
             }
         }
     }
@@ -41,8 +51,6 @@ Item {
             _checked: true
             onClicked: {
                 isLibraryVisible = true
-//                stackIndex = 0
-//                stackView.pop("UserPageAllMusics.qml")
             }
         }
 
@@ -51,9 +59,6 @@ Item {
             buttonText: "Favourite"
             onClicked: {
                 isLibraryVisible = false
-//                if (!stackIndex)
-//                    stackView.push("UserPageFavourite.qml")
-//                stackIndex = 1
             }
         }
     }
@@ -87,12 +92,5 @@ Item {
             anchors.fill: parent
             visible: !isLibraryVisible
         }
-
-//        StackView {
-//            id: stackView
-//            initialItem: "UserPageAllMusics.qml"
-//            anchors.fill: parent
-//            clip: true
-//        }
     }
 }
