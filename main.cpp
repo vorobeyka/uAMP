@@ -4,6 +4,7 @@
 
 #include "settings.h"
 #include "musiclibrary.h"
+#include "playlists.h"
 #include "liveimage.h"
 #include <iostream>
 #include <locale>
@@ -25,6 +26,7 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<LiveImage>("ImageProvider", 1, 0, "LiveImage");
     Settings settings;
     MusicLibrary library(settings.db());
+    Playlists playlists(settings.db());
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
@@ -33,6 +35,7 @@ int main(int argc, char *argv[]) {
 
     context->setContextProperty("Settings", &settings);
     context->setContextProperty("library", &library);
+    context->setContextProperty("playlists", &playlists);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

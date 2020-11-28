@@ -55,8 +55,6 @@ Item {
                     _currentPage.visible = false
                     _currentPage = _musicPlaylistPage
                     _currentPage.visible = true
-//                    mainStack.pop()
-//                    mainStack.push("MusicPlaylists.qml")
                     _initialItem = "playlists"
                 }
             }

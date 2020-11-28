@@ -69,6 +69,7 @@ add_executable(player
   musiclibrary.h
   liveimage.h
   imagefile.h
+  playlists.h
   3dparty/bass.h
 )
 
